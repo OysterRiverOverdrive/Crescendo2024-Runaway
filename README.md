@@ -18,14 +18,14 @@ Robot Code for FIRST Robotics Competition Year 2024
 
 ## Common Issues
 
-#### Pull request `checks have failed`
+### Pull request `checks have failed`
 
 If your pull request is blocked by a message like `All checks have failed` and `Merging is blocked`:
 
 * Open the pull request in the browser.
 * Click on "Details" which should bring you to the output of the failed check to figure out what needs to be fixed on your branch.
 
-#### Running gradle commands
+### Running gradle commands
 
 To run a command like `./gradlew spotlessApply`,
 
