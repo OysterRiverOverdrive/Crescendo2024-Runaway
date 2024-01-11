@@ -4,12 +4,17 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,7 +50,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
           RobotConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  // private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
+  private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
@@ -67,16 +72,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
   // Odometry class for tracking robot pose
-  // SwerveDriveOdometry m_odometry =
-  //     new SwerveDriveOdometry(
-  //         DriveConstants.kDriveKinematics,
-  //         Rotation2d.fromDegrees(m_gyro.getAngle()),
-  //         new SwerveModulePosition[] {
-  //           m_frontLeft.getPosition(),
-  //           m_frontRight.getPosition(),
-  //           m_rearLeft.getPosition(),
-  //           m_rearRight.getPosition()
-  //         });
+  SwerveDriveOdometry m_odometry =
+      new SwerveDriveOdometry(
+          DriveConstants.kDriveKinematics,
+          Rotation2d.fromDegrees(m_gyro.getAngle()),
+          new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+          });
 
   /** Creates a new DriveSubsystem. */
   public DrivetrainSubsystem() {
@@ -91,26 +96,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
    *
    * @return The pose.
    */
-  // public Pose2d getPose() {
-  //   return m_odometry.getPoseMeters();
-  // }
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
 
   /**
    * Resets the odometry to the specified pose.
    *
    * @param pose The pose to which to set the odometry.
    */
-  // public void resetOdometry(Pose2d pose) {
-  //   m_odometry.resetPosition(
-  //       Rotation2d.fromDegrees(m_gyro.getAngle()),
-  //       new SwerveModulePosition[] {
-  //         m_frontLeft.getPosition(),
-  //         m_frontRight.getPosition(),
-  //         m_rearLeft.getPosition(),
-  //         m_rearRight.getPosition()
-  //       },
-  //       pose);
-  // }
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(
+        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+        },
+        pose);
+  }
 
   /**
    * Method to drive the robot using joystick info.
@@ -181,19 +186,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
-    // var swerveModuleStates =
-    //     DriveConstants.kDriveKinematics.toSwerveModuleStates(
-    //         fieldRelative
-    //             ? ChassisSpeeds.fromFieldRelativeSpeeds(
-    //                 xSpeedDelivered,
-    //                 ySpeedDelivered,
-    //                 rotDelivered,
-    //                 Rotation2d.fromDegrees(m_gyro.getAngle()))
-    //             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
-
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
-            new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                    xSpeedDelivered,
+                    ySpeedDelivered,
+                    rotDelivered,
+                    Rotation2d.fromDegrees(m_gyro.getAngle()))
+                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+
+    // var swerveModuleStates =
+    //     DriveConstants.kDriveKinematics.toSwerveModuleStates(
+    //         new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -234,27 +239,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /** Zeroes the heading of the robot. */
-  // public void zeroHeading() {
-  //   m_gyro.reset();
-  // }
+  public void zeroHeading() {
+    m_gyro.reset();
+  }
 
   /**
    * Returns the heading of the robot.
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  // public double getHeading() {
-  //   return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
-  // }
+  public double getHeading() {
+    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  }
 
   /**
    * Returns the turn rate of the robot.
    *
    * @return The turn rate of the robot, in degrees per second
    */
-  // public double getTurnRate() {
-  //   return m_gyro.getRate() * (RobotConstants.kGyroReversed ? -1.0 : 1.0);
-  // }
+  public double getTurnRate() {
+    return m_gyro.getRate() * (RobotConstants.kGyroReversed ? -1.0 : 1.0);
+  }
 
   @Override
   public void periodic() {
@@ -275,13 +280,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     // Update the odometry in the periodic block
-    // m_odometry.update(
-    //     Rotation2d.fromDegrees(m_gyro.getAngle()),
-    //     new SwerveModulePosition[] {
-    //       m_frontLeft.getPosition(),
-    //       m_frontRight.getPosition(),
-    //       m_rearLeft.getPosition(),
-    //       m_rearRight.getPosition()
-    //     });
+    m_odometry.update(
+        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+        });
   }
 }
