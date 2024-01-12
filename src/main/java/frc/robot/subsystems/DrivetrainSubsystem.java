@@ -51,11 +51,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
+  
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
   private double m_currentTranslationDir = 0.0;
   private double m_currentTranslationMag = 0.0;
+
+  private double x;
+  private double y;
+  private double r;
 
   // Max Speeds
   private double maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
@@ -75,7 +80,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(m_gyro.getAngle()),
+          Rotation2d.fromDegrees(gyroangle()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -85,6 +90,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DrivetrainSubsystem() {
+    zeroHeading();
     m_drivemode.setDefaultOption("Medium Speed", kmedium);
     m_drivemode.addOption("Slow Speeds (Demo Mode)", kslow);
     m_drivemode.addOption("High Speeds", khigh);
@@ -107,7 +113,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(gyroangle()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -186,6 +192,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
+    x=xSpeedDelivered;
+    y=ySpeedDelivered;
+    r=rotDelivered;
+
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -193,7 +203,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                     xSpeedDelivered,
                     ySpeedDelivered,
                     rotDelivered,
-                    Rotation2d.fromDegrees(m_gyro.getAngle()))
+                    Rotation2d.fromDegrees(gyroangle()))
                 : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
     // var swerveModuleStates =
@@ -243,13 +253,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_gyro.reset();
   }
 
+  /** Zeroes the heading of the robot. */
+  public double gyroangle() {
+    return m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
   /**
    * Returns the heading of the robot.
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+    return Rotation2d.fromDegrees(gyroangle()).getDegrees();
   }
 
   /**
@@ -278,6 +293,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
         break;
     }
+    SmartDashboard.putNumber("Z axis", m_gyro.getYaw());
+    SmartDashboard.putNumber("Z axis angle", gyroangle());
+    SmartDashboard.putNumber("x", x);
+    SmartDashboard.putNumber("y", y);
+    SmartDashboard.putNumber("r", r);
 
     // Update the odometry in the periodic block
     m_odometry.update(
