@@ -15,7 +15,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -51,7 +50,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
-  
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
@@ -66,12 +64,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
   private double maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
 
-  // Drop Down
-  private final SendableChooser<String> m_drivemode = new SendableChooser<>();
-  private final String khigh = "High Speeds";
-  private final String kmedium = "Medium Speeds";
-  private final String kslow = "Low Speed";
-
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
@@ -80,7 +72,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(gyroangle()),
+          Rotation2d.fromDegrees(getHeading()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -91,10 +83,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
   public DrivetrainSubsystem() {
     zeroHeading();
-    m_drivemode.setDefaultOption("Medium Speed", kmedium);
-    m_drivemode.addOption("Slow Speeds (Demo Mode)", kslow);
-    m_drivemode.addOption("High Speeds", khigh);
-    SmartDashboard.putData("Driver Config", m_drivemode);
+    m_gyro.calibrate();
   }
 
   /**
@@ -113,7 +102,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(gyroangle()),
+        Rotation2d.fromDegrees(getHeading()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -192,23 +181,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
-    x=xSpeedDelivered;
-    y=ySpeedDelivered;
-    r=rotDelivered;
+    x = xSpeedDelivered;
+    y = ySpeedDelivered;
+    r = rotDelivered;
 
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xSpeedDelivered,
-                    ySpeedDelivered,
-                    rotDelivered,
-                    Rotation2d.fromDegrees(gyroangle()))
+                    xSpeedDelivered, ySpeedDelivered, rotDelivered, getRotation2d())
                 : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
-
-    // var swerveModuleStates =
-    //     DriveConstants.kDriveKinematics.toSwerveModuleStates(
-    //         new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -258,14 +240,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0);
   }
 
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
   public double getHeading() {
-    return Rotation2d.fromDegrees(gyroangle()).getDegrees();
+
+    return Math.IEEEremainder(m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0), 360);
   }
+
+  public Rotation2d getRotation2d() {
+    return Rotation2d.fromDegrees(getHeading());
+  }
+
+  // /**
+  //  * Returns the heading of the robot.
+  //  *
+  //  * @return the robot's heading in degrees, from -180 to 180
+  //  */
+  // public double getHeading() {
+  //   return Rotation2d.fromDegrees(gyroangle()).getDegrees();
+  // }
 
   /**
    * Returns the turn rate of the robot.
@@ -278,30 +269,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    switch (m_drivemode.getSelected()) {
-      case khigh:
-        maxSpeedDrive = DriveConstants.kSpeedHighDrive;
-        maxSpeedTurn = DriveConstants.kSpeedHighTurn;
-        break;
-      case kslow:
-        maxSpeedDrive = DriveConstants.kSpeedSlowDrive;
-        maxSpeedTurn = DriveConstants.kSpeedSlowTurn;
-        break;
-      case kmedium:
-      default:
-        maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
-        maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
-        break;
-    }
     SmartDashboard.putNumber("Z axis", m_gyro.getYaw());
-    SmartDashboard.putNumber("Z axis angle", gyroangle());
+    SmartDashboard.putNumber("Z axis angle", getHeading());
     SmartDashboard.putNumber("x", x);
     SmartDashboard.putNumber("y", y);
     SmartDashboard.putNumber("r", r);
 
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(getHeading()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),

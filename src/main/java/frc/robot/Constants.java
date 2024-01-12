@@ -87,7 +87,7 @@ public final class Constants {
     public static final int kRearLeftTurningCanId = 8;
 
     // Used to declare Navx as upside down
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGyroReversed = true;
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
