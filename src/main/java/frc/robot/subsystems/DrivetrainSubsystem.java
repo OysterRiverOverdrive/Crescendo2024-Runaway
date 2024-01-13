@@ -87,32 +87,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
-  }
-
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
-        Rotation2d.fromDegrees(getHeading()),
-        new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-        },
-        pose);
-  }
-
-  /**
    * Method to drive the robot using joystick info.
    *
    * @param xSpeed Speed of the robot in the x direction (forward).
@@ -249,14 +223,38 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(getHeading());
   }
 
-  // /**
-  //  * Returns the heading of the robot.
-  //  *
-  //  * @return the robot's heading in degrees, from -180 to 180
-  //  */
-  // public double getHeading() {
-  //   return Rotation2d.fromDegrees(gyroangle()).getDegrees();
-  // }
+  /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(
+        Rotation2d.fromDegrees(getHeading()),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_rearLeft.getPosition(),
+          m_rearRight.getPosition()
+        },
+        pose);
+  }
+
+  public void stopModules() {
+    m_frontLeft.stop();
+    m_frontRight.stop();
+    m_rearLeft.stop();
+    m_rearRight.stop();
+  }
 
   /**
    * Returns the turn rate of the robot.
