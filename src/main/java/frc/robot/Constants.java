@@ -7,6 +7,7 @@ package frc.robot;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -18,6 +19,23 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class AutoConstants {
+    public static final double kMaxSpeedMetersPerSecond =
+        DriveConstants.kMaxSpeedMetersPerSecond / 4;
+    public static final double kMaxAngularSpeedRadiansPerSecond =
+        DriveConstants.kMaxAngularSpeed / 10;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
+    public static final double kPXController = 1.5;
+    public static final double kPYController = 1.5;
+    public static final double kPThetaController = 3;
+
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+        new TrapezoidProfile.Constraints(
+            kMaxAngularSpeedRadiansPerSecond, kMaxAngularAccelerationRadiansPerSecondSquared);
+  }
+
   // Constants specifically for Driving & Operation
   public static class DriveConstants {
     // Controller Ports ---
@@ -30,7 +48,7 @@ public final class Constants {
     public static final int kDriveX = 1;
     public static final int kDriveY = 0;
     public static final int kDriveRotate = 4;
-    public static final double deadzoneDriver = 0.2;
+    public static final double deadzoneDriver = 0.18;
 
     public enum joysticks {
       DRIVER,
@@ -40,8 +58,8 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
 
-    public static final double kMaxSpeedMetersPerSecond = 4.8;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 2.1;
+    public static final double kMaxAngularSpeed = 2; // radians per second
 
     // Drive Mode Speeds
     // High
@@ -87,7 +105,7 @@ public final class Constants {
     public static final int kRearLeftTurningCanId = 8;
 
     // Used to declare Navx as upside down
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGyroReversed = true;
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontLeftChassisAngularOffset = -Math.PI / 2;
