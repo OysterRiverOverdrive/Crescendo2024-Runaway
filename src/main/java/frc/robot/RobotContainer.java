@@ -10,8 +10,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.TeleopCmd;
-import frc.robot.commands.auto.AutoCreationCmd;
+import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class RobotContainer {
     m_chooser.addOption("Null", auto3);
     m_chooser.addOption("Null", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
+    SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
     // Configure Buttons Methods
     configureBindings();
@@ -63,16 +65,21 @@ public class RobotContainer {
 
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+    Command auto;
     switch (m_chooser.getSelected()) {
       case auto1:
       default:
-        return driveCircle;
+        auto = driveCircle;
       case auto2:
-        return null;
+        auto =  null;
       case auto3:
-        return null;
+        auto = null;
       case auto4:
-        return null;
+        auto = null;
     }
+    return new SequentialCommandGroup(
+      new AutoSleepCmd(SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
+      auto
+    );
   }
 }
