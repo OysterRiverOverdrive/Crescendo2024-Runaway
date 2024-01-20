@@ -21,6 +21,8 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.utils.SwerveModule;
 import frc.utils.SwerveUtils;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   // Create SwerveModules
@@ -48,13 +50,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
           RobotConstants.kRearRightTurningCanId,
           RobotConstants.kBackRightChassisAngularOffset);
 
-  // The gyro sensor
+  
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final String low = "auto1";
+  private final String medium = "auto2";
+  private final String high = "auto3";
+          // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
   private double m_currentTranslationDir = 0.0;
   private double m_currentTranslationMag = 0.0;
+
+
 
   private double x;
   private double y;
@@ -84,6 +93,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DrivetrainSubsystem() {
     zeroHeading();
     m_gyro.calibrate();
+
+    m_chooser.setDefaultOption("Medium Speed", medium);
+    m_chooser.addOption("Low Speed", low);
+    m_chooser.addOption("High Speed", high);
+    SmartDashboard.putData("Speed Drop Down", m_chooser);
   }
 
   /**
@@ -272,6 +286,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("x", x);
     SmartDashboard.putNumber("y", y);
     SmartDashboard.putNumber("r", r);
+    switch (m_chooser.getSelected()) {
+      case high:
+      maxSpeedDrive = DriveConstants.kSpeedHighDrive;
+      maxSpeedTurn = DriveConstants.kSpeedHighTurn;
+      case low:
+      maxSpeedDrive = DriveConstants.kSpeedSlowDrive;
+      maxSpeedTurn = DriveConstants.kSpeedSlowTurn;
+      case medium:
+      default: 
+      maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
+      maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
+    }
+
 
     // Update the odometry in the periodic block
     m_odometry.update(
