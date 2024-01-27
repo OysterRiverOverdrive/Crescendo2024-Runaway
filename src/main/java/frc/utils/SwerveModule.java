@@ -145,7 +145,7 @@ public class SwerveModule {
     if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
       stop();
       return;
-  }
+    } else {
     // Apply chassis angular offset to the desired state.
     SwerveModuleState correctedDesiredState = new SwerveModuleState();
     correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
@@ -164,6 +164,7 @@ public class SwerveModule {
         optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
     m_desiredState = desiredState;
+    }
   }
 
   /** Zeroes all the SwerveModule encoders. */
