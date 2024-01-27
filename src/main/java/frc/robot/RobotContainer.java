@@ -11,9 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.utils.ControllerUtils;
+
 import java.util.List;
 
 public class RobotContainer {
@@ -26,6 +30,8 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+
+  private final ControllerUtils controllerutil = new ControllerUtils();
 
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
@@ -59,6 +65,10 @@ public class RobotContainer {
     // Configure buttons
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+
+    controllerutil
+        .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
+        .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
 
   public Command getAutonomousCommand() {
