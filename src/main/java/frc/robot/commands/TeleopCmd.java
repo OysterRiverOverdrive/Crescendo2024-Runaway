@@ -39,7 +39,7 @@ public class TeleopCmd extends Command {
     double ContX = deadzone(controller.getRawAxis(DriveConstants.kDriveX)) * -1;
     double ContY = deadzone(controller.getRawAxis(DriveConstants.kDriveY)) * -1;
     double ContRotate = deadzone(controller.getRawAxis(DriveConstants.kDriveRotate)) * -1;
-    driveSub.drive(ContX, ContY, ContRotate, true, true);
+    driveSub.drive(ContY, ContX, ContRotate, true, true);
   }
 
   // Called once the command ends or is interrupted.

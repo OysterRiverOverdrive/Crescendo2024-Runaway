@@ -45,10 +45,10 @@ public final class Constants {
     public static final int kOperControllerPort = 1;
 
     // Driver Controller Joystick ---
-    public static final int kDriveX = 1;
-    public static final int kDriveY = 0;
+    public static final int kDriveX = 0;
+    public static final int kDriveY = 1;
     public static final int kDriveRotate = 4;
-    public static final double deadzoneDriver = 0.18;
+    public static final double deadzoneDriver = 0.12;
 
     public enum joysticks {
       DRIVER,
@@ -72,9 +72,9 @@ public final class Constants {
     public static final double kSpeedSlowDrive = 4.8;
     public static final double kSpeedSlowTurn = 1.8;
 
-    public static final double kDirectionSlewRate = 1.2; // radians per second
-    public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
-    public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
+    public static final double kDirectionSlewRate = 4; // radians per second
+    public static final double kMagnitudeSlewRate = 0.95; // percent per second (1 = 100%)
+    public static final double kRotationalSlewRate = 5; // percent per second (1 = 100%)
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
@@ -165,14 +165,14 @@ public final class Constants {
 
     // Swerve Module Idle Modes ---
     // These determine how the module behavior when there is a lack of input from the driver
-    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kCoast;
+    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
     // Current limits ---
     // Meant for the electrical side of the drivetrain to make sure that the drivetrain isn't
     // drawing too much power
-    public static final int kDrivingMotorCurrentLimit = 50; // amps
-    public static final int kTurningMotorCurrentLimit = 20; // amps
+    public static final int kDrivingMotorCurrentLimit = 40; // amps
+    public static final int kTurningMotorCurrentLimit = 15; // amps
   }
 
   public static final class NeoMotorConstants {
