@@ -10,14 +10,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.utils.ControllerUtils;
-
 import java.util.List;
 
 public class RobotContainer {
@@ -42,7 +41,15 @@ public class RobotContainer {
   private final Command driveCircle =
       autodrive.AutoDriveCmd(
           drivetrain,
-          List.of(new Translation2d(0, 1), new Translation2d(2, 1), new Translation2d(2, -1), new Translation2d(4, -1), new Translation2d(4, 1), new Translation2d(2, 1), new Translation2d(2, -1), new Translation2d(0, -1)),
+          List.of(
+              new Translation2d(0, 1),
+              new Translation2d(2, 1),
+              new Translation2d(2, -1),
+              new Translation2d(4, -1),
+              new Translation2d(4, 1),
+              new Translation2d(2, 1),
+              new Translation2d(2, -1),
+              new Translation2d(0, -1)),
           new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
@@ -81,14 +88,12 @@ public class RobotContainer {
       default:
         auto = driveCircle;
       case auto2:
-        auto =  null;
+        auto = null;
       case auto3:
         auto = null;
       case auto4:
         auto = null;
     }
-    return new SequentialCommandGroup(
-      auto
-    );
+    return new SequentialCommandGroup(auto);
   }
 }
