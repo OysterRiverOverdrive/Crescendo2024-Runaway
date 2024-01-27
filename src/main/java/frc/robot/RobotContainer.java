@@ -42,8 +42,8 @@ public class RobotContainer {
   private final Command driveCircle =
       autodrive.AutoDriveCmd(
           drivetrain,
-          List.of(new Translation2d(0, 1), new Translation2d(1, 1), new Translation2d(1, 0)),
-          new Pose2d(0, 0, new Rotation2d(-180)));
+          List.of(new Translation2d(0, 1), new Translation2d(2, 1), new Translation2d(2, -1), new Translation2d(4, -1), new Translation2d(4, 1), new Translation2d(2, 1), new Translation2d(2, -1), new Translation2d(0, -1)),
+          new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
@@ -51,9 +51,9 @@ public class RobotContainer {
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
-    m_chooser.addOption("Null", auto2);
-    m_chooser.addOption("Null", auto3);
-    m_chooser.addOption("Null", auto4);
+    m_chooser.addOption("Null1", auto2);
+    m_chooser.addOption("Null2", auto3);
+    m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
@@ -88,7 +88,6 @@ public class RobotContainer {
         auto = null;
     }
     return new SequentialCommandGroup(
-      new AutoSleepCmd(SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
       auto
     );
   }
