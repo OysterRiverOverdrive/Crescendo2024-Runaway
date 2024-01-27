@@ -146,24 +146,24 @@ public class SwerveModule {
       stop();
       return;
     } else {
-    // Apply chassis angular offset to the desired state.
-    SwerveModuleState correctedDesiredState = new SwerveModuleState();
-    correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-    correctedDesiredState.angle =
-        desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
+      // Apply chassis angular offset to the desired state.
+      SwerveModuleState correctedDesiredState = new SwerveModuleState();
+      correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
+      correctedDesiredState.angle =
+          desiredState.angle.plus(Rotation2d.fromRadians(m_chassisAngularOffset));
 
-    // Optimize the reference state to avoid spinning further than 90 degrees.
-    SwerveModuleState optimizedDesiredState =
-        SwerveModuleState.optimize(
-            correctedDesiredState, new Rotation2d(m_turningEncoder.getPosition()));
+      // Optimize the reference state to avoid spinning further than 90 degrees.
+      SwerveModuleState optimizedDesiredState =
+          SwerveModuleState.optimize(
+              correctedDesiredState, new Rotation2d(m_turningEncoder.getPosition()));
 
-    // Command driving and turning SPARKS MAX towards their respective setpoints.
-    m_drivingPIDController.setReference(
-        optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-    m_turningPIDController.setReference(
-        optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+      // Command driving and turning SPARKS MAX towards their respective setpoints.
+      m_drivingPIDController.setReference(
+          optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
+      m_turningPIDController.setReference(
+          optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
 
-    m_desiredState = desiredState;
+      m_desiredState = desiredState;
     }
   }
 
