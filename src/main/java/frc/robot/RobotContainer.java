@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
@@ -74,7 +73,7 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
     controllerutil
-        .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
+        .supplier(6, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
 
@@ -94,6 +93,6 @@ public class RobotContainer {
       case auto4:
         auto = null;
     }
-    return new SequentialCommandGroup(auto);
+    return auto;
   }
 }
