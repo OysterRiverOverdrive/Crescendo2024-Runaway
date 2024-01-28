@@ -50,6 +50,12 @@ public final class Constants {
     public static final int kDriveRotate = 4;
     public static final double deadzoneDriver = 0.12;
 
+    // Speed Mode Strings
+    // Moved from DrivetrainSubsystem
+    public static final String low = "speed1";
+    public static final String medium = "speed2";
+    public static final String high = "speed3";
+
     public enum joysticks {
       DRIVER,
       OPERATOR

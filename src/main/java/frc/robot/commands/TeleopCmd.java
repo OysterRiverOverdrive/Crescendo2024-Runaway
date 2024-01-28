@@ -15,6 +15,9 @@ public class TeleopCmd extends Command {
   // Create a controller object
   private final Joystick controller = new Joystick(DriveConstants.kDrveControllerPort);
 
+  private double speedDrive;
+  private double speedTurn;
+
   public TeleopCmd(DrivetrainSubsystem drives) {
     driveSub = drives;
     addRequirements(driveSub);
@@ -39,7 +42,24 @@ public class TeleopCmd extends Command {
     double ContX = deadzone(controller.getRawAxis(DriveConstants.kDriveX)) * -1;
     double ContY = deadzone(controller.getRawAxis(DriveConstants.kDriveY)) * -1;
     double ContRotate = deadzone(controller.getRawAxis(DriveConstants.kDriveRotate)) * -1;
-    driveSub.drive(ContY, ContX, ContRotate, true, true);
+
+    // If statements shifted to here so that every time execute runs (20 times a second) so that it gets a fresh value to hand in
+    switch (driveSub.getDropDown()) {
+      case DriveConstants.high:
+      speedDrive = DriveConstants.kSpeedHighDrive;
+      speedTurn = DriveConstants.kSpeedHighTurn;
+
+      case DriveConstants.low:
+      speedDrive = DriveConstants.kSpeedSlowDrive;
+      speedTurn = DriveConstants.kSpeedSlowTurn;
+
+      case DriveConstants.medium:
+      default: 
+      speedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
+      speedTurn = DriveConstants.kMaxAngularSpeed;
+    }
+
+    driveSub.drive(ContY, ContX, ContRotate, true, speedTurn, speedDrive);
   }
 
   // Called once the command ends or is interrupted.
