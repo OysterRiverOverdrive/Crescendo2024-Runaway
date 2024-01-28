@@ -19,6 +19,9 @@ import frc.utils.ControllerUtils;
 import java.util.List;
 
 public class RobotContainer {
+  // Creation of controller utilities
+  private final ControllerUtils controllerutil = new ControllerUtils();
+
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String auto1 = "1";
@@ -29,11 +32,9 @@ public class RobotContainer {
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
 
-  private final ControllerUtils controllerutil = new ControllerUtils();
-
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
-  private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
+  private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain, () -> controllerutil.Boolsupplier(1, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
   // Drive in a circle (Diameter: 1 Meter)

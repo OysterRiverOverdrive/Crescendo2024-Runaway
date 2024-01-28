@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
@@ -17,9 +18,11 @@ public class TeleopCmd extends Command {
 
   private double speedDrive;
   private double speedTurn;
+  private boolean fieldOrient;
 
-  public TeleopCmd(DrivetrainSubsystem drives) {
+  public TeleopCmd(DrivetrainSubsystem drives, Supplier<Boolean> fieldOrient) {
     driveSub = drives;
+    this.fieldOrient = !fieldOrient.get();
     addRequirements(driveSub);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -59,7 +62,7 @@ public class TeleopCmd extends Command {
       speedTurn = DriveConstants.kMaxAngularSpeed;
     }
 
-    driveSub.drive(ContY, ContX, ContRotate, true, speedTurn, speedDrive);
+    driveSub.drive(ContY, ContX, ContRotate, fieldOrient, speedTurn, speedDrive);
   }
 
   // Called once the command ends or is interrupted.
