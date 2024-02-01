@@ -20,7 +20,10 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  public static final int MotorID = 6;
+
   public static final class AutoConstants {
+
     public static final double kMaxSpeedMetersPerSecond =
         DriveConstants.kMaxSpeedMetersPerSecond / 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =
@@ -178,4 +181,11 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  
+  public static class OperatorConstants {
+    public static final int kDriverControllerPort = 0;
+  }
+  
+  
 }
