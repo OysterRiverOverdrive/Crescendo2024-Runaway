@@ -15,13 +15,13 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.utils.SwerveModule;
 import frc.utils.SwerveUtils;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   // Create SwerveModules
@@ -49,9 +49,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
           RobotConstants.kRearRightTurningCanId,
           RobotConstants.kBackRightChassisAngularOffset);
 
-  
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  // Original Strings still exist, just moved to constants.java so that it can be accessed universally so it can be called for comparasion in teleopCmd.java
+  // Original Strings still exist, just moved to constants.java so that it can be accessed
+  // universally so it can be called for comparasion in teleopCmd.java
 
   // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
@@ -61,8 +61,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double m_currentTranslationDir = 0.0;
   private double m_currentTranslationMag = 0.0;
 
-
-
   private double x;
   private double y;
   private double r;
@@ -71,8 +69,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // // Max Speeds
   // private double maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
   // private double maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
-  // 
-  // I shifted the variables to be empty so that later we can assign values when it is passed into the drive function
+  //
+  // I shifted the variables to be empty so that later we can assign values when it is passed into
+  // the drive function
   private double maxSpeedDrive;
   private double maxSpeedTurn;
 
@@ -114,11 +113,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param maxdrive Max driving speed.
    */
   public void drive(
-      double xSpeed, double ySpeed, double rot, boolean fieldRelative, double maxTurn, double maxDrive) {
-    // We ask for the data when calling the function and then we assign it to the empty variables we created earlier (lines 77-78)
+      double xSpeed,
+      double ySpeed,
+      double rot,
+      boolean fieldRelative,
+      double maxTurn,
+      double maxDrive) {
+    // We ask for the data when calling the function and then we assign it to the empty variables we
+    // created earlier (lines 77-78)
     maxSpeedDrive = maxDrive;
     maxSpeedTurn = maxTurn;
-    
+
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -163,7 +168,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
     ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
     m_currentRotation = m_rotLimiter.calculate(rot);
-
 
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * maxSpeedDrive;
@@ -300,13 +304,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //   maxSpeedDrive = DriveConstants.kSpeedSlowDrive;
     //   maxSpeedTurn = DriveConstants.kSpeedSlowTurn;
     //   case medium:
-    //   default: 
+    //   default:
     //   maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
     //   maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
     // }
-    // 
-    // This was transfered to Teleop command so that it passes it off every time the command gets executed
-
+    //
+    // This was transfered to Teleop command so that it passes it off every time the command gets
+    // executed
 
     // Update the odometry in the periodic block
     m_odometry.update(

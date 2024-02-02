@@ -34,7 +34,9 @@ public class RobotContainer {
 
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
-  private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain, () -> controllerutil.Boolsupplier(1, DriveConstants.joysticks.DRIVER));
+  private final TeleopCmd teleopCmd =
+      new TeleopCmd(
+          drivetrain, () -> controllerutil.Boolsupplier(1, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
   // Drive in a circle (Diameter: 1 Meter)
