@@ -18,8 +18,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 // import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.InFeederCmd;
+import frc.robot.commands.OutFeederCmd;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 // import java.util.List;
 import frc.utils.ControllerUtils;
 
@@ -29,6 +32,8 @@ public class RobotContainer {
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
 
   private final ControllerUtils controllerutil = new ControllerUtils();
+
+  private final FeederSubsystem feeder = new FeederSubsystem();
 
   // Commands
   private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
@@ -49,6 +54,15 @@ public class RobotContainer {
     controllerutil
         .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+      
+    controllerutil
+        .supplier(Controllers.logi_a, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new InFeederCmd(feeder));
+
+    controllerutil
+        .supplier(Controllers.logi_a, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new OutFeederCmd(feeder));
+
   }
 
   public Command getAutonomousCommand() {

@@ -104,6 +104,9 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = 7;
     public static final int kRearLeftTurningCanId = 8;
 
+    public static final double FeederIn = 0.5;
+    public static final double FeederOut = -0.5;
+
     // Used to declare Navx as upside down
     public static final boolean kGyroReversed = true;
 
