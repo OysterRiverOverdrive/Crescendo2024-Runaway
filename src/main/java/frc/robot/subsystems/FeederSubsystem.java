@@ -40,6 +40,10 @@ public void OutFeederCmd(){
     m_leadMotor.set(RobotConstants.FeederOut);
 }
 
+public void StopFeederCmd(){
+  m_leadMotor.set(RobotConstants.StopFeeder);
+}
+
 
 
     @Override

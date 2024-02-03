@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.OutFeederCmd;
+import frc.robot.commands.StopFeederCmd;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -60,8 +61,12 @@ public class RobotContainer {
         .onTrue(new InFeederCmd(feeder));
 
     controllerutil
-        .supplier(Controllers.logi_a, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.logi_b, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder));
+    
+    controllerutil
+        .supplier(Controllers.logi_y, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new StopFeederCmd(feeder));
 
   }
 
