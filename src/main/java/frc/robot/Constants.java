@@ -106,7 +106,6 @@ public final class Constants {
 
     public static final double FeederIn = 0.5;
     public static final double FeederOut = -0.5;
-    public static final double StopFeeder = 0;
 
     // Used to declare Navx as upside down
     public static final boolean kGyroReversed = true;
