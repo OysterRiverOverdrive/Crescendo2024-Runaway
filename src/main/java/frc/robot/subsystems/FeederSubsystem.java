@@ -1,16 +1,15 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Constants.RobotConstants;
 
 public class FeederSubsystem extends SubsystemBase {
@@ -24,66 +23,55 @@ public class FeederSubsystem extends SubsystemBase {
   private final ColorMatch m_colorMatcher = new ColorMatch();
   private final Color OrangeTarget = new Color(0.546, 0.363, 0.091);
 
+  public FeederSubsystem() {
+    m_leadMotor = new CANSparkMax(4, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(1, MotorType.kBrushless);
+    m_followMotor.follow(m_leadMotor);
+    m_colorMatcher.addColorMatch(OrangeTarget);
+  }
 
-public FeederSubsystem() {
-        m_leadMotor = new CANSparkMax(4, MotorType.kBrushless);
-        m_followMotor = new CANSparkMax(1,MotorType.kBrushless);
-        m_followMotor.follow(m_leadMotor);
-        m_colorMatcher.addColorMatch(OrangeTarget);
-    }
-
-public void InFeederCmd(){
+  public void InFeederCmd() {
     m_leadMotor.set(RobotConstants.FeederIn);
-}
+  }
 
-public void OutFeederCmd(){
+  public void OutFeederCmd() {
     m_leadMotor.set(RobotConstants.FeederOut);
-}
+  }
 
-public void StopFeederCmd(){
-  m_leadMotor.stopMotor();
-}
+  public void StopFeederCmd() {
+    m_leadMotor.stopMotor();
+  }
 
-
-
-    @Override
-    public void periodic() {
- 
+  @Override
+  public void periodic() {
 
     Color detectedColor = m_colorSensor.getColor();
 
     String colorString;
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
 
-    if (match.color == OrangeTarget && match.confidence > 0.85 ){
+    if (match.color == OrangeTarget && match.confidence > 0.85) {
 
-        colorString = "Orange";
-  
-      } else {
-  
-        colorString = "Unknown";
-  
-      }
+      colorString = "Orange";
 
-      SmartDashboard.putNumber("Red", detectedColor.red);
-      SmartDashboard.putNumber("Green", detectedColor.green);
-      SmartDashboard.putNumber("Blue", detectedColor.blue);
-      SmartDashboard.putNumber("Confidence", match.confidence);
-      SmartDashboard.putString("Detected Color", colorString);
-  
-      SmartDashboard.putNumber("Limit Switch", limitSwitch.getValue());
-      boolean clicked;
-      if (limitSwitch.getValue() <= 193) {
-        clicked = true;
-      } else {
-        clicked = false;
-      }
-      SmartDashboard.putBoolean("Clicked", clicked);
+    } else {
 
-
-  
+      colorString = "Unknown";
     }
+
+    SmartDashboard.putNumber("Red", detectedColor.red);
+    SmartDashboard.putNumber("Green", detectedColor.green);
+    SmartDashboard.putNumber("Blue", detectedColor.blue);
+    SmartDashboard.putNumber("Confidence", match.confidence);
+    SmartDashboard.putString("Detected Color", colorString);
+
+    SmartDashboard.putNumber("Limit Switch", limitSwitch.getValue());
+    boolean clicked;
+    if (limitSwitch.getValue() <= 193) {
+      clicked = true;
+    } else {
+      clicked = false;
+    }
+    SmartDashboard.putBoolean("Clicked", clicked);
+  }
 }
-
-
-

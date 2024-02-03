@@ -12,7 +12,7 @@ public class StopFeederCmd extends Command {
 
   public StopFeederCmd(FeederSubsystem feeders) {
     feeder = feeders;
-    addRequirements(feeders);  
+    addRequirements(feeders);
   }
 
   // Called when the command is initially scheduled.

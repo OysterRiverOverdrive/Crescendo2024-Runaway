@@ -55,19 +55,20 @@ public class RobotContainer {
     controllerutil
         .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
-      
+
     controllerutil
         .supplier(Controllers.logi_a, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new InFeederCmd(feeder));
+        .onTrue(new InFeederCmd(feeder))
+        .onFalse(new StopFeederCmd(feeder));
 
     controllerutil
         .supplier(Controllers.logi_b, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new OutFeederCmd(feeder));
-    
+        .onTrue(new OutFeederCmd(feeder))
+        .onFalse(new StopFeederCmd(feeder));
+
     controllerutil
         .supplier(Controllers.logi_y, DriveConstants.joysticks.OPERATOR)
         .onTrue(new StopFeederCmd(feeder));
-
   }
 
   public Command getAutonomousCommand() {

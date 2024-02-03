@@ -7,16 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FeederSubsystem;
 
-
 public class InFeederCmd extends Command {
-    private FeederSubsystem feeder;
+  private FeederSubsystem feeder;
 
- public InFeederCmd(FeederSubsystem feeders){
+  public InFeederCmd(FeederSubsystem feeders) {
     feeder = feeders;
     addRequirements(feeders);
-
-}
-
+  }
 
   // Called when the command is initially scheduled.
   @Override

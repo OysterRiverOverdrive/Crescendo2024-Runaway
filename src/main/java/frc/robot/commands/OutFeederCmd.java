@@ -10,9 +10,9 @@ import frc.robot.subsystems.FeederSubsystem;
 public class OutFeederCmd extends Command {
   private FeederSubsystem feeder;
 
-public OutFeederCmd(FeederSubsystem feeders) {
-   feeder = feeders;
-   addRequirements(feeders);
+  public OutFeederCmd(FeederSubsystem feeders) {
+    feeder = feeders;
+    addRequirements(feeders);
   }
 
   // Called when the command is initially scheduled.
