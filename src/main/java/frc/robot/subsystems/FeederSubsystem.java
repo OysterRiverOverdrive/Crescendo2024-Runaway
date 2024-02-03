@@ -41,7 +41,7 @@ public void OutFeederCmd(){
 }
 
 public void StopFeederCmd(){
-  m_leadMotor.set(RobotConstants.StopFeeder);
+  m_leadMotor.stopMotor();
 }
 
 
