@@ -65,11 +65,8 @@ public class RobotContainer {
         .supplier(Controllers.logi_b, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
-
-    controllerutil
-        .supplier(Controllers.logi_y, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new StopFeederCmd(feeder));
-  }
+      
+      }
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
