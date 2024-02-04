@@ -63,9 +63,9 @@ public class TeleopCmd extends Command {
         speedTurn = DriveConstants.kMaxAngularSpeed;
     }
     if (!fieldOrient.get()) {
-      driveSub.drive(ContY, ContX, ContRotate, true, speedTurn, speedDrive);
+      driveSub.fieldDrive(ContY, ContX, ContRotate, speedTurn, speedDrive);
     } else {
-      driveSub.drive(ContY, ContX, ContRotate, false, speedTurn, speedDrive);
+      driveSub.robotDrive(ContY, ContX, ContRotate, speedTurn, speedDrive);
     }
   }
 
