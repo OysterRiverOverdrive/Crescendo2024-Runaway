@@ -62,4 +62,25 @@ public final class Controllers {
   public static int logi_start = 10;
   public static int logi_lbutton = 11;
   public static int logi_rbutton = 12;
+
+  // PS4 Controller
+  // Joysticks
+  public static int ps4_lx = 0;
+  public static int ps4_ly = 1;
+  public static int ps4_Ltrigger2 = 2;
+  public static int ps4_Rtrigger2 = 3;
+  public static int ps4_rx = 4;
+  public static int ps4_ry = 5;
+
+  // Buttons
+  public static int ps4_X = 1;
+  public static int ps4_O = 2;
+  public static int ps4_square = 3;
+  public static int ps4_triangle = 4;
+  public static int ps4_Ltrigger1 = 5;
+  public static int ps4_Rtrigger1 = 6;
+  public static int ps4_share = 7;
+  public static int ps4_options = 8;
+  public static int ps4_Lpress = 9;
+  public static int ps4_Rpress = 10;
 }
