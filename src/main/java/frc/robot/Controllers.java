@@ -83,7 +83,4 @@ public final class Controllers {
   public static int ps4_options = 8;
   public static int ps4_Lpress = 9;
   public static int ps4_Rpress = 10;
-
-
-  
 }
