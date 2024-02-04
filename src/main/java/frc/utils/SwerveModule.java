@@ -168,7 +168,7 @@ public class SwerveModule {
   }
 
   public void stop() {
-    m_drivingSparkMax.set(0);
-    m_turningSparkMax.set(0);
+    m_drivingSparkMax.stopMotor();
+    m_turningSparkMax.stopMotor();
   }
 }
