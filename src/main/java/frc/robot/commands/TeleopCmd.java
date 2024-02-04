@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import java.util.function.Supplier;
 
 public class TeleopCmd extends Command {
   /** Creates a new TeleopCmd. */
@@ -15,8 +16,13 @@ public class TeleopCmd extends Command {
   // Create a controller object
   private final Joystick controller = new Joystick(DriveConstants.kDrveControllerPort);
 
-  public TeleopCmd(DrivetrainSubsystem drives) {
+  private double speedDrive;
+  private double speedTurn;
+  private Supplier<Boolean> fieldOrient;
+
+  public TeleopCmd(DrivetrainSubsystem drives, Supplier<Boolean> fieldOrient) {
     driveSub = drives;
+    this.fieldOrient = fieldOrient;
     addRequirements(driveSub);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -39,7 +45,28 @@ public class TeleopCmd extends Command {
     double ContX = deadzone(controller.getRawAxis(DriveConstants.kDriveX)) * -1;
     double ContY = deadzone(controller.getRawAxis(DriveConstants.kDriveY)) * -1;
     double ContRotate = deadzone(controller.getRawAxis(DriveConstants.kDriveRotate)) * -1;
-    driveSub.drive(ContY, ContX, ContRotate, true, true);
+
+    // If statements shifted to here so that every time execute runs (20 times a second) so that it
+    // gets a fresh value to hand in
+    switch (driveSub.getDropDown()) {
+      case DriveConstants.high:
+        speedDrive = DriveConstants.kSpeedHighDrive;
+        speedTurn = DriveConstants.kSpeedHighTurn;
+
+      case DriveConstants.low:
+        speedDrive = DriveConstants.kSpeedSlowDrive;
+        speedTurn = DriveConstants.kSpeedSlowTurn;
+
+      case DriveConstants.medium:
+      default:
+        speedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
+        speedTurn = DriveConstants.kMaxAngularSpeed;
+    }
+    if (!fieldOrient.get()) {
+      driveSub.fieldDrive(ContY, ContX, ContRotate, speedTurn, speedDrive);
+    } else {
+      driveSub.robotDrive(ContY, ContX, ContRotate, speedTurn, speedDrive);
+    }
   }
 
   // Called once the command ends or is interrupted.
