@@ -24,8 +24,8 @@ public class FeederSubsystem extends SubsystemBase {
   private final Color OrangeTarget = new Color(0.546, 0.363, 0.091);
 
   public FeederSubsystem() {
-    m_leadMotor = new CANSparkMax(4, MotorType.kBrushless);
-    m_followMotor = new CANSparkMax(1, MotorType.kBrushless);
+    m_leadMotor = new CANSparkMax(9, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(10, MotorType.kBrushless);
     m_followMotor.follow(m_leadMotor);
     m_colorMatcher.addColorMatch(OrangeTarget);
   }
@@ -41,6 +41,23 @@ public class FeederSubsystem extends SubsystemBase {
   public void StopFeederCmd() {
     m_leadMotor.stopMotor();
   }
+
+  public Boolean getColorSensor(){
+
+    Color detectedColor = m_colorSensor.getColor();
+
+    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+
+    if (match.color == OrangeTarget && match.confidence > 0.85) {
+
+      return true;
+
+    } else {
+
+      return false;
+    }
+  }
+  
 
   @Override
   public void periodic() {
@@ -58,6 +75,8 @@ public class FeederSubsystem extends SubsystemBase {
 
       colorString = "Unknown";
     }
+
+    SmartDashboard.putBoolean("Note Detected", getColorSensor());
 
     SmartDashboard.putNumber("Red", detectedColor.red);
     SmartDashboard.putNumber("Green", detectedColor.green);
