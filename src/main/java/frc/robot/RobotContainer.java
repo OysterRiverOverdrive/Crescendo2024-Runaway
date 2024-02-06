@@ -18,10 +18,19 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 // import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.commands.TeleopCmd;
+import frc.robot.commands.Shooter.MotorStop;
+import frc.robot.commands.Shooter.MotorTurnForward;
 import frc.robot.subsystems.DrivetrainSubsystem;
 // import java.util.List;
 import frc.utils.ControllerUtils;
+
+import frc.robot.subsystems.ShooterSubsystem;
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
@@ -29,6 +38,17 @@ public class RobotContainer {
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
 
   private final ControllerUtils controllerutil = new ControllerUtils();
+
+  //Defining controller
+  private final Joystick operator = new Joystick(Controllers.OPER_PORT);
+  private final Joystick driver1 = new Joystick(Controllers.DRIVER_ONE_PORT);
+
+  // Shooter Subsystem
+  private final ShooterSubsystem m_motorSubsystem = new ShooterSubsystem();
+
+  //Defining Commands (Shooter)
+  private final MotorTurnForward forward = new MotorTurnForward(m_motorSubsystem);
+  private final MotorStop stop = new MotorStop(m_motorSubsystem);
 
   // Commands
   private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
@@ -41,11 +61,37 @@ public class RobotContainer {
     configureBindings();
   }
 
+    
+  //public Trigger supplier(int buttonID) {
+    //BooleanSupplier bsup = () -> xBoxController.getRawButton(buttonID);
+    //Trigger mybutton = new Trigger(bsup);
+    //return mybutton;
+  //}
+
+  public Trigger supplier(int buttonID, joysticks joystick) {
+    if (joystick == joysticks.DRIVER) {
+      BooleanSupplier bsup = () -> driver1.getRawButton(buttonID);
+      Trigger mybutton = new Trigger(bsup);
+      return mybutton;
+    } else {
+      BooleanSupplier bsup = () -> operator.getRawButton(buttonID);
+      Trigger mybutton = new Trigger(bsup);
+      return mybutton;
+    }
+  }
+
   private void configureBindings() {
     // Configure buttons
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // cancelling on release.
+
+    //Shooter shoots
+    supplier(Controllers.logi_rt, joysticks.OPERATOR).onTrue(forward).onFalse(stop);
+    
     controllerutil
         .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
