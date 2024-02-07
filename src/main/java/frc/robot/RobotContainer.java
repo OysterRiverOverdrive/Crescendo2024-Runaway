@@ -39,16 +39,16 @@ public class RobotContainer {
 
   private final ControllerUtils controllerutil = new ControllerUtils();
 
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
+
   //Defining controller
   private final Joystick operator = new Joystick(Controllers.OPER_PORT);
   private final Joystick driver1 = new Joystick(Controllers.DRIVER_ONE_PORT);
 
-  // Shooter Subsystem
-  private final ShooterSubsystem m_motorSubsystem = new ShooterSubsystem();
 
   //Defining Commands (Shooter)
-  private final MotorTurnForward forward = new MotorTurnForward(m_motorSubsystem);
-  private final MotorStop stop = new MotorStop(m_motorSubsystem);
+  private final MotorTurnForward forward = new MotorTurnForward(shooter);
+  private final MotorStop stop = new MotorStop(shooter);
 
   // Commands
   private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
@@ -92,6 +92,11 @@ public class RobotContainer {
     //Shooter shoots
     supplier(Controllers.logi_rt, joysticks.OPERATOR).onTrue(forward).onFalse(stop);
     
+    controllerutil
+        .supplier(Controllers.logi_rt, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new MotorTurnForward(shooter))
+        .onFalse(new MotorStop(shooter));
+
     controllerutil
         .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));

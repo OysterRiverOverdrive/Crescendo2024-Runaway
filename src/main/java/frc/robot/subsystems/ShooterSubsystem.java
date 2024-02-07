@@ -12,25 +12,29 @@ import frc.robot.Controllers;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class ShooterSubsystem extends SubsystemBase {
 
-  public ShooterSubsystem() {}
-  
+public class ShooterSubsystem extends SubsystemBase {
+  private CANSparkMax m_leadMotor;
+  private CANSparkMax m_followMotor;
   private final Joystick operator = new Joystick(Controllers.OPER_PORT);
 
-  int motorID = 3; 
+  public ShooterSubsystem() {
 
-  private final CANSparkMax motor = new CANSparkMax(motorID, MotorType.kBrushless);
+    m_leadMotor = new CANSparkMax(9, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(10, MotorType.kBrushless);
+    m_followMotor.follow(m_leadMotor);
+
+  }
 
   public void motorF() {
     //set speed equal to value of trigger
-    double speed = operator.getRawAxis(Controllers.logi_rt);
-    motor.set(speed);
+    double speed = operator.getRawAxis(Controllers.logi_rt)/2;
+    m_leadMotor.set(speed);
     System.out.println(speed);
   }
 
   public void motorStop() {
-    motor.stopMotor();
+    m_leadMotor.stopMotor();
   }
   
   /**
