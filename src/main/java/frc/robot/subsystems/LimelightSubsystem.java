@@ -17,39 +17,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class LimelightSubsystem extends SubsystemBase {
-    // TODO: make these variables final and initialize them here?
-    private NetworkTable table;
-    private NetworkTableEntry tx;
-    private NetworkTableEntry ty;
-    private NetworkTableEntry ta;
-    private NetworkTableEntry botpose;
-    private NetworkTableEntry botpose_wpired;
-    private NetworkTableEntry botpose_wpiblue;
-    private NetworkTableEntry tid;
-    private boolean absoluteCoordinates;
+    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    private final NetworkTableEntry tx = table.getEntry("tx"); // x coordinate of tag in camera image
+    private final NetworkTableEntry ty = table.getEntry("ty"); // y coordinate of tag in camera image
+    private final NetworkTableEntry ta = table.getEntry("ta"); // area of tag in camera image
+    private final NetworkTableEntry botpose = table.getEntry("botpose"); // bot pose (x, y, z, roll, pitch, yaw, total latency (not used currently))
+    private final NetworkTableEntry botpose_wpired = table.getEntry("botpose_wpired");
+    private final NetworkTableEntry botpose_wpiblue = table.getEntry("botpose_wpiblue");
+    private final NetworkTableEntry tid = table.getEntry("tid"); // ID of currently-seen target
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    // ????
     private final String abs_choice = "absolute coodinates";
     private final String alliance_choice = "alliance coordinates";
+    private boolean absoluteCoordinates;
 
   /** Creates a new LimelightSubSys. */
   public LimelightSubsystem() {
-    // TODO: do we need pipeline here?
-    table = NetworkTableInstance.getDefault().getTable("limelight");
-    tx = table.getEntry("tx"); // x coordinate of tag in camera image
-    ty = table.getEntry("ty"); // y coordinate of tag in camera image
-    ta = table.getEntry("ta"); // area of tag in camera image
-    botpose = table.getEntry("botpose"); // bot pose (x, y, z, roll, pitch, yaw, total latency (not used currently))
-    botpose_wpired = table.getEntry("botpose_wpired");
-    botpose_wpiblue = table.getEntry("botpose_wpiblue");
-
-    tid = table.getEntry("tid"); // ID of currently-seen target
     // default to absolute coordinates, with (0,0) at field center 
-    absoluteCoordinates = true;
+    setAbsoluteCoords();
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
     m_chooser.addOption("Alliance", alliance_choice);
-    SmartDashboard.putData("Coordinates", m_chooser);
+    SmartDashboard.putData("Limelight Coordinates", m_chooser);
   }
 
   @Override
