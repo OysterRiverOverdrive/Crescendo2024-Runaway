@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Controllers;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -45,14 +44,14 @@ public class RobotContainer {
       autodrive.AutoDriveCmd(
           drivetrain,
           List.of(
-              new Translation2d(0, 1),
-              new Translation2d(2, 1),
-              new Translation2d(2, -1),
-              new Translation2d(4, -1),
-              new Translation2d(4, 1),
-              new Translation2d(2, 1),
-              new Translation2d(2, -1),
-              new Translation2d(0, -1)),
+              new Translation2d(0, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(4, -0.75),
+              new Translation2d(4, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(0, -0.75)),
           new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
@@ -87,15 +86,19 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
     Command auto;
     switch (m_chooser.getSelected()) {
-      case auto1:
       default:
+      case auto1:
         auto = driveCircle;
+        break;
       case auto2:
         auto = null;
+        break;
       case auto3:
         auto = null;
+        break;
       case auto4:
         auto = null;
+        break;
     }
     return auto;
   }
