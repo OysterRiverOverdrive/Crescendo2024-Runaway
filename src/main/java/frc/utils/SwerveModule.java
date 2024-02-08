@@ -161,15 +161,8 @@ public class SwerveModule {
     m_drivingPIDController.setReference(
         optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
 
-    if (MathUtil.applyDeadband(
-                driver.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver)
-            > 0.0
-        && MathUtil.applyDeadband(
-                driver.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver)
-            > 0.0) {
       m_turningPIDController.setReference(
           optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
-    }
 
     m_desiredState = desiredState;
   }
