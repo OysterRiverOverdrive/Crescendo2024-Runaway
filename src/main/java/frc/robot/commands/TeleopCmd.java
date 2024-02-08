@@ -35,9 +35,15 @@ public class TeleopCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double ContX = MathUtil.applyDeadband(-controller.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver);
-    double ContY = MathUtil.applyDeadband(-controller.getRawAxis(DriveConstants.kDriveY), DriveConstants.deadzoneDriver);
-    double ContRotate = MathUtil.applyDeadband(-controller.getRawAxis(DriveConstants.kDriveRotate), DriveConstants.deadzoneDriver);
+    double ContX =
+        MathUtil.applyDeadband(
+            -controller.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver);
+    double ContY =
+        MathUtil.applyDeadband(
+            -controller.getRawAxis(DriveConstants.kDriveY), DriveConstants.deadzoneDriver);
+    double ContRotate =
+        MathUtil.applyDeadband(
+            -controller.getRawAxis(DriveConstants.kDriveRotate), DriveConstants.deadzoneDriver);
 
     // If statements shifted to here so that every time execute runs (20 times a second) so that it
     // gets a fresh value to hand in

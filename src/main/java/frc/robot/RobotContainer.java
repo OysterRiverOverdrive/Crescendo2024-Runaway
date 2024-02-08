@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Controllers;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -37,7 +36,8 @@ public class RobotContainer {
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
       new TeleopCmd(
-          drivetrain, () -> controllerutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
+          drivetrain,
+          () -> controllerutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
   // Drive in a circle (Diameter: 1 Meter)

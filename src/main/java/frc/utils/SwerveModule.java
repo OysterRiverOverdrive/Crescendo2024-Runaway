@@ -10,9 +10,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 import com.revrobotics.SparkPIDController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public class SwerveModule {
@@ -27,6 +30,7 @@ public class SwerveModule {
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
+  private Joystick driver = new Joystick(DriveConstants.kDrveControllerPort);
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor, encoder, and PID
@@ -156,8 +160,16 @@ public class SwerveModule {
     // Command driving and turning SPARKS MAX towards their respective setpoints.
     m_drivingPIDController.setReference(
         optimizedDesiredState.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
-    m_turningPIDController.setReference(
-        optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+
+    if (MathUtil.applyDeadband(
+                driver.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver)
+            > 0.0
+        && MathUtil.applyDeadband(
+                driver.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver)
+            > 0.0) {
+      m_turningPIDController.setReference(
+          optimizedDesiredState.angle.getRadians(), CANSparkMax.ControlType.kPosition);
+    }
 
     m_desiredState = desiredState;
   }
