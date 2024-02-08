@@ -36,7 +36,8 @@ public class RobotContainer {
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
       new TeleopCmd(
-          drivetrain, () -> controllerutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
+          drivetrain,
+          () -> controllerutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
   // Drive in a circle (Diameter: 1 Meter)
