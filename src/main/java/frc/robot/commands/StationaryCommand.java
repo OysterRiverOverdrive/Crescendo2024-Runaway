@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class StationaryCommand extends Command {
@@ -16,7 +16,6 @@ public class StationaryCommand extends Command {
     m_Subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-
   }
 
   // Called when the command is initially scheduled.
@@ -39,4 +38,3 @@ public class StationaryCommand extends Command {
     return false;
   }
 }
-

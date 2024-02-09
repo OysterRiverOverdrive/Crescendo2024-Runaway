@@ -21,6 +21,8 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
   public static final int MotorID = 6;
+  public static final int UnderMotor = 11;
+  public static final int TopMotor = 12;
 
   public static final class AutoConstants {
 
@@ -182,10 +184,7 @@ public final class Constants {
     public static final double kFreeSpeedRpm = 5676;
   }
 
-  
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  
-  
 }

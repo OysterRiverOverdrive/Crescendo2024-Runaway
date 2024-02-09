@@ -4,34 +4,30 @@
 
 package frc.robot;
 
-import frc.robot.commands.*;
-
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.StationaryCommand;
-import frc.robot.commands.auto.*;
-import frc.robot.commands.EjectCommand;
-import frc.robot.commands.InwardCommand;
-import frc.robot.subsystems.IntakeSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import java.util.function.BooleanSupplier;
-import edu.wpi.first.wpilibj.Joystick;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.*;
+import frc.robot.commands.EjectCommand;
+import frc.robot.commands.InwardCommand;
+import frc.robot.commands.StationaryCommand;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class RobotContainer {
   // Auto Dropdown - Make dropdown variable and variables to be selected

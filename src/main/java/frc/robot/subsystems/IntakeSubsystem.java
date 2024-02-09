@@ -4,30 +4,33 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import frc.robot.Constants;
 
-
 public class IntakeSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  public IntakeSubsystem() {}
+  private CANSparkMax m_leadMotor;
+  private CANSparkMax m_followMotor;
 
-  private final CANSparkMax motor = new CANSparkMax(Constants.MotorID, MotorType.kBrushless);
-  
+  public IntakeSubsystem() {
+
+    m_leadMotor = new CANSparkMax(Constants.UnderMotor, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(Constants.TopMotor, MotorType.kBrushless);
+    m_followMotor.follow(m_leadMotor);
+  }
+
   public void motorF() {
-    motor.set(0.8);
+    m_leadMotor.set(0.8);
   }
 
   public void motorB() {
-    motor.set(-0.8);
+    m_leadMotor.set(-0.8);
   }
 
   public void motorStop() {
-    motor.stopMotor();
+    m_leadMotor.stopMotor();
   }
 
   public Command exampleMethodCommand() {
@@ -59,4 +62,3 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 }
-
