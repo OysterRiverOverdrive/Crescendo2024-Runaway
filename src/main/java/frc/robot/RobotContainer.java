@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 // import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -17,20 +18,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 // import frc.robot.Constants.AutoConstants;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
-import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.Shooter.MotorStop;
 import frc.robot.commands.Shooter.MotorTurnForward;
+import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 // import java.util.List;
-import frc.utils.ControllerUtils;
-
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.utils.ControllerUtils;
 import java.util.function.BooleanSupplier;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
 
@@ -41,14 +39,9 @@ public class RobotContainer {
 
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
-  //Defining controller
+  // Defining controller
   private final Joystick operator = new Joystick(Controllers.OPER_PORT);
   private final Joystick driver1 = new Joystick(Controllers.DRIVER_ONE_PORT);
-
-
-  //Defining Commands (Shooter)
-  private final MotorTurnForward forward = new MotorTurnForward(shooter);
-  private final MotorStop stop = new MotorStop(shooter);
 
   // Commands
   private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
@@ -61,12 +54,11 @@ public class RobotContainer {
     configureBindings();
   }
 
-    
-  //public Trigger supplier(int buttonID) {
-    //BooleanSupplier bsup = () -> xBoxController.getRawButton(buttonID);
-    //Trigger mybutton = new Trigger(bsup);
-    //return mybutton;
-  //}
+  // public Trigger supplier(int buttonID) {
+  // BooleanSupplier bsup = () -> xBoxController.getRawButton(buttonID);
+  // Trigger mybutton = new Trigger(bsup);
+  // return mybutton;
+  // }
 
   public Trigger supplier(int buttonID, joysticks joystick) {
     if (joystick == joysticks.DRIVER) {
@@ -89,11 +81,11 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
-    //Shooter shoots
-    supplier(Controllers.logi_rt, joysticks.OPERATOR).onTrue(forward).onFalse(stop);
-    
+    // Shooter shoots
+    // supplier(Controllers.xbox_rt, joysticks.OPERATOR).onTrue(forward).onFalse(stop);
+
     controllerutil
-        .supplier(Controllers.logi_rt, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.xbox_rt, DriveConstants.joysticks.OPERATOR)
         .onTrue(new MotorTurnForward(shooter))
         .onFalse(new MotorStop(shooter));
 

@@ -20,6 +20,11 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  public static final class ShooterConstants {
+    public static final int motorCANID1 = 9;
+    public static final int motorCANID2 = 10;
+  }
+
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond =
         DriveConstants.kMaxSpeedMetersPerSecond / 4;

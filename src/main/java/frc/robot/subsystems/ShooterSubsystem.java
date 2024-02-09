@@ -4,14 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.Controllers;
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 
 public class ShooterSubsystem extends SubsystemBase {
   private CANSparkMax m_leadMotor;
@@ -20,15 +19,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem() {
 
-    m_leadMotor = new CANSparkMax(9, MotorType.kBrushless);
-    m_followMotor = new CANSparkMax(10, MotorType.kBrushless);
+    m_leadMotor = new CANSparkMax(ShooterConstants.motorCANID1, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(ShooterConstants.motorCANID2, MotorType.kBrushless);
     m_followMotor.follow(m_leadMotor);
-
   }
 
   public void motorF() {
-    //set speed equal to value of trigger
-    double speed = operator.getRawAxis(Controllers.logi_rt)/2;
+    // set speed equal to value of trigger
+    double speed = operator.getRawAxis(Controllers.xbox_rt) / 2;
+    // double speed = 0.3;
     m_leadMotor.set(speed);
     System.out.println(speed);
   }
@@ -36,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void motorStop() {
     m_leadMotor.stopMotor();
   }
-  
+
   /**
    * Example command factory method.
    *

@@ -4,8 +4,8 @@
 
 package frc.robot.commands.Shooter;
 
-import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /** An example command that uses an example subsystem. */
 public class MotorStop extends Command {
@@ -32,7 +32,7 @@ public class MotorStop extends Command {
   public void execute() {
     m_subsystem.motorStop();
   }
-  
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
