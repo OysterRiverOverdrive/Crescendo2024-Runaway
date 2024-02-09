@@ -77,7 +77,7 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
     controllerutil
-        .supplier(6, DriveConstants.joysticks.DRIVER)
+        .supplier(Controllers.ps4_Rtrigger1, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
 
@@ -103,7 +103,8 @@ public class RobotContainer {
     }
     auto =
         new SequentialCommandGroup(
-            new AutoSleepCmd(SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)), auto);
+            new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
+            auto);
     return auto;
   }
 }
