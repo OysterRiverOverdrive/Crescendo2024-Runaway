@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
@@ -27,14 +28,6 @@ public class TeleopCmd extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public double deadzone(double joyvalue) {
-    if (Math.abs(joyvalue) > DriveConstants.deadzoneDriver) {
-      return joyvalue;
-    } else {
-      return 0.0;
-    }
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -42,9 +35,15 @@ public class TeleopCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double ContX = deadzone(controller.getRawAxis(DriveConstants.kDriveX)) * -1;
-    double ContY = deadzone(controller.getRawAxis(DriveConstants.kDriveY)) * -1;
-    double ContRotate = deadzone(controller.getRawAxis(DriveConstants.kDriveRotate)) * -1;
+    double ContX =
+        MathUtil.applyDeadband(
+            -controller.getRawAxis(DriveConstants.kDriveX), DriveConstants.deadzoneDriver);
+    double ContY =
+        MathUtil.applyDeadband(
+            -controller.getRawAxis(DriveConstants.kDriveY), DriveConstants.deadzoneDriver);
+    double ContRotate =
+        MathUtil.applyDeadband(
+            -controller.getRawAxis(DriveConstants.kDriveRotate), DriveConstants.deadzoneDriver);
 
     // If statements shifted to here so that every time execute runs (20 times a second) so that it
     // gets a fresh value to hand in

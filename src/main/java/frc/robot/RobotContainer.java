@@ -36,7 +36,9 @@ public class RobotContainer {
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
-      new TeleopCmd(drivetrain, () -> cutil.Boolsupplier(5, DriveConstants.joysticks.DRIVER));
+      new TeleopCmd(
+          drivetrain,
+          () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
   // Drive Forward Speaker Run
@@ -83,7 +85,7 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
     cutil
-        .supplier(Controllers.ps4_Rtrigger1, DriveConstants.joysticks.DRIVER)
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
 
@@ -93,8 +95,8 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
     Command auto;
     switch (m_chooser.getSelected()) {
-      case auto1:
       default:
+      case auto1:
         auto = driveCircle;
         break;
       case auto2:
