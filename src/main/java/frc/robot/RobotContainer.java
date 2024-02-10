@@ -7,19 +7,23 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.joysticks;
+import frc.robot.commands.Shooter.MotorStop;
+import frc.robot.commands.Shooter.MotorTurnForward;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
-import frc.robot.commands.Shooter.MotorStop;
-import frc.robot.commands.Shooter.MotorTurnForward;
-import frc.robot.subsystems.ShooterSubsystem;
+import java.util.function.BooleanSupplier;
 
 public class RobotContainer {
   // Creation of controller utilities
