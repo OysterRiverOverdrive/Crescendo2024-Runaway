@@ -4,39 +4,36 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.ProfiledPIDController;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.trajectory.Trajectory;
-// import edu.wpi.first.math.trajectory.TrajectoryConfig;
-// import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-// import frc.robot.Constants.AutoConstants;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.DriveConstants.joysticks;
+import frc.robot.commands.TeleopCmd;
+import frc.robot.commands.auto.*;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.utils.ControllerUtils;
+import java.util.List;
 import frc.robot.commands.Shooter.MotorStop;
 import frc.robot.commands.Shooter.MotorTurnForward;
-import frc.robot.commands.TeleopCmd;
-import frc.robot.subsystems.DrivetrainSubsystem;
-// import java.util.List;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.utils.ControllerUtils;
-import java.util.function.BooleanSupplier;
 
 public class RobotContainer {
+  // Creation of controller utilities
+  private final ControllerUtils controllerutil = new ControllerUtils();
+
+  // Auto Dropdown - Make dropdown variable and variables to be selected
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final String auto1 = "1";
+  private final String auto2 = "2";
+  private final String auto3 = "3";
+  private final String auto4 = "4";
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
-
-  private final ControllerUtils controllerutil = new ControllerUtils();
-
   private final ShooterSubsystem shooter = new ShooterSubsystem();
 
   // Defining controller
@@ -44,21 +41,42 @@ public class RobotContainer {
   private final Joystick driver1 = new Joystick(Controllers.DRIVER_ONE_PORT);
 
   // Commands
-  private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
+  private final AutoCreationCmd autodrive = new AutoCreationCmd();
+  private final TeleopCmd teleopCmd =
+      new TeleopCmd(
+          drivetrain, () -> controllerutil.Boolsupplier(5, DriveConstants.joysticks.DRIVER));
+
+  // Auto Driving Commands
+  // Drive in a circle (Diameter: 1 Meter)
+  private final Command driveCircle =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(
+              new Translation2d(0, 1),
+              new Translation2d(2, 1),
+              new Translation2d(2, -1),
+              new Translation2d(4, -1),
+              new Translation2d(4, 1),
+              new Translation2d(2, 1),
+              new Translation2d(2, -1),
+              new Translation2d(0, -1)),
+          new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
 
+    // Add Auto options to dropdown and push to dashboard
+    m_chooser.setDefaultOption("Circle", auto1);
+    m_chooser.addOption("Null1", auto2);
+    m_chooser.addOption("Null2", auto3);
+    m_chooser.addOption("Null3", auto4);
+    SmartDashboard.putData("Auto Selector", m_chooser);
+    SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
+
     // Configure Buttons Methods
     configureBindings();
   }
-
-  // public Trigger supplier(int buttonID) {
-  // BooleanSupplier bsup = () -> xBoxController.getRawButton(buttonID);
-  // Trigger mybutton = new Trigger(bsup);
-  // return mybutton;
-  // }
 
   public Trigger supplier(int buttonID, joysticks joystick) {
     if (joystick == joysticks.DRIVER) {
@@ -76,13 +94,6 @@ public class RobotContainer {
     // Configure buttons
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-
-    // Shooter shoots
-    // supplier(Controllers.xbox_rt, joysticks.OPERATOR).onTrue(forward).onFalse(stop);
 
     controllerutil
         .supplier(Controllers.xbox_rt, DriveConstants.joysticks.OPERATOR)
@@ -90,56 +101,26 @@ public class RobotContainer {
         .onFalse(new MotorStop(shooter));
 
     controllerutil
-        .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
+        .supplier(6, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    // Return NOTHING, replace with command to be run in autonomous period
-    return null;
+
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
-    //   // 1. Create trajectory settings
-    //   TrajectoryConfig trajectoryConfig =
-    //       new TrajectoryConfig(
-    //               AutoConstants.kMaxSpeedMetersPerSecond,
-    //               AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-    //           .setKinematics(DriveConstants.kDriveKinematics);
-
-    //   // 2. Generate trajectory
-    //   Trajectory trajectory =
-    //       TrajectoryGenerator.generateTrajectory(
-    //           new Pose2d(0, 0, new Rotation2d(0)),
-    //           List.of(new Translation2d(1, 0), new Translation2d(1, -1)),
-    //           new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
-    //           trajectoryConfig);
-
-    //   // 3. Define PID controllers for tracking trajectory
-    //   // PIDController xController =
-    //   // PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-    //   ProfiledPIDController thetaController =
-    //       new ProfiledPIDController(
-    //           AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    //   thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    //   // 4. Construct command to follow trajectory
-    //   SwerveControllerCommand swerveControllerCommand =
-    //       new SwerveControllerCommand(
-    //           trajectory,
-    //           drivetrain::getPose,
-    //           DriveConstants.kDriveKinematics,
-    //           new PIDController(AutoConstants.kPXController, 0, 0),
-    //           new PIDController(AutoConstants.kPYController, 0, 0),
-    //           thetaController,
-    //           drivetrain::setModuleStates,
-    //           drivetrain);
-
-    //   // 5. Add some init and wrap-up, and return everything
-    //   return new SequentialCommandGroup(
-    //       new InstantCommand(() -> drivetrain.resetOdometry(trajectory.getInitialPose())),
-    //       swerveControllerCommand,
-    //       new InstantCommand(() -> drivetrain.stopModules()));
-
+    Command auto;
+    switch (m_chooser.getSelected()) {
+      case auto1:
+      default:
+        auto = driveCircle;
+      case auto2:
+        auto = null;
+      case auto3:
+        auto = null;
+      case auto4:
+        auto = null;
+    }
+    return auto;
   }
 }
