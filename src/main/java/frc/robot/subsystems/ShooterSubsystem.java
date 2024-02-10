@@ -25,7 +25,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void motorF() {
-    // set speed equal to value of trigger
     double speed = operator.getRawAxis(Controllers.xbox_rt) / 2;
     // double speed = 0.3;
     m_leadMotor.set(speed);
