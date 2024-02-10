@@ -17,8 +17,9 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.commands.Shooter.MotorStop;
 import frc.robot.commands.Shooter.MotorTurnForward;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.auto.*;
 import frc.robot.commands.TeleopCmd;
-import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.utils.ControllerUtils;
@@ -27,7 +28,7 @@ import java.util.function.BooleanSupplier;
 
 public class RobotContainer {
   // Creation of controller utilities
-  private final ControllerUtils controllerutil = new ControllerUtils();
+  private final ControllerUtils cutil = new ControllerUtils();
 
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -48,22 +49,30 @@ public class RobotContainer {
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
       new TeleopCmd(
-          drivetrain, () -> controllerutil.Boolsupplier(5, DriveConstants.joysticks.DRIVER));
+          drivetrain,
+          () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
-  // Drive in a circle (Diameter: 1 Meter)
+  // Drive Forward Speaker Run
+  private final Command speakerForwards =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(cutil.inchesToMeters(30), 0)),
+          new Pose2d(cutil.inchesToMeters(54.83), 0, new Rotation2d(0)));
+
+  // Drive in a figure 8
   private final Command driveCircle =
       autodrive.AutoDriveCmd(
           drivetrain,
           List.of(
-              new Translation2d(0, 1),
-              new Translation2d(2, 1),
-              new Translation2d(2, -1),
-              new Translation2d(4, -1),
-              new Translation2d(4, 1),
-              new Translation2d(2, 1),
-              new Translation2d(2, -1),
-              new Translation2d(0, -1)),
+              new Translation2d(0, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(4, -0.75),
+              new Translation2d(4, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(0, -0.75)),
           new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
@@ -72,7 +81,7 @@ public class RobotContainer {
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
-    m_chooser.addOption("Null1", auto2);
+    m_chooser.addOption("Speaker Forward", auto2);
     m_chooser.addOption("Null2", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
@@ -99,13 +108,13 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
-    controllerutil
+    cutil
         .supplier(Controllers.xbox_rt, DriveConstants.joysticks.OPERATOR)
         .onTrue(new MotorTurnForward(shooter))
         .onFalse(new MotorStop(shooter));
 
-    controllerutil
-        .supplier(6, DriveConstants.joysticks.DRIVER)
+    cutil
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
 
@@ -115,16 +124,24 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
     Command auto;
     switch (m_chooser.getSelected()) {
-      case auto1:
       default:
+      case auto1:
         auto = driveCircle;
+        break;
       case auto2:
-        auto = null;
+        auto = speakerForwards;
+        break;
       case auto3:
         auto = null;
+        break;
       case auto4:
         auto = null;
+        break;
     }
+    auto =
+        new SequentialCommandGroup(
+            new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
+            auto);
     return auto;
   }
 }
