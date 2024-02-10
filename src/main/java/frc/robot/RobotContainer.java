@@ -36,7 +36,9 @@ public class RobotContainer {
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
-      new TeleopCmd(drivetrain, () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
+      new TeleopCmd(
+          drivetrain,
+          () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
   // Drive Forward Speaker Run
