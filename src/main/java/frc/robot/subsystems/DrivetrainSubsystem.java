@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -48,6 +49,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
           RobotConstants.kRearRightTurningCanId,
           RobotConstants.kBackRightChassisAngularOffset);
 
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  // Original Strings still exist, just moved to constants.java so that it can be accessed
+  // universally so it can be called for comparasion in teleopCmd.java
+
   // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
 
@@ -60,9 +65,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double y;
   private double r;
 
-  // Max Speeds
-  private double maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
-  private double maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
+  private boolean waiting = false;
+  private double maxSpeedDrive;
+  private double maxSpeedTurn;
 
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
@@ -84,71 +89,73 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public DrivetrainSubsystem() {
     zeroHeading();
     m_gyro.calibrate();
+
+    m_chooser.setDefaultOption("Medium Speed", DriveConstants.medium);
+    m_chooser.addOption("Low Speed", DriveConstants.low);
+    m_chooser.addOption("High Speed", DriveConstants.high);
+    SmartDashboard.putData("Speed Drop Down", m_chooser);
   }
 
   /**
-   * Method to drive the robot using joystick info.
+   * Method to drive the robot using joystick info. (Field Oriented)
    *
    * @param xSpeed Speed of the robot in the x direction (forward).
    * @param ySpeed Speed of the robot in the y direction (sideways).
    * @param rot Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-   * @param rateLimit Whether to enable rate limiting for smoother control.
+   * @param maxTurn Max angular speed.
+   * @param maxDrive Max driving speed.
    */
-  public void drive(
-      double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+  public void fieldDrive(
+      double xSpeed, double ySpeed, double rot, double maxTurn, double maxDrive) {
+    // We ask for the data when calling the function and then we assign it to the empty variables we
+    // created earlier (lines 77-78)
+    maxSpeedDrive = maxDrive;
+    maxSpeedTurn = maxTurn;
 
     double xSpeedCommanded;
     double ySpeedCommanded;
 
-    if (rateLimit) {
-      // Convert XY to polar for rate limiting
-      double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
-      double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
+    // Convert XY to polar for rate limiting
+    double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
+    double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
 
-      // Calculate the direction slew rate based on an estimate of the lateral acceleration
-      double directionSlewRate;
-      if (m_currentTranslationMag != 0.0) {
-        directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
-      } else {
-        directionSlewRate =
-            500.0; // some high number that means the slew rate is effectively instantaneous
-      }
-
-      double currentTime = WPIUtilJNI.now() * 1e-6;
-      double elapsedTime = currentTime - m_prevTime;
-      double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
-      if (angleDif < 0.45 * Math.PI) {
-        m_currentTranslationDir =
-            SwerveUtils.StepTowardsCircular(
-                m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-        m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-      } else if (angleDif > 0.85 * Math.PI) {
-        if (m_currentTranslationMag
-            > 1e-4) { // some small number to avoid floating-point errors with equality checking
-          // keep currentTranslationDir unchanged
-          m_currentTranslationMag = m_magLimiter.calculate(0.0);
-        } else {
-          m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
-          m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-        }
-      } else {
-        m_currentTranslationDir =
-            SwerveUtils.StepTowardsCircular(
-                m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-        m_currentTranslationMag = m_magLimiter.calculate(0.0);
-      }
-      m_prevTime = currentTime;
-
-      xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
-      ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
-      m_currentRotation = m_rotLimiter.calculate(rot);
-
+    // Calculate the direction slew rate based on an estimate of the lateral acceleration
+    double directionSlewRate;
+    if (m_currentTranslationMag != 0.0) {
+      directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
     } else {
-      xSpeedCommanded = xSpeed;
-      ySpeedCommanded = ySpeed;
-      m_currentRotation = rot;
+      directionSlewRate =
+          500.0; // some high number that means the slew rate is effectively instantaneous
     }
+
+    double currentTime = WPIUtilJNI.now() * 1e-6;
+    double elapsedTime = currentTime - m_prevTime;
+    double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
+    if (angleDif < 0.45 * Math.PI) {
+      m_currentTranslationDir =
+          SwerveUtils.StepTowardsCircular(
+              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+      m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
+    } else if (angleDif > 0.85 * Math.PI) {
+      if (m_currentTranslationMag
+          > 1e-4) { // some small number to avoid floating-point errors with equality checking
+        // keep currentTranslationDir unchanged
+        m_currentTranslationMag = m_magLimiter.calculate(0.0);
+      } else {
+        m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
+        m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
+      }
+    } else {
+      m_currentTranslationDir =
+          SwerveUtils.StepTowardsCircular(
+              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+      m_currentTranslationMag = m_magLimiter.calculate(0.0);
+    }
+    m_prevTime = currentTime;
+
+    xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
+    ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
+    m_currentRotation = m_rotLimiter.calculate(rot);
 
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * maxSpeedDrive;
@@ -161,10 +168,90 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
-            fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xSpeedDelivered, ySpeedDelivered, rotDelivered, getRotation2d())
-                : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+            ChassisSpeeds.fromFieldRelativeSpeeds(
+                xSpeedDelivered, ySpeedDelivered, rotDelivered, getRotation2d()));
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  /**
+   * Method to drive the robot using joystick info. (Robot Oriented)
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).
+   * @param ySpeed Speed of the robot in the y direction (sideways).
+   * @param rot Angular rate of the robot.
+   * @param maxTurn Max angular speed.
+   * @param maxDrive Max driving speed.
+   */
+  public void robotDrive(
+      double xSpeed, double ySpeed, double rot, double maxTurn, double maxDrive) {
+    // We ask for the data when calling the function and then we assign it to the empty variables we
+    // created earlier (lines 77-78)
+    maxSpeedDrive = maxDrive;
+    maxSpeedTurn = maxTurn;
+
+    double xSpeedCommanded;
+    double ySpeedCommanded;
+
+    // Convert XY to polar for rate limiting
+    double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
+    double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
+
+    // Calculate the direction slew rate based on an estimate of the lateral acceleration
+    double directionSlewRate;
+    if (m_currentTranslationMag != 0.0) {
+      directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
+    } else {
+      directionSlewRate =
+          500.0; // some high number that means the slew rate is effectively instantaneous
+    }
+
+    double currentTime = WPIUtilJNI.now() * 1e-6;
+    double elapsedTime = currentTime - m_prevTime;
+    double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
+    if (angleDif < 0.45 * Math.PI) {
+      m_currentTranslationDir =
+          SwerveUtils.StepTowardsCircular(
+              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+      m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
+    } else if (angleDif > 0.85 * Math.PI) {
+      if (m_currentTranslationMag
+          > 1e-4) { // some small number to avoid floating-point errors with equality checking
+        // keep currentTranslationDir unchanged
+        m_currentTranslationMag = m_magLimiter.calculate(0.0);
+      } else {
+        m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
+        m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
+      }
+    } else {
+      m_currentTranslationDir =
+          SwerveUtils.StepTowardsCircular(
+              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
+      m_currentTranslationMag = m_magLimiter.calculate(0.0);
+    }
+    m_prevTime = currentTime;
+
+    xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
+    ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
+    m_currentRotation = m_rotLimiter.calculate(rot);
+
+    // Convert the commanded speeds into the correct units for the drivetrain
+    double xSpeedDelivered = xSpeedCommanded * maxSpeedDrive;
+    double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
+    double rotDelivered = m_currentRotation * maxSpeedTurn;
+
+    x = xSpeedDelivered;
+    y = ySpeedDelivered;
+    r = rotDelivered;
+
+    var swerveModuleStates =
+        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+            new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -256,6 +343,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_rearRight.stop();
   }
 
+  public String getDropDown() {
+    return m_chooser.getSelected();
+  }
+
+  public void setWait() {
+    waiting = true;
+  }
+
+  public void setGo() {
+    waiting = false;
+  }
+
   /**
    * Returns the turn rate of the robot.
    *
@@ -272,6 +371,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("x", x);
     SmartDashboard.putNumber("y", y);
     SmartDashboard.putNumber("r", r);
+    SmartDashboard.putBoolean("Auto is Waiting", waiting);
+    // ---- Before ----
+    // switch (m_chooser.getSelected()) {
+    //   case high:
+    //   maxSpeedDrive = DriveConstants.kSpeedHighDrive;
+    //   maxSpeedTurn = DriveConstants.kSpeedHighTurn;
+    //   case low:
+    //   maxSpeedDrive = DriveConstants.kSpeedSlowDrive;
+    //   maxSpeedTurn = DriveConstants.kSpeedSlowTurn;
+    //   case medium:
+    //   default:
+    //   maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
+    //   maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
+    // }
+    //
+    // This was transfered to Teleop command so that it passes it off every time the command gets
+    // executed
 
     // Update the odometry in the periodic block
     m_odometry.update(

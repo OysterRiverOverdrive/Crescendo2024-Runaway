@@ -24,11 +24,11 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond =
         DriveConstants.kMaxSpeedMetersPerSecond / 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =
-        DriveConstants.kMaxAngularSpeed / 8;
+        DriveConstants.kMaxAngularSpeed / 4;
     public static final double kMaxAccelerationMetersPerSecondSquared = 6;
     public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 2;
-    public static final double kPXController = 2.5;
-    public static final double kPYController = 2.5;
+    public static final double kPXController = 2.2;
+    public static final double kPYController = 2.2;
     public static final double kPThetaController = 3.5;
 
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
@@ -50,6 +50,12 @@ public final class Constants {
     public static final int kDriveRotate = 4;
     public static final double deadzoneDriver = 0.12;
 
+    // Speed Mode Strings
+    // Moved from DrivetrainSubsystem
+    public static final String low = "speed1";
+    public static final String medium = "speed2";
+    public static final String high = "speed3";
+
     public enum joysticks {
       DRIVER,
       OPERATOR
@@ -69,7 +75,7 @@ public final class Constants {
     // Medium is Default Speeds
 
     // Slow
-    public static final double kSpeedSlowDrive = 4.8;
+    public static final double kSpeedSlowDrive = 2.1;
     public static final double kSpeedSlowTurn = 1.8;
 
     public static final double kDirectionSlewRate = 4; // radians per second
