@@ -65,13 +65,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double y;
   private double r;
 
-  // ---- Before ----
-  // // Max Speeds
-  // private double maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
-  // private double maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
-  //
-  // I shifted the variables to be empty so that later we can assign values when it is passed into
-  // the drive function
+  private boolean waiting = false;
   private double maxSpeedDrive;
   private double maxSpeedTurn;
 
@@ -353,6 +347,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return m_chooser.getSelected();
   }
 
+  public void setWait() {
+    waiting = true;
+  }
+
+  public void setGo() {
+    waiting = false;
+  }
+
   /**
    * Returns the turn rate of the robot.
    *
@@ -369,6 +371,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("x", x);
     SmartDashboard.putNumber("y", y);
     SmartDashboard.putNumber("r", r);
+    SmartDashboard.putBoolean("Auto is Waiting", waiting);
     // ---- Before ----
     // switch (m_chooser.getSelected()) {
     //   case high:
