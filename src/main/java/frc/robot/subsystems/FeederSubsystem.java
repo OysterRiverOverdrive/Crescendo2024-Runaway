@@ -57,7 +57,23 @@ public class FeederSubsystem extends SubsystemBase {
       return false;
     }
   }
-  
+
+  public Boolean getLimitSwtich(){
+
+
+   
+    if (limitSwitch.getValue() <= 193) {
+
+      return true;
+
+    } else {
+
+      return false;
+
+    }
+    
+  }
+
 
   @Override
   public void periodic() {

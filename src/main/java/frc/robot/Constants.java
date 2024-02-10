@@ -121,6 +121,8 @@ public final class Constants {
     public static final double kFrontRightChassisAngularOffset = 0;
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
+
+    public static final int LimitSwtichActivation = 193;
   }
 
   // Constants specifically for Swerve Module
