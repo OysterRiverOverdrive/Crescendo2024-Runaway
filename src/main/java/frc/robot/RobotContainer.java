@@ -21,7 +21,7 @@ import java.util.List;
 
 public class RobotContainer {
   // Creation of controller utilities
-  private final ControllerUtils controllerutil = new ControllerUtils();
+  private final ControllerUtils cutil = new ControllerUtils();
 
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -36,10 +36,16 @@ public class RobotContainer {
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
-      new TeleopCmd(
-          drivetrain, () -> controllerutil.Boolsupplier(5, DriveConstants.joysticks.DRIVER));
+      new TeleopCmd(drivetrain, () -> cutil.Boolsupplier(5, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
+  // Drive Forward Speaker Run
+  private final Command speakerForwards =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(cutil.inchesToMeters(30), 0)),
+          new Pose2d(cutil.inchesToMeters(54.83), 0, new Rotation2d(0)));
+
   // Drive in a figure 8
   private final Command driveCircle =
       autodrive.AutoDriveCmd(
@@ -61,7 +67,7 @@ public class RobotContainer {
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
-    m_chooser.addOption("Null1", auto2);
+    m_chooser.addOption("Speaker Forward", auto2);
     m_chooser.addOption("Null2", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
@@ -76,7 +82,7 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
-    controllerutil
+    cutil
         .supplier(Controllers.ps4_Rtrigger1, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
   }
@@ -92,7 +98,7 @@ public class RobotContainer {
         auto = driveCircle;
         break;
       case auto2:
-        auto = null;
+        auto = speakerForwards;
         break;
       case auto3:
         auto = null;
