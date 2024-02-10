@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.Optional;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -14,25 +12,27 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import java.util.Optional;
 
 public class LimelightSubsystem extends SubsystemBase {
-    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    private final NetworkTableEntry tx = table.getEntry("tx"); // x coordinate of tag in camera image
-    private final NetworkTableEntry ty = table.getEntry("ty"); // y coordinate of tag in camera image
-    private final NetworkTableEntry ta = table.getEntry("ta"); // area of tag in camera image
-    private final NetworkTableEntry botpose = table.getEntry("botpose"); // bot pose (x, y, z, roll, pitch, yaw, total latency (not used currently))
-    private final NetworkTableEntry botpose_wpired = table.getEntry("botpose_wpired");
-    private final NetworkTableEntry botpose_wpiblue = table.getEntry("botpose_wpiblue");
-    private final NetworkTableEntry tid = table.getEntry("tid"); // ID of currently-seen target
-    private final SendableChooser<String> m_chooser = new SendableChooser<>();
-    private final String abs_choice = "absolute coodinates";
-    private final String alliance_choice = "alliance coordinates";
-    private boolean absoluteCoordinates;
+  private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  private final NetworkTableEntry tx = table.getEntry("tx"); // x coordinate of tag in camera image
+  private final NetworkTableEntry ty = table.getEntry("ty"); // y coordinate of tag in camera image
+  private final NetworkTableEntry ta = table.getEntry("ta"); // area of tag in camera image
+  private final NetworkTableEntry botpose =
+      table.getEntry(
+          "botpose"); // bot pose (x, y, z, roll, pitch, yaw, total latency (not used currently))
+  private final NetworkTableEntry botpose_wpired = table.getEntry("botpose_wpired");
+  private final NetworkTableEntry botpose_wpiblue = table.getEntry("botpose_wpiblue");
+  private final NetworkTableEntry tid = table.getEntry("tid"); // ID of currently-seen target
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final String abs_choice = "absolute coodinates";
+  private final String alliance_choice = "alliance coordinates";
+  private boolean absoluteCoordinates;
 
   /** Creates a new LimelightSubSys. */
   public LimelightSubsystem() {
-    // default to absolute coordinates, with (0,0) at field center 
+    // default to absolute coordinates, with (0,0) at field center
     setAbsoluteCoords();
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
@@ -42,32 +42,26 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (m_chooser.getSelected().equals(abs_choice))
-    {
+    if (m_chooser.getSelected().equals(abs_choice)) {
       setAbsoluteCoords();
-    }
-    else
-    {
+    } else {
       setAllianceCoords();
     }
 
-    //read values periodically
+    // read values periodically
     double x = getAprilTagX();
     double y = getAprilTagY();
     double area = getAprilTagArea();
     int targetid = getAprilTagID();
     // call either getAbsoluteBotPose or getTeamBotPose
     double[] fieldpose;
-    if (absoluteCoordinates)
-    {
+    if (absoluteCoordinates) {
       fieldpose = getAbsoluteBotPose();
-    }
-    else
-    {
+    } else {
       fieldpose = getAllianceBotPose();
     }
 
-    SmartDashboard.putNumber("LimelightX", x );
+    SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
     SmartDashboard.putNumber("LimelightArea", area);
     SmartDashboard.putNumber("Target ID", targetid);
@@ -79,51 +73,44 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
   }
 
-  public void setAbsoluteCoords()
-  {
+  public void setAbsoluteCoords() {
     absoluteCoordinates = true;
   }
 
-  public void setAllianceCoords()
-  {
+  public void setAllianceCoords() {
     absoluteCoordinates = false;
   }
 
-  public double[] getAbsoluteBotPose()
-  {
+  public double[] getAbsoluteBotPose() {
     return botpose.getDoubleArray(new double[6]);
   }
 
-  public double[] getAllianceBotPose()
-  {
-    if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue)))
-    {
+  public double[] getAllianceBotPose() {
+    if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue))) {
       return botpose_wpiblue.getDoubleArray(new double[6]);
-    }
-    else
-    {
+    } else {
       return botpose_wpired.getDoubleArray(new double[6]);
     }
   }
 
-  public int getAprilTagID()
-  {
-    return (int)tid.getDouble(0.0);
+  public int getAprilTagID() {
+    return (int) tid.getDouble(0.0);
   }
 
-  public double getAprilTagX()
-  {
+  public double getAprilTagX() {
     return tx.getDouble(0.0);
   }
 
-  public double getAprilTagY()
-  {
+  public double getAprilTagY() {
     return ty.getDouble(0.0);
   }
 
-  public double getAprilTagArea()
-  {
+  public double getAprilTagArea() {
     return ta.getDouble(0.0);
   }
 
+  // Set the pose of the camera relative to the robot. Can also be set in web interface
+  public void setCameraposeRobotspace(double[] camPose) {
+    table.getEntry("camerapose_robotspace_set").setDoubleArray(camPose);
+  }
 }
