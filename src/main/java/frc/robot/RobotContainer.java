@@ -4,19 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.ProfiledPIDController;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.trajectory.Trajectory;
-// import edu.wpi.first.math.trajectory.TrajectoryConfig;
-// import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-// import frc.robot.Constants.AutoConstants;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.OutFeederCmd;
@@ -24,24 +19,68 @@ import frc.robot.commands.StopFeederCmd;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
-// import java.util.List;
+import frc.robot.auto.*;
 import frc.utils.ControllerUtils;
+import java.util.List;
 
 public class RobotContainer {
+  // Creation of controller utilities
+  private final ControllerUtils cutil = new ControllerUtils();
+
+  // Auto Dropdown - Make dropdown variable and variables to be selected
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final String auto1 = "1";
+  private final String auto2 = "2";
+  private final String auto3 = "3";
+  private final String auto4 = "4";
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
 
-  private final ControllerUtils controllerutil = new ControllerUtils();
 
   private final FeederSubsystem feeder = new FeederSubsystem();
 
   // Commands
-  private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
+  private final AutoCreationCmd autodrive = new AutoCreationCmd();
+  private final TeleopCmd teleopCmd =
+      new TeleopCmd(
+          drivetrain,
+          () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
+
+  // Auto Driving Commands
+  // Drive Forward Speaker Run
+  private final Command speakerForwards =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(cutil.inchesToMeters(30), 0)),
+          new Pose2d(cutil.inchesToMeters(54.83), 0, new Rotation2d(0)));
+
+  // Drive in a figure 8
+  private final Command driveCircle =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(
+              new Translation2d(0, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(4, -0.75),
+              new Translation2d(4, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(0, -0.75)),
+          new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
+
+    // Add Auto options to dropdown and push to dashboard
+    m_chooser.setDefaultOption("Circle", auto1);
+    m_chooser.addOption("Speaker Forward", auto2);
+    m_chooser.addOption("Null2", auto3);
+    m_chooser.addOption("Null3", auto4);
+    SmartDashboard.putData("Auto Selector", m_chooser);
+    SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
     // Configure Buttons Methods
     configureBindings();
@@ -52,67 +91,45 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
-    controllerutil
-        .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
+    cutil
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
-    controllerutil
+    cutil
         .supplier(Controllers.logi_a, DriveConstants.joysticks.OPERATOR)
         .onTrue(new InFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
-    controllerutil
+    cutil
         .supplier(Controllers.logi_y, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
   }
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    // Return NOTHING, replace with command to be run in autonomous period
-    return null;
+
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
-    //   // 1. Create trajectory settings
-    //   TrajectoryConfig trajectoryConfig =
-    //       new TrajectoryConfig(
-    //               AutoConstants.kMaxSpeedMetersPerSecond,
-    //               AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-    //           .setKinematics(DriveConstants.kDriveKinematics);
-
-    //   // 2. Generate trajectory
-    //   Trajectory trajectory =
-    //       TrajectoryGenerator.generateTrajectory(
-    //           new Pose2d(0, 0, new Rotation2d(0)),
-    //           List.of(new Translation2d(1, 0), new Translation2d(1, -1)),
-    //           new Pose2d(2, -1, Rotation2d.fromDegrees(180)),
-    //           trajectoryConfig);
-
-    //   // 3. Define PID controllers for tracking trajectory
-    //   // PIDController xController =
-    //   // PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-    //   ProfiledPIDController thetaController =
-    //       new ProfiledPIDController(
-    //           AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    //   thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    //   // 4. Construct command to follow trajectory
-    //   SwerveControllerCommand swerveControllerCommand =
-    //       new SwerveControllerCommand(
-    //           trajectory,
-    //           drivetrain::getPose,
-    //           DriveConstants.kDriveKinematics,
-    //           new PIDController(AutoConstants.kPXController, 0, 0),
-    //           new PIDController(AutoConstants.kPYController, 0, 0),
-    //           thetaController,
-    //           drivetrain::setModuleStates,
-    //           drivetrain);
-
-    //   // 5. Add some init and wrap-up, and return everything
-    //   return new SequentialCommandGroup(
-    //       new InstantCommand(() -> drivetrain.resetOdometry(trajectory.getInitialPose())),
-    //       swerveControllerCommand,
-    //       new InstantCommand(() -> drivetrain.stopModules()));
-
+    Command auto;
+    switch (m_chooser.getSelected()) {
+      default:
+      case auto1:
+        auto = driveCircle;
+        break;
+      case auto2:
+        auto = speakerForwards;
+        break;
+      case auto3:
+        auto = null;
+        break;
+      case auto4:
+        auto = null;
+        break;
+    }
+    auto =
+        new SequentialCommandGroup(
+            new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
+            auto);
+    return auto;
   }
 }
