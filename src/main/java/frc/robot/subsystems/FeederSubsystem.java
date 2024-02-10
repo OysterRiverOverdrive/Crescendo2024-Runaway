@@ -70,6 +70,7 @@ public class FeederSubsystem extends SubsystemBase {
     if (match.color == OrangeTarget && match.confidence > 0.85) {
 
       colorString = "Orange";
+      // m_leadMotor.stopMotor();
 
     } else {
 
@@ -77,10 +78,6 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     SmartDashboard.putBoolean("Note Detected", getColorSensor());
-
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
     SmartDashboard.putNumber("Confidence", match.confidence);
     SmartDashboard.putString("Detected Color", colorString);
 
