@@ -88,4 +88,8 @@ public class ControllerUtils {
       return mybutton;
     }
   }
+
+  public double inchesToMeters(double inches) {
+    return inches * 0.0254;
+  }
 }
