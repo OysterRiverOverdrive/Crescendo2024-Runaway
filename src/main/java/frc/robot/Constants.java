@@ -24,11 +24,11 @@ public final class Constants {
     public static final double kMaxSpeedMetersPerSecond =
         DriveConstants.kMaxSpeedMetersPerSecond / 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =
-        DriveConstants.kMaxAngularSpeed / 8;
+        DriveConstants.kMaxAngularSpeed / 4;
     public static final double kMaxAccelerationMetersPerSecondSquared = 6;
     public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 2;
-    public static final double kPXController = 2.5;
-    public static final double kPYController = 2.5;
+    public static final double kPXController = 2.2;
+    public static final double kPYController = 2.2;
     public static final double kPThetaController = 3.5;
 
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
@@ -45,10 +45,16 @@ public final class Constants {
     public static final int kOperControllerPort = 1;
 
     // Driver Controller Joystick ---
-    public static final int kDriveX = 1;
-    public static final int kDriveY = 0;
+    public static final int kDriveX = 0;
+    public static final int kDriveY = 1;
     public static final int kDriveRotate = 4;
-    public static final double deadzoneDriver = 0.18;
+    public static final double deadzoneDriver = 0.12;
+
+    // Speed Mode Strings
+    // Moved from DrivetrainSubsystem
+    public static final String low = "speed1";
+    public static final String medium = "speed2";
+    public static final String high = "speed3";
 
     public enum joysticks {
       DRIVER,
@@ -69,12 +75,12 @@ public final class Constants {
     // Medium is Default Speeds
 
     // Slow
-    public static final double kSpeedSlowDrive = 4.8;
+    public static final double kSpeedSlowDrive = 2.1;
     public static final double kSpeedSlowTurn = 1.8;
 
-    public static final double kDirectionSlewRate = 1.2; // radians per second
-    public static final double kMagnitudeSlewRate = 1.8; // percent per second (1 = 100%)
-    public static final double kRotationalSlewRate = 2.0; // percent per second (1 = 100%)
+    public static final double kDirectionSlewRate = 4; // radians per second
+    public static final double kMagnitudeSlewRate = 0.95; // percent per second (1 = 100%)
+    public static final double kRotationalSlewRate = 5; // percent per second (1 = 100%)
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
@@ -165,14 +171,14 @@ public final class Constants {
 
     // Swerve Module Idle Modes ---
     // These determine how the module behavior when there is a lack of input from the driver
-    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kCoast;
+    public static final IdleMode kDrivingMotorIdleMode = IdleMode.kBrake;
     public static final IdleMode kTurningMotorIdleMode = IdleMode.kBrake;
 
     // Current limits ---
     // Meant for the electrical side of the drivetrain to make sure that the drivetrain isn't
     // drawing too much power
-    public static final int kDrivingMotorCurrentLimit = 50; // amps
-    public static final int kTurningMotorCurrentLimit = 20; // amps
+    public static final int kDrivingMotorCurrentLimit = 40; // amps
+    public static final int kTurningMotorCurrentLimit = 15; // amps
   }
 
   public static final class NeoMotorConstants {
