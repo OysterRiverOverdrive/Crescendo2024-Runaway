@@ -7,14 +7,28 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.RobotConstants;
 
 public class HangerSubsystem extends SubsystemBase {
+
   private final DoubleSolenoid m_rightSolenoid =
-      new DoubleSolenoid(1, PneumaticsModuleType.REVPH, 0, 1);
+      new DoubleSolenoid(
+          RobotConstants.kPneumaticHubCanId,
+          PneumaticsModuleType.REVPH,
+          RobotConstants.kHangerRightFwd,
+          RobotConstants.kHangerRightBck);
+
   private final DoubleSolenoid m_leftSolenoid =
-      new DoubleSolenoid(1, PneumaticsModuleType.REVPH, 2, 3);
-  private final Compressor m_compressor = new Compressor(1, PneumaticsModuleType.REVPH);
+      new DoubleSolenoid(
+          RobotConstants.kPneumaticHubCanId,
+          PneumaticsModuleType.REVPH,
+          RobotConstants.kHangerLeftFwd,
+          RobotConstants.kHangerLeftBck);
+
+  private final Compressor m_compressor =
+      new Compressor(RobotConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH);
 
   public HangerSubsystem() {
     // If Compressor on Bot
@@ -37,6 +51,7 @@ public class HangerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Pneumatics Pressure (PSI)", getPressure());
     // This method will be called once per scheduler run
   }
 }
