@@ -16,6 +16,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
+// Import Intake Subsystem (example ^ )
 import frc.utils.ControllerUtils;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  // Create Intake Subsystem (Example ^ )
 
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
@@ -87,6 +89,11 @@ public class RobotContainer {
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+
+    // Reference: https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/Shooter/src/main/java/frc/robot/RobotContainer.java
+    //            Lines 111 - 114
+    // Create two buttons (in & out), use supplier partial example above, on true execute action, on false stop motors
+    
   }
 
   public Command getAutonomousCommand() {
