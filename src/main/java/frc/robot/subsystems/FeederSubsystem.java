@@ -24,8 +24,8 @@ public class FeederSubsystem extends SubsystemBase {
   private final Color OrangeTarget = new Color(0.546, 0.363, 0.091);
 
   public FeederSubsystem() {
-    m_leadMotor = new CANSparkMax(9, MotorType.kBrushless);
-    m_followMotor = new CANSparkMax(10, MotorType.kBrushless);
+    m_leadMotor = new CANSparkMax(11, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(12, MotorType.kBrushless);
     m_followMotor.follow(m_leadMotor);
     m_colorMatcher.addColorMatch(OrangeTarget);
   }
@@ -40,6 +40,10 @@ public class FeederSubsystem extends SubsystemBase {
 
   public void StopFeederCmd() {
     m_leadMotor.stopMotor();
+  }
+
+  public void ToShooterCmd(){
+    m_leadMotor.set(RobotConstants.ToShooter);
   }
 
   public Boolean getColorSensor(){

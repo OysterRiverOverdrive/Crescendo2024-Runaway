@@ -17,6 +17,7 @@ import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.OutFeederCmd;
 import frc.robot.commands.StopFeederCmd;
 import frc.robot.commands.TeleopCmd;
+import frc.robot.commands.ToShooterCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.auto.*;
@@ -104,6 +105,12 @@ public class RobotContainer {
         .supplier(Controllers.logi_y, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
+
+    cutil
+        .supplier(Controllers.logi_x, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new ToShooterCmd(feeder))
+        .onFalse(new ToShooterCmd(feeder));
+        
   }
 
   public Command getAutonomousCommand() {
