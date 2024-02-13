@@ -16,20 +16,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.*;
-import frc.robot.commands.EjectCommand;
-import frc.robot.commands.InwardCommand;
-import frc.robot.commands.StationaryCommand;
+import frc.robot.auto.*;
 import frc.robot.commands.TeleopCmd;
-import frc.robot.commands.auto.*;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystem.IntakeSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 import java.util.function.BooleanSupplier;
-
-public class RobotContainer {
+  private final ControllerUtils cutil = new ControllerUtils();
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String auto1 = "1";
@@ -39,27 +33,36 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
-
-  private final ControllerUtils controllerutil = new ControllerUtils();
+  // Create Intake Subsystem (Example ^ )
 
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
-  private final TeleopCmd teleopCmd = new TeleopCmd(drivetrain);
+  private final TeleopCmd teleopCmd =
+      new TeleopCmd(
+          drivetrain,
+          () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Driving Commands
-  // Drive in a circle (Diameter: 1 Meter)
+  // Drive Forward Speaker Run
+  private final Command speakerForwards =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(cutil.inchesToMeters(30), 0)),
+          new Pose2d(cutil.inchesToMeters(54.83), 0, new Rotation2d(0)));
+
+  // Drive in a figure 8
   private final Command driveCircle =
       autodrive.AutoDriveCmd(
           drivetrain,
           List.of(
-              new Translation2d(0, 1),
-              new Translation2d(2, 1),
-              new Translation2d(2, -1),
-              new Translation2d(4, -1),
-              new Translation2d(4, 1),
-              new Translation2d(2, 1),
-              new Translation2d(2, -1),
-              new Translation2d(0, -1)),
+              new Translation2d(0, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(4, -0.75),
+              new Translation2d(4, 0.75),
+              new Translation2d(2, 0.75),
+              new Translation2d(2, -0.75),
+              new Translation2d(0, -0.75)),
           new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
@@ -68,7 +71,7 @@ public class RobotContainer {
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
-    m_chooser.addOption("Null1", auto2);
+    m_chooser.addOption("Speaker Forward", auto2);
     m_chooser.addOption("Null2", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
@@ -85,9 +88,14 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
-    controllerutil
-        .supplier(Controllers.logi_b, DriveConstants.joysticks.DRIVER)
+    cutil
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+
+    // Reference: https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/Shooter/src/main/java/frc/robot/RobotContainer.java
+    //            Lines 111 - 114
+    // Create two buttons (in & out), use supplier partial example above, on true execute action, on false stop motors
+    
   }
 
   public Command getAutonomousCommand() {
@@ -96,17 +104,25 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
     Command auto;
     switch (m_chooser.getSelected()) {
-      case auto1:
       default:
+      case auto1:
         auto = driveCircle;
+        break;
       case auto2:
-        auto = null;
+        auto = speakerForwards;
+        break;
       case auto3:
         auto = null;
+        break;
       case auto4:
         auto = null;
+        break;
     }
-    return new SequentialCommandGroup(auto);
+    auto =
+        new SequentialCommandGroup(
+            new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
+            auto);
+    return auto;
   }
 
   private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();

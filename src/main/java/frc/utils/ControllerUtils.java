@@ -33,6 +33,20 @@ public class ControllerUtils {
   }
 
   /**
+   * Method of acquiring basic controller button booleans
+   *
+   * @param buttonID Button ID on the controller according to FRC Driver Station
+   * @param joystick Controller of which the button is located, use Enum in constants
+   */
+  public Boolean Boolsupplier(int buttonID, DriveConstants.joysticks joystick) {
+    if (joystick == DriveConstants.joysticks.DRIVER) {
+      return driver.getRawButton(buttonID);
+    } else {
+      return operator.getRawButton(buttonID);
+    }
+  }
+
+  /**
    * Sub-method of acquiring boolean of controller D-Pad buttons, only for use of POVsupplier method
    *
    * @param degree degree on the D-Pad to be checked (Pulled from FRC Driver Station)
@@ -73,5 +87,9 @@ public class ControllerUtils {
       Trigger mybutton = new Trigger(bsup);
       return mybutton;
     }
+  }
+
+  public double inchesToMeters(double inches) {
+    return inches * 0.0254;
   }
 }
