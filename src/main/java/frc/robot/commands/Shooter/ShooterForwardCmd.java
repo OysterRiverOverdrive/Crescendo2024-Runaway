@@ -7,21 +7,15 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-/** An example command that uses an example subsystem. */
-public class MotorForwardCmd extends Command {
+
+public class ShooterForwardCmd extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ShooterSubsystem shooter;
 
-  public MotorForwardCmd(ShooterSubsystem shooters) {
+  public ShooterForwardCmd(ShooterSubsystem shooters) {
     shooter = shooters;
     addRequirements(shooters);
   }
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
 
   // Called when the command is initially scheduled.
   @Override

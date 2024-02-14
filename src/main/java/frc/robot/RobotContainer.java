@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.*;
-import frc.robot.commands.Shooter.MotorForwardCmd;
-import frc.robot.commands.Shooter.MotorStop;
+import frc.robot.commands.Shooter.ShooterForwardCmd;
+import frc.robot.commands.Shooter.ShooterStopCmd;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -90,8 +90,8 @@ public class RobotContainer {
 
     cutil
         .supplier(Controllers.xbox_rt, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new MotorForwardCmd(shooter))
-        .onFalse(new MotorStop(shooter));
+        .onTrue(new ShooterForwardCmd(shooter))
+        .onFalse(new ShooterStopCmd(shooter));
 
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
