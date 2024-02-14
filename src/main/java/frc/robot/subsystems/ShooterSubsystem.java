@@ -24,7 +24,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_followMotor.follow(m_leadMotor);
   }
 
-  public void motorF() {
+  public void MotorForwardCmd() {
     double speed = operator.getRawAxis(Controllers.xbox_rt) / 2;
     // double speed = 0.3;
     m_leadMotor.set(speed);
