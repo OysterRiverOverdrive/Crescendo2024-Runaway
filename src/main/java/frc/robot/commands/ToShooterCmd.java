@@ -10,11 +10,10 @@ import frc.robot.subsystems.FeederSubsystem;
 public class ToShooterCmd extends Command {
   private FeederSubsystem feeder;
 
-  public ToShooterCmd(FeederSubsystem feeders){
+  public ToShooterCmd(FeederSubsystem feeders) {
     feeder = feeders;
     addRequirements(feeders);
   }
-
 
   // Called when the command is initially scheduled.
   @Override

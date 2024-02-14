@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.auto.*;
 import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.OutFeederCmd;
 import frc.robot.commands.StopFeederCmd;
@@ -41,7 +42,6 @@ public class RobotContainer {
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
-
 
   private final FeederSubsystem feeder = new FeederSubsystem();
 
@@ -104,20 +104,19 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
     cutil
-        .supplier(Controllers.logi_a, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR)
         .onTrue(new InFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
     cutil
-        .supplier(Controllers.logi_y, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
     cutil
-        .supplier(Controllers.logi_x, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_square, DriveConstants.joysticks.OPERATOR)
         .onTrue(new ToShooterCmd(feeder))
         .onFalse(new ToShooterCmd(feeder));
-        
   }
 
   public Command getAutonomousCommand() {

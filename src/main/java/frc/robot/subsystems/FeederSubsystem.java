@@ -24,8 +24,14 @@ public class FeederSubsystem extends SubsystemBase {
   private final Color OrangeTarget = new Color(0.546, 0.363, 0.091);
 
   public FeederSubsystem() {
-    m_leadMotor = new CANSparkMax(11, MotorType.kBrushless);
-    m_followMotor = new CANSparkMax(12, MotorType.kBrushless);
+    // m_leadMotor = new CANSparkMax(11, MotorType.kBrushless);
+    // m_followMotor = new CANSparkMax(12, MotorType.kBrushless);
+
+    m_leadMotor = new CANSparkMax(RobotConstants.FeederOneCanId, MotorType.kBrushless);
+    m_followMotor = new CANSparkMax(RobotConstants.FeederTwoCanId, MotorType.kBrushless);
+
+    m_followMotor.setInverted(true);
+
     m_followMotor.follow(m_leadMotor);
     m_colorMatcher.addColorMatch(OrangeTarget);
   }
@@ -42,11 +48,11 @@ public class FeederSubsystem extends SubsystemBase {
     m_leadMotor.stopMotor();
   }
 
-  public void ToShooterCmd(){
+  public void ToShooterCmd() {
     m_leadMotor.set(RobotConstants.ToShooter);
   }
 
-  public Boolean getColorSensor(){
+  public Boolean getColorSensor() {
 
     Color detectedColor = m_colorSensor.getColor();
 
@@ -62,10 +68,8 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
-  public Boolean getLimitSwtich(){
+  public Boolean getLimitSwtich() {
 
-
-   
     if (limitSwitch.getValue() <= 193) {
 
       return true;
@@ -73,11 +77,8 @@ public class FeederSubsystem extends SubsystemBase {
     } else {
 
       return false;
-
     }
-    
   }
-
 
   @Override
   public void periodic() {

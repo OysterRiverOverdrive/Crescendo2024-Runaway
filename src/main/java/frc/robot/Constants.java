@@ -110,6 +110,9 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = 7;
     public static final int kRearLeftTurningCanId = 8;
 
+    public static final int FeederOneCanId = 11;
+    public static final int FeederTwoCanId = 12;
+
     public static final double FeederIn = 0.3;
     public static final double FeederOut = -0.3;
     public static final double ToShooter = 0.45;
