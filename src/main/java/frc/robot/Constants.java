@@ -113,6 +113,17 @@ public final class Constants {
     public static final double FeederIn = 0.3;
     public static final double FeederOut = -0.3;
     public static final double ToShooter = 0.45;
+    
+    public static final int kPneumaticHubCanId = 50;
+
+    // PCM Ports
+    public static final int kHangerRightFwd = 0;
+    public static final int kHangerRightBck = 1;
+    public static final int kHangerLeftFwd = 2;
+    public static final int kHangerLeftBck = 3;
+
+    // Minimum PSI for two actuations
+    public static final double kMinActuationPSI = 80;
 
     // Used to declare Navx as upside down
     public static final boolean kGyroReversed = true;

@@ -16,11 +16,14 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.OutFeederCmd;
 import frc.robot.commands.StopFeederCmd;
+import frc.robot.Constants.DriveConstants.joysticks;
+import frc.robot.auto.*;
+import frc.robot.commands.Hanger.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.ToShooterCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.auto.*;
+import frc.robot.subsystems.HangerSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final HangerSubsystem hanger = new HangerSubsystem();
 
 
   private final FeederSubsystem feeder = new FeederSubsystem();
@@ -91,6 +95,9 @@ public class RobotContainer {
     // Configure buttons
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+
+    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+    cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
