@@ -116,7 +116,7 @@ public final class Constants {
     public static final double FeederIn = 0.3;
     public static final double FeederOut = -0.3;
     public static final double ToShooter = 0.45;
-    
+
     public static final int kPneumaticHubCanId = 50;
 
     // PCM Ports
