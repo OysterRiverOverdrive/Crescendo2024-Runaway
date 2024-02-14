@@ -16,11 +16,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
+import frc.robot.commands.Hanger.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.commands.Intake.*;
+import frc.robot.subsystems.HangerSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -37,8 +40,7 @@ public class RobotContainer {
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
-
-  // Create Intake Subsystem (Example ^ )
+  private final HangerSubsystem hanger = new HangerSubsystem();
 
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
@@ -91,6 +93,9 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
+    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+    cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
+
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
@@ -102,6 +107,7 @@ public class RobotContainer {
         .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
         .onTrue(new IntakeCmd(m_intakesubsystem))
         .onFalse(new IntakeStopCmd(m_intakesubsystem));
+        
     cutil
         .supplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OuttakeCmd(m_intakesubsystem))
