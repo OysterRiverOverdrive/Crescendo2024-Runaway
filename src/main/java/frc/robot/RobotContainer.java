@@ -104,19 +104,19 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
     cutil
-        .supplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
         .onTrue(new InFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
     cutil
-        .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_share, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
     cutil
-        .supplier(Controllers.ps4_square, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
         .onTrue(new ToShooterCmd(feeder))
-        .onFalse(new ToShooterCmd(feeder));
+        .onFalse(new StopFeederCmd(feeder));
   }
 
   public Command getAutonomousCommand() {
