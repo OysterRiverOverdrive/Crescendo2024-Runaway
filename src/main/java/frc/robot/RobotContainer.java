@@ -19,10 +19,13 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystem.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.commands.Intake.*;
 import frc.utils.ControllerUtils;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+
+public class RobotContainer {
   private final ControllerUtils cutil = new ControllerUtils();
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -33,6 +36,8 @@ import java.util.function.BooleanSupplier;
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
+
   // Create Intake Subsystem (Example ^ )
 
   // Commands
@@ -83,8 +88,6 @@ import java.util.function.BooleanSupplier;
 
   private void configureBindings() {
     // Configure buttons
-    supplier(1).onTrue(forward).onFalse(stop);
-    supplier(2).onTrue(backward).onFalse(stop);
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
@@ -95,6 +98,15 @@ import java.util.function.BooleanSupplier;
     // Reference: https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/Shooter/src/main/java/frc/robot/RobotContainer.java
     //            Lines 111 - 114
     // Create two buttons (in & out), use supplier partial example above, on true execute action, on false stop motors
+    cutil
+        .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new IntakeCmd(m_intakesubsystem))
+        .onFalse(new IntakeStopCmd(m_intakesubsystem));
+    cutil
+        .supplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new OuttakeCmd(m_intakesubsystem))
+        .onFalse(new IntakeStopCmd(m_intakesubsystem));
+
     
   }
 
@@ -125,23 +137,9 @@ import java.util.function.BooleanSupplier;
     return auto;
   }
 
-  private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
-
-  private final Joystick XBoxController = new Joystick(0);
-
-  private final InwardCommand forward = new InwardCommand(m_intakesubsystem);
-  private final EjectCommand backward = new EjectCommand(m_intakesubsystem);
-  private final StationaryCommand stop = new StationaryCommand(m_intakesubsystem);
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
-  public Trigger supplier(int buttonID) {
-    BooleanSupplier bsup = () -> XBoxController.getRawButton(buttonID);
-    Trigger mybutton = new Trigger(bsup);
-    return mybutton;
-  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the

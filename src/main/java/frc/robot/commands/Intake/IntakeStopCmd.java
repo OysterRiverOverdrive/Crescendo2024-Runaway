@@ -5,15 +5,17 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-// Import Intake Subsystem
+import frc.robot.subsystems.IntakeSubsystem;
 
 // Reference: https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/IntakeColorCindy/src/main/java/frc/robot/commands/InFeederCmd.java
-public class IntakeCmd extends Command {
-  // Instaniate Intake Subsystem with empty value
+public class IntakeStopCmd extends Command {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  private final IntakeSubsystem m_Subsystem;
 
-  public IntakeCmd(/*Add intake subsystem value */) {
-    // Set the empty value equal to value provided in line 14
-    // add requirements see reference
+  public IntakeStopCmd(IntakeSubsystem subsystem) {
+    m_Subsystem = subsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -23,9 +25,8 @@ public class IntakeCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Call methods created in subsystem
-    // set rollers to spin in
-    // set bumper wheel to spin in
+    m_Subsystem.BmotorStop();
+    m_Subsystem.RmotorStop();
   }
 
   // Called once the command ends or is interrupted.

@@ -20,9 +20,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static final int MotorID = 6;
-  public static final int UnderMotor = 11;
-  public static final int TopMotor = 12;
+  public static final int BumperMotor = 9;
+  public static final int RollerMotor = 10;
 
   public static final class AutoConstants {
 

@@ -11,26 +11,37 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private CANSparkMax m_leadMotor;
-  private CANSparkMax m_followMotor;
+  private CANSparkMax m_BMotor;
+  private CANSparkMax m_RMotor;
 
   public IntakeSubsystem() {
 
-    m_leadMotor = new CANSparkMax(Constants.UnderMotor, MotorType.kBrushless);
-    m_followMotor = new CANSparkMax(Constants.TopMotor, MotorType.kBrushless);
-    m_followMotor.follow(m_leadMotor);
+    m_BMotor = new CANSparkMax(Constants.BumperMotor, MotorType.kBrushless);
+    m_RMotor = new CANSparkMax(Constants.RollerMotor, MotorType.kBrushless);
   }
 
-  public void motorF() {
-    m_leadMotor.set(0.8);
+  public void BmotorF() {
+    m_BMotor.set(0.8);
   }
 
-  public void motorB() {
-    m_leadMotor.set(-0.8);
+  public void BmotorB() {
+    m_BMotor.set(-0.8);
   }
 
-  public void motorStop() {
-    m_leadMotor.stopMotor();
+  public void BmotorStop() {
+    m_BMotor.stopMotor();
+  }
+
+  public void RmotorF() {
+    m_RMotor.set(0.8);
+  }
+
+  public void RmotorB() {
+    m_RMotor.set(-0.8);
+  }
+
+  public void RmotorStop() {
+    m_RMotor.stopMotor();
   }
 
   public Command exampleMethodCommand() {
