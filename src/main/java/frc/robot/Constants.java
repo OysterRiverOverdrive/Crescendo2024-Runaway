@@ -20,11 +20,6 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static final class ShooterConstants {
-    public static final int motorCANID1 = 13;
-    public static final int motorCANID2 = 14;
-  }
-
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond =
         DriveConstants.kMaxSpeedMetersPerSecond / 2;
@@ -114,6 +109,9 @@ public final class Constants {
 
     public static final int kRearLeftDrivingCanId = 7;
     public static final int kRearLeftTurningCanId = 8;
+
+    public static final int kShooterCanId1 = 13;
+    public static final int kShooterCanId2 = 14;
 
     // Used to declare Navx as upside down
     public static final boolean kGyroReversed = true;
