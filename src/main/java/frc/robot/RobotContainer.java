@@ -97,12 +97,12 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
     cutil
-        .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
         .onTrue(new IntakeCmd(m_intakesubsystem))
         .onFalse(new IntakeStopCmd(m_intakesubsystem));
 
     cutil
-        .supplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OuttakeCmd(m_intakesubsystem))
         .onFalse(new IntakeStopCmd(m_intakesubsystem));
   }
