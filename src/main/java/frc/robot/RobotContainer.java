@@ -19,6 +19,7 @@ import frc.robot.commands.Hanger.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
 
   // Commands
