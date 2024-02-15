@@ -112,6 +112,16 @@ public final class Constants {
 
     public static final int kShooterCanId1 = 13;
     public static final int kShooterCanId2 = 14;
+    public static final int kPneumaticHubCanId = 50;
+
+    // PCM Ports
+    public static final int kHangerRightFwd = 0;
+    public static final int kHangerRightBck = 1;
+    public static final int kHangerLeftFwd = 2;
+    public static final int kHangerLeftBck = 3;
+
+    // Minimum PSI for two actuations
+    public static final double kMinActuationPSI = 80;
 
     // Used to declare Navx as upside down
     public static final boolean kGyroReversed = true;
