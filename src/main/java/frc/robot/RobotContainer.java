@@ -16,11 +16,11 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
 import frc.robot.commands.Hanger.*;
+import frc.robot.commands.Intake.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.commands.Intake.*;
 import frc.robot.subsystems.HangerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
@@ -95,18 +95,16 @@ public class RobotContainer {
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
-      
+
     cutil
         .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
         .onTrue(new IntakeCmd(m_intakesubsystem))
         .onFalse(new IntakeStopCmd(m_intakesubsystem));
-        
+
     cutil
         .supplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OuttakeCmd(m_intakesubsystem))
         .onFalse(new IntakeStopCmd(m_intakesubsystem));
-
-    
   }
 
   public Command getAutonomousCommand() {

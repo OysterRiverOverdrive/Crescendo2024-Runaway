@@ -134,10 +134,9 @@ public final class Constants {
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
-    //intake motor speeds
+    // intake motor speeds
     public static final double intakeMotorForward = 0.8;
     public static final double intakeMotorBackward = -0.8;
-    public static final double intakeMotorStop = 0;
   }
 
   // Constants specifically for Swerve Module

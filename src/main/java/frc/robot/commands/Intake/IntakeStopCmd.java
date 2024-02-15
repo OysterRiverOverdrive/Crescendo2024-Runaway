@@ -7,7 +7,8 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-// Reference: https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/IntakeColorCindy/src/main/java/frc/robot/commands/InFeederCmd.java
+// Reference:
+// https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/IntakeColorCindy/src/main/java/frc/robot/commands/InFeederCmd.java
 public class IntakeStopCmd extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSubsystem m_Subsystem;
