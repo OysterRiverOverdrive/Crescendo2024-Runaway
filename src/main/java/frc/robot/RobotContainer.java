@@ -7,14 +7,11 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
@@ -26,7 +23,6 @@ import frc.robot.commands.Intake.*;
 import frc.robot.subsystems.HangerSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public class RobotContainer {
   private final ControllerUtils cutil = new ControllerUtils();
@@ -99,10 +95,7 @@ public class RobotContainer {
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
-
-    // Reference: https://github.com/OysterRiverOverdrive/Crescendo2024-Runaway/blob/Shooter/src/main/java/frc/robot/RobotContainer.java
-    //            Lines 111 - 114
-    // Create two buttons (in & out), use supplier partial example above, on true execute action, on false stop motors
+      
     cutil
         .supplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR)
         .onTrue(new IntakeCmd(m_intakesubsystem))
@@ -142,18 +135,4 @@ public class RobotContainer {
             auto);
     return auto;
   }
-
-  
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
 }
