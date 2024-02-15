@@ -88,8 +88,9 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
+    //Shooter Controls
     cutil
-        .supplier(Controllers.xbox_rt, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_RT, DriveConstants.joysticks.OPERATOR)
         .onTrue(new ShooterForwardCmd(shooter))
         .onFalse(new ShooterStopCmd(shooter));
 
