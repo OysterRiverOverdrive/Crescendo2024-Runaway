@@ -77,6 +77,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
+    shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
@@ -99,10 +100,11 @@ public class RobotContainer {
     cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
     // Shooter Controls
-    cutil
-        .supplier(Controllers.ps4_RT, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new ShooterForwardCmd(shooter))
-        .onFalse(new ShooterStopCmd(shooter));
+    
+    //cutil
+        //.supplier(Controllers.ps4_RT, DriveConstants.joysticks.OPERATOR)
+        //.onTrue(new ShooterForwardCmd(shooter))
+        //.onFalse(new ShooterStopCmd(shooter));
 
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
