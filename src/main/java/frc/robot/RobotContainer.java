@@ -84,7 +84,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
-    //Shooter Controls
+    // Shooter Controls
     shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
