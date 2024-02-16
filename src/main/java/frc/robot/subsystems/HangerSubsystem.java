@@ -73,6 +73,5 @@ public class HangerSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Pneumatics Pressure (PSI)", getPressure());
     SmartDashboard.putBoolean("Pneumatics Alert", checkRuns());
-    // This method will be called once per scheduler run
   }
 }

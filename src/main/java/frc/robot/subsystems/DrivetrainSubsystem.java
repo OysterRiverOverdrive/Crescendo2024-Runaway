@@ -50,9 +50,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
           RobotConstants.kBackRightChassisAngularOffset);
 
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  // Original Strings still exist, just moved to constants.java so that it can be accessed
-  // universally so it can be called for comparasion in teleopCmd.java
-
   // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
 
@@ -107,8 +104,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void fieldDrive(
       double xSpeed, double ySpeed, double rot, double maxTurn, double maxDrive) {
-    // We ask for the data when calling the function and then we assign it to the empty variables we
-    // created earlier (lines 77-78)
     maxSpeedDrive = maxDrive;
     maxSpeedTurn = maxTurn;
 
@@ -190,8 +185,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void robotDrive(
       double xSpeed, double ySpeed, double rot, double maxTurn, double maxDrive) {
-    // We ask for the data when calling the function and then we assign it to the empty variables we
-    // created earlier (lines 77-78)
     maxSpeedDrive = maxDrive;
     maxSpeedTurn = maxTurn;
 
@@ -262,6 +255,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   /** Sets the wheels into an X formation to prevent movement. */
+  // Not used could be applied later though
   public void setX() {
     m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
     m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
@@ -372,22 +366,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("y", y);
     SmartDashboard.putNumber("r", r);
     SmartDashboard.putBoolean("Auto is Waiting", waiting);
-    // ---- Before ----
-    // switch (m_chooser.getSelected()) {
-    //   case high:
-    //   maxSpeedDrive = DriveConstants.kSpeedHighDrive;
-    //   maxSpeedTurn = DriveConstants.kSpeedHighTurn;
-    //   case low:
-    //   maxSpeedDrive = DriveConstants.kSpeedSlowDrive;
-    //   maxSpeedTurn = DriveConstants.kSpeedSlowTurn;
-    //   case medium:
-    //   default:
-    //   maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
-    //   maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
-    // }
-    //
-    // This was transfered to Teleop command so that it passes it off every time the command gets
-    // executed
 
     // Update the odometry in the periodic block
     m_odometry.update(
