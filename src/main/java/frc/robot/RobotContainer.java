@@ -11,12 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
 import frc.robot.commands.Hanger.*;
 import frc.robot.commands.InFeederCmd;
+import frc.robot.commands.Intake.*;
 import frc.robot.commands.OutFeederCmd;
 import frc.robot.commands.StopFeederCmd;
 import frc.robot.commands.TeleopCmd;
@@ -24,13 +26,13 @@ import frc.robot.commands.ToShooterCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
 public class RobotContainer {
-  // Creation of controller utilities
   private final ControllerUtils cutil = new ControllerUtils();
-
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String auto1 = "1";
@@ -40,6 +42,8 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
+  private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
 
   private final FeederSubsystem feeder = new FeederSubsystem();
@@ -114,8 +118,18 @@ public class RobotContainer {
 
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new ToShooterCmd(feeder))
-        .onFalse(new StopFeederCmd(feeder));
+        .onTrue(
+            new ParallelCommandGroup(new ToShooterCmd(feeder), new IntakeCmd(m_intakesubsystem)))
+        .onFalse(
+            new ParallelCommandGroup(
+                new StopFeederCmd(feeder), new IntakeStopCmd(m_intakesubsystem)));
+    // .onTrue(new IntakeCmd(m_intakesubsystem))
+    // .onFalse(new IntakeStopCmd(m_intakesubsystem));
+
+    cutil
+        .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new OuttakeCmd(m_intakesubsystem))
+        .onFalse(new IntakeStopCmd(m_intakesubsystem));
   }
 
   public Command getAutonomousCommand() {

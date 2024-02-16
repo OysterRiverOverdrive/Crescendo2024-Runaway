@@ -20,7 +20,11 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  public static final int BumperMotor = 9;
+  public static final int RollerMotor = 10;
+
   public static final class AutoConstants {
+
     public static final double kMaxSpeedMetersPerSecond =
         DriveConstants.kMaxSpeedMetersPerSecond / 2;
     public static final double kMaxAngularSpeedRadiansPerSecond =
@@ -138,6 +142,9 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     public static final int LimitSwtichActivation = 193;
+    // intake motor speeds
+    public static final double intakeMotorForward = 0.8;
+    public static final double intakeMotorBackward = -0.8;
   }
 
   // Constants specifically for Swerve Module
