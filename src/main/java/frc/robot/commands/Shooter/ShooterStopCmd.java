@@ -7,11 +7,9 @@ package frc.robot.commands.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-
 public class ShooterStopCmd extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ShooterSubsystem m_subsystem;
-
 
   public ShooterStopCmd(ShooterSubsystem subsystem) {
     m_subsystem = subsystem;
