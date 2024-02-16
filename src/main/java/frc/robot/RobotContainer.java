@@ -31,7 +31,9 @@ import frc.utils.ControllerUtils;
 import java.util.List;
 
 public class RobotContainer {
+  // Controller Utils Instance
   private final ControllerUtils cutil = new ControllerUtils();
+
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String auto1 = "1";
@@ -45,7 +47,6 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
-
   private final FeederSubsystem feeder = new FeederSubsystem();
 
   // Commands
@@ -101,33 +102,39 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
+    // Hangers Up
     cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+
+    // Hangers Down
     cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
+    // Zero Heading 
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
+    // Feeder to Shooter
     cutil
-        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new InFeederCmd(feeder))
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new ToShooterCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
+    // Feeder Out 
     cutil
         .supplier(Controllers.ps4_share, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
+    // Intaking - Feeder in and Intake in
     cutil
-        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
         .onTrue(
-            new ParallelCommandGroup(new ToShooterCmd(feeder), new IntakeCmd(m_intakesubsystem)))
+            new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(m_intakesubsystem)))
         .onFalse(
             new ParallelCommandGroup(
                 new StopFeederCmd(feeder), new IntakeStopCmd(m_intakesubsystem)));
-    // .onTrue(new IntakeCmd(m_intakesubsystem))
-    // .onFalse(new IntakeStopCmd(m_intakesubsystem));
 
+    // Intake out
     cutil
         .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OuttakeCmd(m_intakesubsystem))
@@ -138,6 +145,7 @@ public class RobotContainer {
 
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+    // Get auto dropdown to run
     Command auto;
     switch (m_chooser.getSelected()) {
       default:
@@ -154,6 +162,7 @@ public class RobotContainer {
         auto = null;
         break;
     }
+    // Create sequential command with the wait command first then run selected auto
     auto =
         new SequentialCommandGroup(
             new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
