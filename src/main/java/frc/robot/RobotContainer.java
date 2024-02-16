@@ -18,18 +18,18 @@ import frc.robot.auto.*;
 import frc.robot.commands.Hanger.*;
 import frc.robot.commands.Shooter.ShooterForwardCmd;
 import frc.robot.commands.Shooter.ShooterStopCmd;
+import frc.robot.commands.Intake.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
 public class RobotContainer {
-  // Creation of controller utilities
   private final ControllerUtils cutil = new ControllerUtils();
-
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String auto1 = "1";
@@ -40,6 +40,7 @@ public class RobotContainer {
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
 
@@ -106,6 +107,16 @@ public class RobotContainer {
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+
+    cutil
+        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new IntakeCmd(m_intakesubsystem))
+        .onFalse(new IntakeStopCmd(m_intakesubsystem));
+
+    cutil
+        .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new OuttakeCmd(m_intakesubsystem))
+        .onFalse(new IntakeStopCmd(m_intakesubsystem));
   }
 
   public Command getAutonomousCommand() {
