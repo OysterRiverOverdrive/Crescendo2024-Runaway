@@ -20,6 +20,7 @@ import frc.robot.commands.Hanger.*;
 import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.OutFeederCmd;
+import frc.robot.commands.Shooter.ShooterForwardCmd;
 import frc.robot.commands.StopFeederCmd;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.commands.ToShooterCmd;
@@ -28,6 +29,7 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
@@ -81,6 +84,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
+    // Shooter Controls
+    shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
