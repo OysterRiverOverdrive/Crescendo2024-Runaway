@@ -14,8 +14,10 @@ import frc.robot.Constants.RobotConstants;
 
 public class FeederSubsystem extends SubsystemBase {
   // Creating Both Motors
-  private CANSparkMax m_feedLeftMotor = new CANSparkMax(RobotConstants.FeederLeftCanId, MotorType.kBrushless);
-  private CANSparkMax m_feedRightMotor = new CANSparkMax(RobotConstants.FeederRightCanId, MotorType.kBrushless);
+  private CANSparkMax m_feedLeftMotor =
+      new CANSparkMax(RobotConstants.FeederLeftCanId, MotorType.kBrushless);
+  private CANSparkMax m_feedRightMotor =
+      new CANSparkMax(RobotConstants.FeederRightCanId, MotorType.kBrushless);
 
   // Create color sensor and limit switch
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
@@ -81,6 +83,5 @@ public class FeederSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Note Detected (Color)", getColorSensor());
     SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwtich());
     SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());
-
   }
 }

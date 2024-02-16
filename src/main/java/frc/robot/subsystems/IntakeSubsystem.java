@@ -13,8 +13,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private CANSparkMax m_BumperMotor = new CANSparkMax(Constants.BumperMotor, MotorType.kBrushless);
   private CANSparkMax m_RollerMotor = new CANSparkMax(Constants.RollerMotor, MotorType.kBrushless);
 
-  public IntakeSubsystem() {
-  }
+  public IntakeSubsystem() {}
 
   public void BmotorF() {
     m_BumperMotor.set(Constants.RobotConstants.intakeMotorForward);
