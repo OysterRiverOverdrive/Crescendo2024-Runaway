@@ -114,6 +114,13 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = 7;
     public static final int kRearLeftTurningCanId = 8;
 
+    public static final int FeederOneCanId = 11;
+    public static final int FeederTwoCanId = 12;
+
+    public static final double FeederIn = 0.3;
+    public static final double FeederOut = -0.3;
+    public static final double ToShooter = 0.45;
+
     public static final int kPneumaticHubCanId = 50;
 
     // PCM Ports
@@ -134,6 +141,7 @@ public final class Constants {
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
+    public static final int LimitSwtichActivation = 193;
     // intake motor speeds
     public static final double intakeMotorForward = 0.8;
     public static final double intakeMotorBackward = -0.8;
