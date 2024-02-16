@@ -29,6 +29,7 @@ public class FeederSubsystem extends SubsystemBase {
     m_followMotor = new CANSparkMax(RobotConstants.FeederTwoCanId, MotorType.kBrushless);
 
     m_followMotor.follow(m_leadMotor, true);
+    
 
     m_colorMatcher.addColorMatch(OrangeTarget);
   }
