@@ -18,7 +18,6 @@ import frc.robot.auto.*;
 import frc.robot.commands.Hanger.*;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Shooter.ShooterForwardCmd;
-import frc.robot.commands.Shooter.ShooterStopCmd;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
@@ -100,11 +99,11 @@ public class RobotContainer {
     cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
     // Shooter Controls
-    
-    //cutil
-        //.supplier(Controllers.ps4_RT, DriveConstants.joysticks.OPERATOR)
-        //.onTrue(new ShooterForwardCmd(shooter))
-        //.onFalse(new ShooterStopCmd(shooter));
+
+    // cutil
+    // .supplier(Controllers.ps4_RT, DriveConstants.joysticks.OPERATOR)
+    // .onTrue(new ShooterForwardCmd(shooter))
+    // .onFalse(new ShooterStopCmd(shooter));
 
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
