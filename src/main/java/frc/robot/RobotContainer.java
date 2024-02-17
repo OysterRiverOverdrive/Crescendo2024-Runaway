@@ -60,28 +60,25 @@ public class RobotContainer {
   // Drive Forward Speaker Run
   private final Command speakerForwards =
       autodrive.AutoDriveCmd(
-          drivetrain,
-          List.of(new Translation2d(1, 0)),
-          new Pose2d(1.3, 0, new Rotation2d(0)));
+          drivetrain, List.of(new Translation2d(1, 0)), new Pose2d(1.3, 0, new Rotation2d(0)));
 
   private final Command speakertoamp =
       autodrive.AutoDriveCmd(
           drivetrain,
           List.of(new Translation2d(-0.4, 0), new Translation2d(-0.83, -1.3)),
-          new Pose2d(-0.83, -2.08, new Rotation2d(Math.PI/2)));
+          new Pose2d(-0.83, -2.08, new Rotation2d(Math.PI / 2)));
 
   private final Command amptostage =
       autodrive.AutoDriveCmd(
           drivetrain,
           List.of(new Translation2d(3, 0)),
-          new Pose2d(3.4, -1.0, new Rotation2d(-Math.PI/2)));
-  
+          new Pose2d(3.4, -1.0, new Rotation2d(-Math.PI / 2)));
+
   private final Command stagetospeak =
       autodrive.AutoDriveCmd(
           drivetrain,
-          List.of(new Translation2d(-0.3, 0),new Translation2d(-0.8, -1.2)),
+          List.of(new Translation2d(-0.3, 0), new Translation2d(-0.8, -1.2)),
           new Pose2d(-1.2, -1.2, new Rotation2d(0)));
-
 
   // Drive in a figure 8
   private final Command driveCircle =
@@ -97,8 +94,6 @@ public class RobotContainer {
               new Translation2d(2, -0.75),
               new Translation2d(0, -0.75)),
           new Pose2d(0, 0, new Rotation2d(0)));
-
-  
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
