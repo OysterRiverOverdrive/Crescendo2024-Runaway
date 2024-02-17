@@ -13,8 +13,6 @@ import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
 public class SwerveModule {
@@ -29,7 +27,6 @@ public class SwerveModule {
 
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
-  private Joystick driver = new Joystick(DriveConstants.kDrveControllerPort);
 
   /**
    * Constructs a MAXSwerveModule and configures the driving and turning motor, encoder, and PID

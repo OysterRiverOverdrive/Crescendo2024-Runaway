@@ -11,16 +11,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
+import frc.robot.commands.Feeder.*;
+import frc.robot.commands.Hanger.*;
+import frc.robot.commands.Intake.*;
+import frc.robot.commands.Shooter.*;
 import frc.robot.commands.TeleopCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.HangerSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.utils.ControllerUtils;
 import java.util.List;
 
 public class RobotContainer {
-  // Creation of controller utilities
+  // Controller Utils Instance
   private final ControllerUtils cutil = new ControllerUtils();
 
   // Auto Dropdown - Make dropdown variable and variables to be selected
@@ -32,6 +43,11 @@ public class RobotContainer {
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
+  private final LimelightSubsystem limelight = new LimelightSubsystem();
+  private final HangerSubsystem hanger = new HangerSubsystem();
+  private final FeederSubsystem feeder = new FeederSubsystem();
 
   // Commands
   private final AutoCreationCmd autodrive = new AutoCreationCmd();
@@ -66,6 +82,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
+    // Shooter Controls
+    shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Circle", auto1);
@@ -84,15 +102,49 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
+    // Hangers Up
+    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+
+    // Hangers Down
+    cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
+
+    // Zero Heading
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
+
+    // Feeder to Shooter
+    cutil
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new ToShooterCmd(feeder))
+        .onFalse(new StopFeederCmd(feeder));
+
+    // Feeder Out
+    cutil
+        .supplier(Controllers.ps4_share, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new OutFeederCmd(feeder))
+        .onFalse(new StopFeederCmd(feeder));
+
+    // Intaking - Feeder in and Intake in
+    cutil
+        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(m_intakesubsystem)))
+        .onFalse(
+            new ParallelCommandGroup(
+                new StopFeederCmd(feeder), new IntakeStopCmd(m_intakesubsystem)));
+
+    // Intake out
+    cutil
+        .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new OuttakeCmd(m_intakesubsystem))
+        .onFalse(new IntakeStopCmd(m_intakesubsystem));
   }
 
   public Command getAutonomousCommand() {
 
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+    // Get auto dropdown to run
     Command auto;
     switch (m_chooser.getSelected()) {
       default:
@@ -109,6 +161,7 @@ public class RobotContainer {
         auto = null;
         break;
     }
+    // Create sequential command with the wait command first then run selected auto
     auto =
         new SequentialCommandGroup(
             new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),
