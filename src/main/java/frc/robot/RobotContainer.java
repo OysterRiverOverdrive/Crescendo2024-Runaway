@@ -61,8 +61,27 @@ public class RobotContainer {
   private final Command speakerForwards =
       autodrive.AutoDriveCmd(
           drivetrain,
-          List.of(new Translation2d(cutil.inchesToMeters(30), 0)),
-          new Pose2d(cutil.inchesToMeters(54.83), 0, new Rotation2d(0)));
+          List.of(new Translation2d(1, 0)),
+          new Pose2d(1.3, 0, new Rotation2d(0)));
+
+  private final Command speakertoamp =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(-0.4, 0), new Translation2d(-0.83, -1.3)),
+          new Pose2d(-0.83, -2.08, new Rotation2d(Math.PI/2)));
+
+  private final Command amptostage =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(3, 0)),
+          new Pose2d(3.4, -1.0, new Rotation2d(-Math.PI/2)));
+  
+  private final Command stagetospeak =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(-0.3, 0),new Translation2d(-0.8, -1.2)),
+          new Pose2d(-1.2, -1.2, new Rotation2d(0)));
+
 
   // Drive in a figure 8
   private final Command driveCircle =
@@ -79,6 +98,8 @@ public class RobotContainer {
               new Translation2d(0, -0.75)),
           new Pose2d(0, 0, new Rotation2d(0)));
 
+  
+
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
@@ -86,8 +107,8 @@ public class RobotContainer {
     shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
-    m_chooser.setDefaultOption("Circle", auto1);
-    m_chooser.addOption("Speaker Forward", auto2);
+    m_chooser.setDefaultOption("Figure 8 Demo", auto1);
+    m_chooser.addOption("Shooter Demo", auto2);
     m_chooser.addOption("Null2", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
@@ -152,7 +173,7 @@ public class RobotContainer {
         auto = driveCircle;
         break;
       case auto2:
-        auto = speakerForwards;
+        auto = new SequentialCommandGroup(speakerForwards, speakertoamp, amptostage, stagetospeak);
         break;
       case auto3:
         auto = null;
