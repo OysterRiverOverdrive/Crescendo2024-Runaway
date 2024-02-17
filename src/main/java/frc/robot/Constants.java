@@ -188,10 +188,10 @@ public final class Constants {
   // timerValues
   public static final class TimerConstants {
     // from timer from when autonomous starts to autonmous ends
-    public static final int AutoTimerLength = 5; // seconds
+    public static final int AutoTimerLength = 15; // seconds
     // timer that starts when autonomous ends until Halftime
-    public static final int TeleOpStartTimerLength = 10; // seconds
+    public static final int TeleOpStartTimerLength = 75; // seconds
     // timer that starts when Halftime untill match ends
-    public static final int TeleOpEndTimerLength = 10; // seconds
+    public static final int TeleOpEndTimerLength = 75; // seconds
   }
 }
