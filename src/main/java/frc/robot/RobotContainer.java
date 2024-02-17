@@ -108,7 +108,7 @@ public class RobotContainer {
     // Hangers Down
     cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
-    // Zero Heading 
+    // Zero Heading
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
@@ -119,7 +119,7 @@ public class RobotContainer {
         .onTrue(new ToShooterCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
-    // Feeder Out 
+    // Feeder Out
     cutil
         .supplier(Controllers.ps4_share, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
@@ -128,8 +128,7 @@ public class RobotContainer {
     // Intaking - Feeder in and Intake in
     cutil
         .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
-        .onTrue(
-            new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(m_intakesubsystem)))
+        .onTrue(new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(m_intakesubsystem)))
         .onFalse(
             new ParallelCommandGroup(
                 new StopFeederCmd(feeder), new IntakeStopCmd(m_intakesubsystem)));
