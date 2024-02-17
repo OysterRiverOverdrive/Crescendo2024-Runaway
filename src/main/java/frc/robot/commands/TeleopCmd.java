@@ -44,27 +44,15 @@ public class TeleopCmd extends Command {
     double ContRotate =
         MathUtil.applyDeadband(
             -controller.getRawAxis(DriveConstants.kDriveRotate), DriveConstants.deadzoneDriver);
-
-    // If statements shifted to here so that every time execute runs (20 times a second) so that it
-    // gets a fresh value to hand in
-    switch (driveSub.getDropDown()) {
-      case DriveConstants.high:
-        speedDrive = DriveConstants.kSpeedHighDrive;
-        speedTurn = DriveConstants.kSpeedHighTurn;
-
-      case DriveConstants.low:
-        speedDrive = DriveConstants.kSpeedSlowDrive;
-        speedTurn = DriveConstants.kSpeedSlowTurn;
-
-      case DriveConstants.medium:
-      default:
-        speedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
-        speedTurn = DriveConstants.kMaxAngularSpeed;
+    if (driveSub.checkDemoMode()) {
+      ContX = ContX*DriveConstants.kDemoModeRatio;
+      ContY = ContY*DriveConstants.kDemoModeRatio;
+      ContRotate = ContRotate*DriveConstants.kDemoModeRatio;
     }
     if (!fieldOrient.get()) {
-      driveSub.fieldDrive(ContY, ContX, ContRotate, speedTurn, speedDrive);
+      driveSub.fieldDrive(ContY, ContX, ContRotate);
     } else {
-      driveSub.robotDrive(ContY, ContX, ContRotate, speedTurn, speedDrive);
+      driveSub.robotDrive(ContY, ContX, ContRotate);
     }
   }
 

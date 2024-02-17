@@ -62,9 +62,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double y;
   private double r;
 
-  private boolean waiting = false;
-  private double maxSpeedDrive;
-  private double maxSpeedTurn;
+  private boolean waiting;
+  private boolean demoMode = false;
+  private double maxSpeedDrive = DriveConstants.kMaxSpeedMetersPerSecond;
+  private double maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
 
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
@@ -84,6 +85,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DrivetrainSubsystem() {
+    demoMode = false;
+    SmartDashboard.putBoolean("Demo Mode", demoMode);
     zeroHeading();
     m_gyro.calibrate();
 
@@ -103,9 +106,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param maxDrive Max driving speed.
    */
   public void fieldDrive(
-      double xSpeed, double ySpeed, double rot, double maxTurn, double maxDrive) {
-    maxSpeedDrive = maxDrive;
-    maxSpeedTurn = maxTurn;
+      double xSpeed, double ySpeed, double rot) {
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -184,9 +185,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param maxDrive Max driving speed.
    */
   public void robotDrive(
-      double xSpeed, double ySpeed, double rot, double maxTurn, double maxDrive) {
-    maxSpeedDrive = maxDrive;
-    maxSpeedTurn = maxTurn;
+      double xSpeed, double ySpeed, double rot) {
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -348,6 +347,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void setGo() {
     waiting = false;
   }
+
+  public boolean checkDemoMode() {
+    return SmartDashboard.getBoolean("Demo Mode", false);
+  }
+  
 
   /**
    * Returns the turn rate of the robot.

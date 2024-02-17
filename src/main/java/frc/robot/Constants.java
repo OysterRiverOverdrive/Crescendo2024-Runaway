@@ -68,19 +68,11 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
 
-    public static final double kMaxSpeedMetersPerSecond = 4.8;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 6;
+    public static final double kMaxAngularSpeed = 2 * Math.PI; // Radians per second
 
-    // Drive Mode Speeds
-    // High
-    public static final double kSpeedHighDrive = 6.0;
-    public static final double kSpeedHighTurn = kMaxAngularSpeed;
-
-    // Medium is Default Speeds
-
-    // Slow
-    public static final double kSpeedSlowDrive = 2.1;
-    public static final double kSpeedSlowTurn = 1.8;
+    // Demo Mode Speeds Ratio to original speeds
+    public static final double kDemoModeRatio = 1/3;
 
     public static final double kDirectionSlewRate = 4; // radians per second
     public static final double kMagnitudeSlewRate = 0.95; // percent per second (1 = 100%)
