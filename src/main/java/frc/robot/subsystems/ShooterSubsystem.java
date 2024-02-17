@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants;
 
@@ -14,9 +16,21 @@ public class ShooterSubsystem extends SubsystemBase {
       new CANSparkMax(RobotConstants.kShooterLeftCanId, MotorType.kBrushless);
   private CANSparkMax m_followMotor =
       new CANSparkMax(RobotConstants.kShooterRightCanId, MotorType.kBrushless);
+  private CANSparkMax ampMotor =
+      new CANSparkMax(RobotConstants.kAmpCanId, MotorType.kBrushless);  
+
+  RelativeEncoder ampEncoder = ampMotor.getEncoder();
+
+  SparkPIDController ampMotorPidController = ampMotor.getPIDController();
 
   public ShooterSubsystem() {
     m_followMotor.follow(m_leadMotor, true);
+
+    ampMotorPidController.setFeedbackDevice(ampEncoder);
+
+    ampMotorPidController.setP(.05);
+    ampMotorPidController.setI(0);
+    ampMotorPidController.setD(0);
   }
 
   public void ShooterForwardCmd(double trigValue) {
@@ -26,6 +40,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void motorStop() {
     m_leadMotor.stopMotor();
+  }
+
+  public void AmpArmUpCmd() {
+    //values need to be changed
+    ampMotorPidController.setReference(0,CANSparkMax.ControlType.kVelocity);
+  }
+
+  public void AmpArmDownCmd() {
+    //values need to be changed
+    ampMotorPidController.setReference(0,CANSparkMax.ControlType.kVelocity);
   }
 
   @Override

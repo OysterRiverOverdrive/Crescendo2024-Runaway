@@ -116,6 +116,7 @@ public final class Constants {
 
     public static final int kShooterLeftCanId = 13;
     public static final int kShooterRightCanId = 14;
+    public static final int kAmpCanId = 15;
 
     public static final int FeederLeftCanId = 11;
     public static final int FeederRightCanId = 12;
