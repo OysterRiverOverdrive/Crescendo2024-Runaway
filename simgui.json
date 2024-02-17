@@ -3,11 +3,45 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Auto Selector": "String Chooser",
-      "/SmartDashboard/Limelight Coordinates": "String Chooser",
       "/SmartDashboard/Speed Drop Down": "String Chooser"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Auto Selector": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Speed Drop Down": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "retained": {
+      "SmartDashboard": {
+        "open": true
+      }
+    },
+    "transitory": {
+      "SmartDashboard": {
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
     "visible": true
   }
 }
