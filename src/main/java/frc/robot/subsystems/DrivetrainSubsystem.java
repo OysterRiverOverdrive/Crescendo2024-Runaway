@@ -105,8 +105,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param maxTurn Max angular speed.
    * @param maxDrive Max driving speed.
    */
-  public void fieldDrive(
-      double xSpeed, double ySpeed, double rot) {
+  public void fieldDrive(double xSpeed, double ySpeed, double rot) {
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -184,8 +183,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param maxTurn Max angular speed.
    * @param maxDrive Max driving speed.
    */
-  public void robotDrive(
-      double xSpeed, double ySpeed, double rot) {
+  public void robotDrive(double xSpeed, double ySpeed, double rot) {
 
     double xSpeedCommanded;
     double ySpeedCommanded;
@@ -351,7 +349,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public boolean checkDemoMode() {
     return SmartDashboard.getBoolean("Demo Mode", false);
   }
-  
 
   /**
    * Returns the turn rate of the robot.

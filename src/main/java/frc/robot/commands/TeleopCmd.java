@@ -42,9 +42,9 @@ public class TeleopCmd extends Command {
         MathUtil.applyDeadband(
             -controller.getRawAxis(DriveConstants.kDriveRotate), DriveConstants.deadzoneDriver);
     if (driveSub.checkDemoMode()) {
-      ContX = ContX*DriveConstants.kDemoModeRatio;
-      ContY = ContY*DriveConstants.kDemoModeRatio;
-      ContRotate = ContRotate*DriveConstants.kDemoModeRatio;
+      ContX = ContX * DriveConstants.kDemoModeRatio;
+      ContY = ContY * DriveConstants.kDemoModeRatio;
+      ContRotate = ContRotate * DriveConstants.kDemoModeRatio;
     }
     if (!fieldOrient.get()) {
       driveSub.fieldDrive(ContY, ContX, ContRotate);

@@ -72,7 +72,7 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // Radians per second
 
     // Demo Mode Speeds Ratio to original speeds
-    public static final double kDemoModeRatio = 1/3;
+    public static final double kDemoModeRatio = 1 / 3;
 
     public static final double kDirectionSlewRate = 4; // radians per second
     public static final double kMagnitudeSlewRate = 0.95; // percent per second (1 = 100%)
