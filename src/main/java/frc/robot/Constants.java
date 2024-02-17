@@ -184,4 +184,14 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+
+  // timerValues
+  public static final class TimerConstants {
+    // from timer from when autonomous starts to autonmous ends
+    public static final int AutoTimerLength = 5; // seconds
+    // timer that starts when autonomous ends until Halftime
+    public static final int TeleOpStartTimerLength = 10; // seconds
+    // timer that starts when Halftime untill match ends
+    public static final int TeleOpEndTimerLength = 10; // seconds
+  }
 }
