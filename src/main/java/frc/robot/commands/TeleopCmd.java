@@ -16,9 +16,6 @@ public class TeleopCmd extends Command {
   private final DrivetrainSubsystem driveSub;
   // Create a controller object
   private final Joystick controller = new Joystick(DriveConstants.kDrveControllerPort);
-
-  private double speedDrive;
-  private double speedTurn;
   private Supplier<Boolean> fieldOrient;
 
   public TeleopCmd(DrivetrainSubsystem drives, Supplier<Boolean> fieldOrient) {
