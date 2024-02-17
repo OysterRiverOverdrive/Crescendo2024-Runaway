@@ -10,37 +10,33 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private CANSparkMax m_BMotor;
-  private CANSparkMax m_RMotor;
+  private CANSparkMax m_BumperMotor = new CANSparkMax(Constants.BumperMotor, MotorType.kBrushless);
+  private CANSparkMax m_RollerMotor = new CANSparkMax(Constants.RollerMotor, MotorType.kBrushless);
 
-  public IntakeSubsystem() {
-
-    m_BMotor = new CANSparkMax(Constants.BumperMotor, MotorType.kBrushless);
-    m_RMotor = new CANSparkMax(Constants.RollerMotor, MotorType.kBrushless);
-  }
+  public IntakeSubsystem() {}
 
   public void BmotorF() {
-    m_BMotor.set(Constants.RobotConstants.intakeMotorForward);
+    m_BumperMotor.set(Constants.RobotConstants.intakeMotorForward);
   }
 
   public void BmotorB() {
-    m_BMotor.set(Constants.RobotConstants.intakeMotorBackward);
+    m_BumperMotor.set(Constants.RobotConstants.intakeMotorBackward);
   }
 
   public void BmotorStop() {
-    m_BMotor.stopMotor();
+    m_BumperMotor.stopMotor();
   }
 
   public void RmotorF() {
-    m_RMotor.set(Constants.RobotConstants.intakeMotorForward);
+    m_RollerMotor.set(Constants.RobotConstants.intakeMotorForward);
   }
 
   public void RmotorB() {
-    m_RMotor.set(Constants.RobotConstants.intakeMotorBackward);
+    m_RollerMotor.set(Constants.RobotConstants.intakeMotorBackward);
   }
 
   public void RmotorStop() {
-    m_RMotor.stopMotor();
+    m_RollerMotor.stopMotor();
   }
 
   @Override
