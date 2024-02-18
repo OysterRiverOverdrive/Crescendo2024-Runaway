@@ -116,7 +116,7 @@ public final class Constants {
 
     public static final int kShooterLeftCanId = 13;
     public static final int kShooterRightCanId = 14;
-    public static final int kAmpCanId = 15;
+    public static final int kAmpArmCanId = 15;
 
     public static final int FeederLeftCanId = 11;
     public static final int FeederRightCanId = 12;
@@ -132,6 +132,9 @@ public final class Constants {
     public static final int kHangerRightBck = 1;
     public static final int kHangerLeftFwd = 2;
     public static final int kHangerLeftBck = 3;
+
+    // Amp Arm
+    public static final double kAmpArmGearRatio = 27.0; // 27:1, For every one rotation of the arm, the neo spins 27 times
 
     // Minimum PSI for two actuations
     public static final double kMinActuationPSI = 80;
