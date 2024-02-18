@@ -58,9 +58,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double m_currentTranslationDir = 0.0;
   private double m_currentTranslationMag = 0.0;
 
-  private double x;
-  private double y;
-  private double r;
+  private double xspeedjoy;
+  private double yspeedjoy;
+  private double rspeedjoy;
+
+  private double xspeedapplied;
+  private double yspeedapplied;
+  private double rspeedapplied;
 
   private boolean waiting = false;
   private double maxSpeedDrive;
@@ -107,6 +111,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     maxSpeedDrive = maxDrive;
     maxSpeedTurn = maxTurn;
 
+    xspeedjoy = xSpeed;
+    yspeedjoy = ySpeed;
+    rspeedjoy = rot;
+
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -157,9 +165,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
-    x = xSpeedDelivered;
-    y = ySpeedDelivered;
-    r = rotDelivered;
+    xspeedapplied = xSpeedDelivered;
+    yspeedapplied = ySpeedDelivered;
+    rspeedapplied = rotDelivered;
 
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -188,6 +196,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     maxSpeedDrive = maxDrive;
     maxSpeedTurn = maxTurn;
 
+    xspeedjoy = xSpeed;
+    yspeedjoy = ySpeed;
+    rspeedjoy = rot;
+
     double xSpeedCommanded;
     double ySpeedCommanded;
 
@@ -238,9 +250,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
-    x = xSpeedDelivered;
-    y = ySpeedDelivered;
-    r = rotDelivered;
+    xspeedapplied = xSpeedDelivered;
+    yspeedapplied = ySpeedDelivered;
+    rspeedapplied = rotDelivered;
 
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -362,9 +374,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Z axis", m_gyro.getYaw());
     SmartDashboard.putNumber("Z axis angle", getHeading());
-    SmartDashboard.putNumber("x", x);
-    SmartDashboard.putNumber("y", y);
-    SmartDashboard.putNumber("r", r);
+    SmartDashboard.putNumber("X Speed Commanded", xspeedjoy);
+    SmartDashboard.putNumber("Y Speed Commanded", yspeedjoy);
+    SmartDashboard.putNumber("R Speed Commanded", rspeedjoy);
+    SmartDashboard.putNumber("X Speed Applied", xspeedapplied);
+    SmartDashboard.putNumber("Y Speed Applied", yspeedapplied);
+    SmartDashboard.putNumber("R Speed Applied", rspeedapplied);
     SmartDashboard.putBoolean("Auto is Waiting", waiting);
 
     // Update the odometry in the periodic block
