@@ -9,7 +9,7 @@
       "name": "Main",
       "request": "launch",
       "mainClass": "frc.robot.Main",
-      "projectName": "Crescendo2024-Roomba"
+      "projectName": "Crescendo2024-Runaway"
     },
     {
       "type": "wpilib",
