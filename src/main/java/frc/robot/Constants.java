@@ -120,7 +120,7 @@ public final class Constants {
     public static final int kShooterLeftCanId = 13;
     public static final int kShooterRightCanId = 14;
     public static final int kAmpArmCanId = 15;
-    
+
     public static final int kPneumaticHubCanId = 50;
 
     public static final double FeederInSpeed = -0.15;
