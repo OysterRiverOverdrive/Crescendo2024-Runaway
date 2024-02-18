@@ -7,20 +7,22 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.RobotConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  private CANSparkMax m_BumperMotor = new CANSparkMax(Constants.BumperMotor, MotorType.kBrushless);
-  private CANSparkMax m_RollerMotor = new CANSparkMax(Constants.RollerMotor, MotorType.kBrushless);
+  private CANSparkMax m_BumperMotor =
+      new CANSparkMax(RobotConstants.BumperMotorCanId, MotorType.kBrushless);
+  private CANSparkMax m_RollerMotor =
+      new CANSparkMax(RobotConstants.RollerMotorCanId, MotorType.kBrushless);
 
   public IntakeSubsystem() {}
 
   public void BmotorF() {
-    m_BumperMotor.set(Constants.RobotConstants.intakeMotorForward);
+    m_BumperMotor.set(RobotConstants.bumperMotorForward);
   }
 
   public void BmotorB() {
-    m_BumperMotor.set(Constants.RobotConstants.intakeMotorBackward);
+    m_BumperMotor.set(RobotConstants.bumperMotorBackward);
   }
 
   public void BmotorStop() {
@@ -28,11 +30,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void RmotorF() {
-    m_RollerMotor.set(Constants.RobotConstants.intakeMotorForward);
+    m_RollerMotor.set(RobotConstants.rollerMotorForward);
   }
 
   public void RmotorB() {
-    m_RollerMotor.set(Constants.RobotConstants.intakeMotorBackward);
+    m_RollerMotor.set(RobotConstants.rollerMotorBackward);
   }
 
   public void RmotorStop() {

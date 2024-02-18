@@ -20,9 +20,6 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static final int BumperMotor = 9;
-  public static final int RollerMotor = 10;
-
   public static final class AutoConstants {
 
     public static final double kMaxSpeedMetersPerSecond =
@@ -114,17 +111,20 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = 7;
     public static final int kRearLeftTurningCanId = 8;
 
-    public static final int kShooterLeftCanId = 13;
-    public static final int kShooterRightCanId = 14;
+    public static final int BumperMotorCanId = 9;
+    public static final int RollerMotorCanId = 10;
 
     public static final int FeederLeftCanId = 11;
     public static final int FeederRightCanId = 12;
 
-    public static final double FeederInSpeed = 0.3;
-    public static final double FeederOutSpeed = -0.3;
-    public static final double FeederToShooterSpeed = 0.45;
+    public static final int kShooterLeftCanId = 13;
+    public static final int kShooterRightCanId = 14;
 
     public static final int kPneumaticHubCanId = 50;
+
+    public static final double FeederInSpeed = -0.15;
+    public static final double FeederOutSpeed = 0.15;
+    public static final double FeederToShooterSpeed = -0.45;
 
     // PCM Ports
     public static final int kHangerRightFwd = 0;
@@ -145,9 +145,13 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     public static final int LimitSwtichActivation = 193;
+
     // intake motor speeds
-    public static final double intakeMotorForward = 0.8;
-    public static final double intakeMotorBackward = -0.8;
+    public static final double bumperMotorForward = -0.8;
+    public static final double bumperMotorBackward = 0.8;
+
+    public static final double rollerMotorForward = 0.8;
+    public static final double rollerMotorBackward = -0.8;
   }
 
   // Constants specifically for Swerve Module
