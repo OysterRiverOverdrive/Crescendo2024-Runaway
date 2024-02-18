@@ -39,7 +39,7 @@ public class AutoCreationCmd {
    *     </pre>
    *
    * @param finalrest Pose2d of what the robot's final resting position should be
-   *     <pre>new Pose2d(x-offset, y-offset, new Rotation2d(rotationDegrees))</pre>
+   *     <pre>new Pose2d(x-offset, y-offset, new Rotation2d(rotationRadians))</pre>
    *
    * @return A Command variable telling the robot to drive
    */
