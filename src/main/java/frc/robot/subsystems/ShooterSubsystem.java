@@ -44,7 +44,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void AmpArmUpCmd() {
     // Degrees from resting position (May Need to add a negative)
-    double degrees = 100;
+    double degrees = 60; //130 degrees measured
     // Convert account for gear ratio
     degrees = degrees * RobotConstants.kAmpArmGearRatio;
     // Convert to radians
