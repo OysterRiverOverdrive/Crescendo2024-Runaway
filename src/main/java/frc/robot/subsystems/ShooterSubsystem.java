@@ -4,12 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.IdleMode;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants;
 
@@ -18,8 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
       new CANSparkMax(RobotConstants.kShooterLeftCanId, MotorType.kBrushless);
   private CANSparkMax m_followMotor =
       new CANSparkMax(RobotConstants.kShooterRightCanId, MotorType.kBrushless);
-  private CANSparkMax ampMotor =
-      new CANSparkMax(RobotConstants.kAmpArmCanId, MotorType.kBrushless);  
+  private CANSparkMax ampMotor = new CANSparkMax(RobotConstants.kAmpArmCanId, MotorType.kBrushless);
 
   RelativeEncoder ampEncoder = ampMotor.getEncoder();
 
@@ -50,13 +48,13 @@ public class ShooterSubsystem extends SubsystemBase {
     // Convert account for gear ratio
     degrees = degrees * RobotConstants.kAmpArmGearRatio;
     // Convert to radians
-    degrees = degrees * (Math.PI/180);
+    degrees = degrees * (Math.PI / 180);
     // Set position
     ampMotorPidController.setReference(degrees, CANSparkMax.ControlType.kPosition);
   }
 
   public void AmpArmDownCmd() {
-    ampMotorPidController.setReference(0,CANSparkMax.ControlType.kPosition);
+    ampMotorPidController.setReference(0, CANSparkMax.ControlType.kPosition);
   }
 
   @Override
