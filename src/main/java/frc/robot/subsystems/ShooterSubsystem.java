@@ -28,9 +28,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
     ampMotor.setIdleMode(IdleMode.kBrake);
     ampMotorPidController.setFeedbackDevice(ampEncoder);
-    ampMotorPidController.setP(0.5);
+    ampMotorPidController.setP(0.01);
     ampMotorPidController.setI(0);
     ampMotorPidController.setD(0);
+
+    AmpEncoderReset();
+  }
+
+  public void AmpEncoderReset() {
+    ampEncoder.setPosition(0);
   }
 
   public void ShooterForwardCmd(double trigValue) {
@@ -43,12 +49,13 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void AmpArmUpCmd() {
-    // Degrees from resting position (May Need to add a negative)
-    double degrees = 60; //130 degrees measured
+    double degrees = 60; // 130 degrees measured
+    //degrees out of 360
+    degrees = degrees/360;
     // Convert account for gear ratio
     degrees = degrees * RobotConstants.kAmpArmGearRatio;
     // Convert to radians
-    degrees = degrees * (Math.PI / 180);
+    // degrees = degrees * (Math.PI / 180);
     // Set position
     ampMotorPidController.setReference(degrees, CANSparkMax.ControlType.kPosition);
   }
@@ -60,6 +67,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.out.println("amp encoder: " + ampEncoder.getPosition());
   }
 
   @Override

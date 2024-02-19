@@ -123,9 +123,10 @@ public final class Constants {
 
     public static final int kPneumaticHubCanId = 50;
 
+    //Feeder Speeds
     public static final double FeederInSpeed = -0.15;
     public static final double FeederOutSpeed = 0.15;
-    public static final double FeederToShooterSpeed = -0.25;
+    public static final double FeederToShooterSpeed = -0.35;
 
     // PCM Ports
     public static final int kHangerRightFwd = 0;
@@ -155,8 +156,8 @@ public final class Constants {
     public static final double bumperMotorForward = 0.8;
     public static final double bumperMotorBackward = -0.8;
 
-    public static final double rollerMotorForward = 0.8;
-    public static final double rollerMotorBackward = -0.8;
+    public static final double rollerMotorForward = -0.8;
+    public static final double rollerMotorBackward = 0.8;
   }
 
   // Constants specifically for Swerve Module

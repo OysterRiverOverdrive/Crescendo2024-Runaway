@@ -29,15 +29,16 @@ public class ShooterForwardCmd extends Command {
   @Override
   public void execute() {
     // trigger value (how far it's pushed in) is set as the speed of the motor
-    double trigValue = oper.getRawAxis(Controllers.ps4_RT);
+    double trigValue = oper.getRawAxis(Controllers.ps4_RTJoystick);
+    trigValue = (trigValue + 1)/2;
     shooter.ShooterForwardCmd(trigValue);
 
-    // If the trigger is pushed in enough spin out the amp arm
-    if (trigValue >= 0.2) {
-      shooter.AmpArmUpCmd();
-    } else {
-      shooter.AmpArmDownCmd();
-    }
+      // If the trigger is pushed in enough spin out the amp arm
+      // if (trigValue >= 0.2) {
+      //   shooter.AmpArmUpCmd();
+      // } else {
+      //   shooter.AmpArmDownCmd();
+      // } 
   }
 
   // Called once the command ends or is interrupted.
