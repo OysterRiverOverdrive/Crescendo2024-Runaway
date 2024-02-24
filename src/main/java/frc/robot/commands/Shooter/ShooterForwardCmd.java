@@ -4,9 +4,11 @@
 
 package frc.robot.commands.Shooter;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.RobotConstants;
 import frc.robot.Controllers;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -15,6 +17,8 @@ public class ShooterForwardCmd extends Command {
   private final ShooterSubsystem shooter;
 
   private final Joystick oper = new Joystick(DriveConstants.kOperControllerPort);
+  private final PIDController pidControl =
+      new PIDController(RobotConstants.kAmpArmP, RobotConstants.kAmpArmI, RobotConstants.kAmpArmD);
 
   boolean controllerStartsAtNegOne;
 
@@ -45,12 +49,12 @@ public class ShooterForwardCmd extends Command {
     }
     shooter.ShooterForwardCmd(trigValue);
 
-      // If the trigger is pushed in enough spin out the amp arm
-      // if (trigValue >= 0.2) {
-      //   shooter.AmpArmUpCmd();
-      // } else {
-      //   shooter.AmpArmDownCmd();
-      // } 
+    double degreeout = RobotConstants.kAmpArmDegreesOut / 360; // Convert to percentage of rotation
+    if (trigValue >= RobotConstants.kAmpArmTrigActivate) {
+      shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), degreeout));
+    } else {
+      shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), 0));
+    }
   }
 
   // Called once the command ends or is interrupted.

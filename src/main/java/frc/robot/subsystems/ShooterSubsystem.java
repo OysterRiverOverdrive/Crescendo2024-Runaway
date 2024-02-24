@@ -17,26 +17,13 @@ public class ShooterSubsystem extends SubsystemBase {
       new CANSparkMax(RobotConstants.kShooterLeftCanId, MotorType.kBrushless);
   private CANSparkMax m_followMotor =
       new CANSparkMax(RobotConstants.kShooterRightCanId, MotorType.kBrushless);
-  private CANSparkMax ampMotor = new CANSparkMax(RobotConstants.kAmpArmCanId, MotorType.kBrushless);
-
-  RelativeEncoder ampEncoder = ampMotor.getEncoder();
-
-  SparkPIDController ampMotorPidController = ampMotor.getPIDController();
+  private CANSparkMax m_ampArmMotor =
+      new CANSparkMax(RobotConstants.kAmpArmCanId, MotorType.kBrushless);
+  private RelativeEncoder encAmpArm = m_ampArmMotor.getEncoder();
 
   public ShooterSubsystem() {
     m_followMotor.follow(m_leadMotor, true);
-
-    ampMotor.setIdleMode(IdleMode.kBrake);
-    ampMotorPidController.setFeedbackDevice(ampEncoder);
-    ampMotorPidController.setP(0.01);
-    ampMotorPidController.setI(0);
-    ampMotorPidController.setD(0);
-
-    AmpEncoderReset();
-  }
-
-  public void AmpEncoderReset() {
-    ampEncoder.setPosition(0);
+    encAmpArm.setPosition(0); // Reset Encoder on Boot
   }
 
   public void ShooterForwardCmd(double trigValue) {
@@ -48,20 +35,15 @@ public class ShooterSubsystem extends SubsystemBase {
     m_leadMotor.stopMotor();
   }
 
-  public void AmpArmUpCmd() {
-    double degrees = 60; // 130 degrees measured
-    //degrees out of 360
-    degrees = degrees/360;
-    // Convert account for gear ratio
-    degrees = degrees * RobotConstants.kAmpArmGearRatio;
-    // Convert to radians
-    // degrees = degrees * (Math.PI / 180);
-    // Set position
-    ampMotorPidController.setReference(degrees, CANSparkMax.ControlType.kPosition);
+  public double getAmpArmEnc() {
+    return encAmpArm.getPosition()
+        / RobotConstants
+            .kAmpArmGearRatio; // Divide for the gear ratio to get the position of the arm, not the
+    // motor
   }
 
-  public void AmpArmDownCmd() {
-    ampMotorPidController.setReference(0, CANSparkMax.ControlType.kPosition);
+  public void setArmSpeed(double speed) {
+    m_ampArmMotor.set(speed);
   }
 
   @Override
