@@ -16,6 +16,8 @@ public class ShooterForwardCmd extends Command {
 
   private final Joystick oper = new Joystick(DriveConstants.kOperControllerPort);
 
+  boolean controllerStartsAtNegOne;
+
   public ShooterForwardCmd(ShooterSubsystem shooters) {
     shooter = shooters;
     addRequirements(shooters);
@@ -23,14 +25,24 @@ public class ShooterForwardCmd extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    double trigValue = oper.getRawAxis(Controllers.ps4_RTJoystick);
+    if (trigValue != 0) { 
+    controllerStartsAtNegOne = true;
+    }
+    else {
+      controllerStartsAtNegOne = false;
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // trigger value (how far it's pushed in) is set as the speed of the motor
     double trigValue = oper.getRawAxis(Controllers.ps4_RTJoystick);
-    trigValue = (trigValue + 1)/2;
+    if (controllerStartsAtNegOne) {
+      trigValue = (trigValue + 1)/2;
+    }
     shooter.ShooterForwardCmd(trigValue);
 
       // If the trigger is pushed in enough spin out the amp arm
