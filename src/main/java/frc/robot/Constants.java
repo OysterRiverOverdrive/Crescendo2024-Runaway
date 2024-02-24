@@ -121,7 +121,7 @@ public final class Constants {
     public static final int FeederRightCanId = 12;
 
     public static final double FeederInSpeed = -0.3;
-    public static final double FeederOutSpeed = 0.3;
+    public static final double FeederOutSpeed = 0.2;
     public static final double FeederToShooterSpeed = -0.45;
 
     public static final int kPneumaticHubCanId = 50;
