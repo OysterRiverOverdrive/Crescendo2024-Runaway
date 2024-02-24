@@ -4,9 +4,11 @@
 
 package frc.robot.commands.Shooter;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.RobotConstants;
 import frc.robot.Controllers;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -15,6 +17,8 @@ public class ShooterForwardCmd extends Command {
   private final ShooterSubsystem shooter;
 
   private final Joystick oper = new Joystick(DriveConstants.kOperControllerPort);
+  private final PIDController pidControl =
+      new PIDController(RobotConstants.kAmpArmP, RobotConstants.kAmpArmI, RobotConstants.kAmpArmD);
 
   public ShooterForwardCmd(ShooterSubsystem shooters) {
     shooter = shooters;
@@ -31,6 +35,13 @@ public class ShooterForwardCmd extends Command {
     // trigger value (how far it's pushed in) is set as the speed of the motor
     double trigValue = oper.getRawAxis(Controllers.ps4_RT);
     shooter.ShooterForwardCmd(trigValue);
+
+    double degreeout = RobotConstants.kAmpArmDegreesOut / 360; // Convert to percentage of rotation
+    if (trigValue >= RobotConstants.kAmpArmTrigActivate) {
+      shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), degreeout));
+    } else {
+      shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), 0));
+    }
   }
 
   // Called once the command ends or is interrupted.
