@@ -34,7 +34,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getAmpArmEnc() {
-    return encAmpArm.getPosition() / RobotConstants.kAmpArmGearRatio; // Divide for the gear ratio to get the position of the arm, not the motor
+    return encAmpArm.getPosition()
+        / RobotConstants
+            .kAmpArmGearRatio; // Divide for the gear ratio to get the position of the arm, not the
+    // motor
   }
 
   public void setArmSpeed(double speed) {
