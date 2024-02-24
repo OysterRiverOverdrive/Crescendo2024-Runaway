@@ -21,7 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void ShooterForwardCmd(double trigValue) {
     m_shooterMotor1.set(trigValue);
-    m_shooterMotor2.set(0.8*trigValue);
+    m_shooterMotor2.set(0.85 * trigValue);
   }
 
   public void motorStop() {
