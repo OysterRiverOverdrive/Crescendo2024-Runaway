@@ -119,9 +119,9 @@ public final class Constants {
 
     public static final int kAmpArmCanId = 15;
     public static final double kAmpArmGearRatio = 27; // 27:1, Motor needs to spin 27 times for the arm to spin once
-    public static final double kAmpArmDegreesOut = 100;
-    public static final double kAmpArmTrigActivate = 0.25;
-    public static final double kAmpArmP = 0.05;
+    public static final double kAmpArmDegreesOut = 115;
+    public static final double kAmpArmTrigActivate = 0.15;
+    public static final double kAmpArmP = 0.8;
     public static final double kAmpArmI = 0.0;
     public static final double kAmpArmD = 0.0;
 
@@ -154,8 +154,8 @@ public final class Constants {
 
     public static final int LimitSwtichActivation = 193;
     // intake motor speeds
-    public static final double intakeMotorForward = 0.8;
-    public static final double intakeMotorBackward = -0.8;
+    public static final double intakeMotorForward = 0.85;
+    public static final double intakeMotorBackward = -0.85;
   }
 
   // Constants specifically for Swerve Module
