@@ -4,16 +4,15 @@
 
 package frc.robot.commands.Feeder;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FeederSubsystem;
-import edu.wpi.first.wpilibj.Timer;
 
 public class AutoFeederCmd extends Command {
   private FeederSubsystem feeder;
   private Timer timer = new Timer();
   public boolean toShooter;
   public double timeNum;
-
 
   public AutoFeederCmd(FeederSubsystem feeders, boolean goToShooter, double time) {
     feeder = feeders;
@@ -34,8 +33,7 @@ public class AutoFeederCmd extends Command {
   public void execute() {
     if (toShooter) {
       feeder.ToShooterCmd();
-    }
-    else {
+    } else {
       feeder.InFeederCmd();
     }
   }
@@ -50,7 +48,7 @@ public class AutoFeederCmd extends Command {
   @Override
   public boolean isFinished() {
     double currTime = timer.get();
-    
+
     return currTime >= timeNum ? true : false;
   }
 }
