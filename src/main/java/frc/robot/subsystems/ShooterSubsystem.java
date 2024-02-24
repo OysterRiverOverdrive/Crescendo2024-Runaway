@@ -10,18 +10,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private CANSparkMax m_shooterMotor1;
-  private CANSparkMax m_shooterMotor2;
+  private CANSparkMax m_shooterMotor1 =
+      new CANSparkMax(RobotConstants.kShooterLeftCanId, MotorType.kBrushless);
+  private CANSparkMax m_shooterMotor2 =
+      new CANSparkMax(RobotConstants.kShooterRightCanId, MotorType.kBrushless);
 
   public ShooterSubsystem() {
-
-    m_shooterMotor1 = new CANSparkMax(RobotConstants.kShooterCanId1, MotorType.kBrushless);
-    m_shooterMotor2 = new CANSparkMax(RobotConstants.kShooterCanId2, MotorType.kBrushless);
+    m_shooterMotor2.setInverted(true);
   }
 
   public void ShooterForwardCmd(double trigValue) {
     m_shooterMotor1.set(trigValue);
-    m_shooterMotor2.setInverted(true);
     m_shooterMotor2.set(0.8*trigValue);
   }
 

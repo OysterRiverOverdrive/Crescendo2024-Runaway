@@ -16,14 +16,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
+import frc.robot.commands.Feeder.*;
 import frc.robot.commands.Hanger.*;
-import frc.robot.commands.InFeederCmd;
 import frc.robot.commands.Intake.*;
-import frc.robot.commands.OutFeederCmd;
-import frc.robot.commands.Shooter.ShooterForwardCmd;
-import frc.robot.commands.StopFeederCmd;
+import frc.robot.commands.Shooter.*;
 import frc.robot.commands.TeleopCmd;
-import frc.robot.commands.ToShooterCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
@@ -34,7 +31,9 @@ import frc.utils.ControllerUtils;
 import java.util.List;
 
 public class RobotContainer {
+  // Controller Utils Instance
   private final ControllerUtils cutil = new ControllerUtils();
+
   // Auto Dropdown - Make dropdown variable and variables to be selected
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final String auto1 = "1";
@@ -48,7 +47,6 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
-
   private final FeederSubsystem feeder = new FeederSubsystem();
 
   // Commands
@@ -62,9 +60,25 @@ public class RobotContainer {
   // Drive Forward Speaker Run
   private final Command speakerForwards =
       autodrive.AutoDriveCmd(
+          drivetrain, List.of(new Translation2d(1, 0)), new Pose2d(1.3, 0, new Rotation2d(0)));
+
+  private final Command speakertoamp =
+      autodrive.AutoDriveCmd(
           drivetrain,
-          List.of(new Translation2d(cutil.inchesToMeters(30), 0)),
-          new Pose2d(cutil.inchesToMeters(54.83), 0, new Rotation2d(0)));
+          List.of(new Translation2d(-0.4, 0), new Translation2d(-0.83, -1.3)),
+          new Pose2d(-0.83, -2.08, new Rotation2d(Math.PI / 2)));
+
+  private final Command amptostage =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(3, 0)),
+          new Pose2d(3.4, -1.0, new Rotation2d(-Math.PI / 2)));
+
+  private final Command stagetospeak =
+      autodrive.AutoDriveCmd(
+          drivetrain,
+          List.of(new Translation2d(-0.3, 0), new Translation2d(-0.8, -1.2)),
+          new Pose2d(-1.2, -1.2, new Rotation2d(0)));
 
   // Drive in a figure 8
   private final Command driveCircle =
@@ -88,8 +102,8 @@ public class RobotContainer {
     shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
-    m_chooser.setDefaultOption("Circle", auto1);
-    m_chooser.addOption("Speaker Forward", auto2);
+    m_chooser.setDefaultOption("Figure 8 Demo", auto1);
+    m_chooser.addOption("Shooter Demo", auto2);
     m_chooser.addOption("Null2", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
@@ -104,33 +118,38 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
+    // Hangers Up
     cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+
+    // Hangers Down
     cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
+    // Zero Heading
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
         .onTrue(new InstantCommand(() -> drivetrain.zeroHeading()));
 
+    // Feeder to Shooter
     cutil
-        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new InFeederCmd(feeder))
+        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new ToShooterCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
+    // Feeder Out
     cutil
         .supplier(Controllers.ps4_share, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
+    // Intaking - Feeder in and Intake in
     cutil
-        .supplier(Controllers.ps4_RB, DriveConstants.joysticks.OPERATOR)
-        .onTrue(
-            new ParallelCommandGroup(new ToShooterCmd(feeder), new IntakeCmd(m_intakesubsystem)))
+        .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
+        .onTrue(new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(m_intakesubsystem)))
         .onFalse(
             new ParallelCommandGroup(
                 new StopFeederCmd(feeder), new IntakeStopCmd(m_intakesubsystem)));
-    // .onTrue(new IntakeCmd(m_intakesubsystem))
-    // .onFalse(new IntakeStopCmd(m_intakesubsystem));
 
+    // Intake out
     cutil
         .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OuttakeCmd(m_intakesubsystem))
@@ -141,6 +160,7 @@ public class RobotContainer {
 
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
+    // Get auto dropdown to run
     Command auto;
     switch (m_chooser.getSelected()) {
       default:
@@ -148,7 +168,7 @@ public class RobotContainer {
         auto = driveCircle;
         break;
       case auto2:
-        auto = speakerForwards;
+        auto = new SequentialCommandGroup(speakerForwards, speakertoamp, amptostage, stagetospeak);
         break;
       case auto3:
         auto = null;
@@ -157,6 +177,7 @@ public class RobotContainer {
         auto = null;
         break;
     }
+    // Create sequential command with the wait command first then run selected auto
     auto =
         new SequentialCommandGroup(
             new BeginSleepCmd(drivetrain, SmartDashboard.getNumber("Auto Wait Time (Sec)", 0)),

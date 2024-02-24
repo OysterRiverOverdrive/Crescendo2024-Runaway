@@ -114,14 +114,15 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = 7;
     public static final int kRearLeftTurningCanId = 8;
 
-    public static final int kShooterCanId1 = 13;
-    public static final int kShooterCanId2 = 14;
-    public static final int FeederOneCanId = 11;
-    public static final int FeederTwoCanId = 12;
+    public static final int kShooterLeftCanId = 13;
+    public static final int kShooterRightCanId = 14;
 
-    public static final double FeederIn = 0.3;
-    public static final double FeederOut = -0.3;
-    public static final double ToShooter = 0.45;
+    public static final int FeederLeftCanId = 11;
+    public static final int FeederRightCanId = 12;
+
+    public static final double FeederInSpeed = 0.3;
+    public static final double FeederOutSpeed = -0.3;
+    public static final double FeederToShooterSpeed = 0.45;
 
     public static final int kPneumaticHubCanId = 50;
 
@@ -212,5 +213,15 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
+  }
+
+  // timerValues
+  public static final class TimerConstants {
+    // from timer from when autonomous starts to autonmous ends
+    public static final int AutoTimerLength = 15; // seconds
+    // timer that starts when autonomous ends until Halftime
+    public static final int TeleOpStartTimerLength = 75; // seconds
+    // timer that starts when Halftime untill match ends
+    public static final int TeleOpEndTimerLength = 75; // seconds
   }
 }
