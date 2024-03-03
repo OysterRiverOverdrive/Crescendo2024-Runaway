@@ -296,12 +296,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Z axis", m_gyro.getYaw());
     SmartDashboard.putNumber("Z axis angle", getHeading());
-    SmartDashboard.putNumber("X Speed Commanded", xspeedjoy);
-    SmartDashboard.putNumber("Y Speed Commanded", yspeedjoy);
-    SmartDashboard.putNumber("R Speed Commanded", rspeedjoy);
-    SmartDashboard.putNumber("X Speed Applied", xspeedapplied);
-    SmartDashboard.putNumber("Y Speed Applied", yspeedapplied);
-    SmartDashboard.putNumber("R Speed Applied", rspeedapplied);
     SmartDashboard.putBoolean("Auto is Waiting", waiting);
 
     // Update the odometry in the periodic block
