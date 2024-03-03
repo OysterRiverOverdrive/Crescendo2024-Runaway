@@ -21,8 +21,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ExampleAuton extends ParallelCommandGroup {
-  public ExampleAuton(DrivetrainSubsystem drivetrain, IntakeSubsystem intake, FeederSubsystem feeder, ShooterSubsystem shooter) {
+public class BackAndShootAuto extends ParallelCommandGroup {
+  public BackAndShootAuto(DrivetrainSubsystem drivetrain, IntakeSubsystem intake, FeederSubsystem feeder, ShooterSubsystem shooter) {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
