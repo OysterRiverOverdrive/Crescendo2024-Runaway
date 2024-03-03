@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +26,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.utils.ControllerUtils;
-import java.util.List;
 
 public class RobotContainer {
   // Controller Utils Instance
@@ -57,8 +53,8 @@ public class RobotContainer {
           () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Commands
-  private final BackAndShootAuto backAndShootAuto = new BackAndShootAuto(drivetrain, intake, feeder, shooter);
-
+  private final BackAndShootAuto backAndShootAuto =
+      new BackAndShootAuto(drivetrain, intake, feeder, shooter);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
@@ -110,9 +106,7 @@ public class RobotContainer {
     cutil
         .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
         .onTrue(new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(intake)))
-        .onFalse(
-            new ParallelCommandGroup(
-                new StopFeederCmd(feeder), new IntakeStopCmd(intake)));
+        .onFalse(new ParallelCommandGroup(new StopFeederCmd(feeder), new IntakeStopCmd(intake)));
 
     // Intake out
     cutil

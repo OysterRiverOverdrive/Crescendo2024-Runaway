@@ -4,8 +4,6 @@
 
 package frc.robot.auto.plans;
 
-import java.util.List;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -17,12 +15,17 @@ import frc.robot.auto.AutoSleepCmd;
 import frc.robot.commands.Feeder.AutoFeederCmd;
 import frc.robot.commands.Shooter.AutoShooterCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import java.util.List;
 
 public class BackAndShootAuto extends ParallelCommandGroup {
-  public BackAndShootAuto(DrivetrainSubsystem drivetrain, IntakeSubsystem intake, FeederSubsystem feeder, ShooterSubsystem shooter) {
+  public BackAndShootAuto(
+      DrivetrainSubsystem drivetrain,
+      IntakeSubsystem intake,
+      FeederSubsystem feeder,
+      ShooterSubsystem shooter) {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
@@ -33,17 +36,16 @@ public class BackAndShootAuto extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      // Drivetrain Sequential
-      new SequentialCommandGroup(speakerForwards, new AutoSleepCmd(4)),
+        // Drivetrain Sequential
+        new SequentialCommandGroup(speakerForwards, new AutoSleepCmd(4)),
 
-      // Intake Sequential
-      new SequentialCommandGroup(new AutoSleepCmd(0)),
+        // Intake Sequential
+        new SequentialCommandGroup(new AutoSleepCmd(0)),
 
-      // Feeder Sequential
-      new SequentialCommandGroup(new AutoSleepCmd(1.5), new AutoFeederCmd(feeder, true, 0.5)),
+        // Feeder Sequential
+        new SequentialCommandGroup(new AutoSleepCmd(1.5), new AutoFeederCmd(feeder, true, 0.5)),
 
-      // Shooter Sequential
-      new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 2))
-    );
+        // Shooter Sequential
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 2)));
   }
 }
