@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.joysticks;
 import frc.robot.auto.*;
+import frc.robot.auto.plans.*;
 import frc.robot.commands.Feeder.*;
 import frc.robot.commands.Hanger.*;
 import frc.robot.commands.Intake.*;
@@ -44,56 +45,20 @@ public class RobotContainer {
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
   private final ShooterSubsystem shooter = new ShooterSubsystem();
-  private final IntakeSubsystem m_intakesubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
   private final FeederSubsystem feeder = new FeederSubsystem();
 
   // Commands
-  private final AutoCreationCmd autodrive = new AutoCreationCmd();
   private final TeleopCmd teleopCmd =
       new TeleopCmd(
           drivetrain,
           () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
-  // Auto Driving Commands
-  // Drive Forward Speaker Run
-  private final Command speakerForwards =
-      autodrive.AutoDriveCmd(
-          drivetrain, List.of(new Translation2d(1, 0)), new Pose2d(1.3, 0, new Rotation2d(0)));
+  // Auto Commands
+  private final BackAndShootAuto backAndShootAuto = new BackAndShootAuto(drivetrain, intake, feeder, shooter);
 
-  private final Command speakertoamp =
-      autodrive.AutoDriveCmd(
-          drivetrain,
-          List.of(new Translation2d(-0.4, 0), new Translation2d(-0.83, -1.3)),
-          new Pose2d(-0.83, -2.08, new Rotation2d(Math.PI / 2)));
-
-  private final Command amptostage =
-      autodrive.AutoDriveCmd(
-          drivetrain,
-          List.of(new Translation2d(3, 0)),
-          new Pose2d(3.4, -1.0, new Rotation2d(-Math.PI / 2)));
-
-  private final Command stagetospeak =
-      autodrive.AutoDriveCmd(
-          drivetrain,
-          List.of(new Translation2d(-0.3, 0), new Translation2d(-0.8, -1.2)),
-          new Pose2d(-1.2, -1.2, new Rotation2d(0)));
-
-  // Drive in a figure 8
-  private final Command driveCircle =
-      autodrive.AutoDriveCmd(
-          drivetrain,
-          List.of(
-              new Translation2d(0, 0.75),
-              new Translation2d(2, 0.75),
-              new Translation2d(2, -0.75),
-              new Translation2d(4, -0.75),
-              new Translation2d(4, 0.75),
-              new Translation2d(2, 0.75),
-              new Translation2d(2, -0.75),
-              new Translation2d(0, -0.75)),
-          new Pose2d(0, 0, new Rotation2d(0)));
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
@@ -102,8 +67,8 @@ public class RobotContainer {
     shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
-    m_chooser.setDefaultOption("Figure 8 Demo", auto1);
-    m_chooser.addOption("Shooter Demo", auto2);
+    m_chooser.setDefaultOption("Back And Shoot", auto1);
+    m_chooser.addOption("Null1", auto2);
     m_chooser.addOption("Null2", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
@@ -144,16 +109,16 @@ public class RobotContainer {
     // Intaking - Feeder in and Intake in
     cutil
         .supplier(Controllers.ps4_LB, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(m_intakesubsystem)))
+        .onTrue(new ParallelCommandGroup(new InFeederCmd(feeder), new IntakeCmd(intake)))
         .onFalse(
             new ParallelCommandGroup(
-                new StopFeederCmd(feeder), new IntakeStopCmd(m_intakesubsystem)));
+                new StopFeederCmd(feeder), new IntakeStopCmd(intake)));
 
     // Intake out
     cutil
         .supplier(Controllers.ps4_options, DriveConstants.joysticks.OPERATOR)
-        .onTrue(new OuttakeCmd(m_intakesubsystem))
-        .onFalse(new IntakeStopCmd(m_intakesubsystem));
+        .onTrue(new OuttakeCmd(intake))
+        .onFalse(new IntakeStopCmd(intake));
   }
 
   public Command getAutonomousCommand() {
@@ -165,10 +130,10 @@ public class RobotContainer {
     switch (m_chooser.getSelected()) {
       default:
       case auto1:
-        auto = driveCircle;
+        auto = backAndShootAuto;
         break;
       case auto2:
-        auto = new SequentialCommandGroup(speakerForwards, speakertoamp, amptostage, stagetospeak);
+        auto = null;
         break;
       case auto3:
         auto = null;
