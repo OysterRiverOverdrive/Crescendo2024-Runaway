@@ -119,10 +119,10 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
     // Hangers Up
-    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+    cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
 
     // Hangers Down
-    cutil.POVsupplier(270, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
+    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
     // Zero Heading
     cutil

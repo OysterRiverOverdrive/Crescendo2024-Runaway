@@ -16,11 +16,11 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {}
 
   public void BmotorF() {
-    m_BumperMotor.set(Constants.RobotConstants.intakeMotorForward);
+    m_BumperMotor.set(-Constants.RobotConstants.intakeMotorForward);
   }
 
   public void BmotorB() {
-    m_BumperMotor.set(Constants.RobotConstants.intakeMotorBackward);
+    m_BumperMotor.set(-Constants.RobotConstants.intakeMotorBackward);
   }
 
   public void BmotorStop() {
