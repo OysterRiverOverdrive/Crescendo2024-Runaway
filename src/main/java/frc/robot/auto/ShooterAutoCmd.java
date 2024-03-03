@@ -4,17 +4,17 @@
 
 package frc.robot.auto;
 
-import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Timer;
-
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterAutoCmd extends Command {
   private Timer timer = new Timer();
   ShooterSubsystem shoot;
   double inSpeed;
   double timeRunning;
-  public ShooterAutoCmd(ShooterSubsystem shoots,double inputSpeed, double timeRun) {
+
+  public ShooterAutoCmd(ShooterSubsystem shoots, double inputSpeed, double timeRun) {
     shoot = shoots;
     inSpeed = inputSpeed;
     timeRunning = timeRun;
@@ -23,10 +23,9 @@ public class ShooterAutoCmd extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() 
-  {
+  public void initialize() {
     timer.reset();
-    timer.start();  
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,8 +36,7 @@ public class ShooterAutoCmd extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
+  public void end(boolean interrupted) {
     shoot.motorStop();
   }
 
@@ -47,6 +45,5 @@ public class ShooterAutoCmd extends Command {
   public boolean isFinished() {
 
     return timer.hasElapsed(timeRunning) ? true : false;
-
   }
 }
