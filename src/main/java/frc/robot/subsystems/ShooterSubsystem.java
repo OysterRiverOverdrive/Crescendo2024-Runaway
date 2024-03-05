@@ -11,26 +11,27 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private CANSparkMax m_leadMotor =
+  private CANSparkMax m_shooterMotor1 =
       new CANSparkMax(RobotConstants.kShooterLeftCanId, MotorType.kBrushless);
-  private CANSparkMax m_followMotor =
+  private CANSparkMax m_shooterMotor2 =
       new CANSparkMax(RobotConstants.kShooterRightCanId, MotorType.kBrushless);
   private CANSparkMax m_ampArmMotor =
       new CANSparkMax(RobotConstants.kAmpArmCanId, MotorType.kBrushless);
   private RelativeEncoder encAmpArm = m_ampArmMotor.getEncoder();
 
   public ShooterSubsystem() {
-    m_followMotor.follow(m_leadMotor, true);
+    m_shooterMotor2.setInverted(true);
     encAmpArm.setPosition(0); // Reset Encoder on Boot
   }
 
   public void ShooterForwardCmd(double trigValue) {
-    m_leadMotor.set(trigValue);
-    System.out.println(trigValue);
+    m_shooterMotor1.set(trigValue);
+    m_shooterMotor2.set(0.85 * trigValue);
   }
 
   public void motorStop() {
-    m_leadMotor.stopMotor();
+    m_shooterMotor1.stopMotor();
+    m_shooterMotor2.stopMotor();
   }
 
   public double getAmpArmEnc() {
