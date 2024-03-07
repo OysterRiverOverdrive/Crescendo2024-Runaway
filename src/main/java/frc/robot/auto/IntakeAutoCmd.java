@@ -15,7 +15,7 @@ public class IntakeAutoCmd extends Command {
   double timeRunning;
 
   public IntakeAutoCmd(IntakeSubsystem intakes, boolean useBumperOrRollerMotor, double timeRun) {
-    //True means only bumper motor will run, false means only roller motor will run.
+    // True means only bumper motor will run, false means only roller motor will run.
     intake = intakes;
     bumperOrRollerMotor = useBumperOrRollerMotor;
     timeRunning = timeRun;
@@ -33,9 +33,9 @@ public class IntakeAutoCmd extends Command {
   @Override
   public void execute() {
     if (bumperOrRollerMotor) {
-        intake.BmotorF();
+      intake.BmotorF();
     } else {
-        intake.RmotorF();
+      intake.RmotorF();
     }
   }
 
@@ -53,4 +53,3 @@ public class IntakeAutoCmd extends Command {
     return timer.hasElapsed(timeRunning) ? true : false;
   }
 }
-
