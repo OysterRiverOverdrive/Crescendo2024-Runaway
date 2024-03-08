@@ -120,8 +120,8 @@ public final class Constants {
     public static final int kAmpArmCanId = 15;
     public static final double kAmpArmGearRatio =
         27; // 27:1, Motor needs to spin 27 times for the arm to spin once
-    public static final double kAmpArmDegreesOut = 115;
-    public static final double kAmpArmTrigActivate = 0.15;
+    public static final double kAmpArmDegreesOut = 110;
+    public static final double kAmpArmTrigActivate = 0.10;
     public static final double kAmpArmP = 0.8;
     public static final double kAmpArmI = 0.0;
     public static final double kAmpArmD = 0.0;
