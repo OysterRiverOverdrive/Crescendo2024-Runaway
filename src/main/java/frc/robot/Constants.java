@@ -153,7 +153,7 @@ public final class Constants {
     public static final double kBackLeftChassisAngularOffset = Math.PI;
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
-    public static final int LimitSwtichActivation = 193;
+    public static final int LimitSwitchActivation = 193;
     // intake motor speeds
     public static final double intakeMotorForward = 0.85;
     public static final double intakeMotorBackward = -0.85;

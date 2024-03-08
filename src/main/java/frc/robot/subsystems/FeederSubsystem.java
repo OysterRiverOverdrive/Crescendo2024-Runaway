@@ -66,9 +66,11 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
-  public Boolean getLimitSwtich() {
+  Boolean colorTripped = false;
 
-    if (limitSwitch.getValue() <= RobotConstants.LimitSwtichActivation) {
+  public Boolean getLimitSwitch() {
+
+    if (limitSwitch.getValue() <= RobotConstants.LimitSwitchActivation) {
 
       return true;
 
@@ -80,8 +82,15 @@ public class FeederSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if (getColorSensor())
+    {
+      colorTripped = true;
+    }
+
+    SmartDashboard.putBoolean("Note Tripped (Color)", colorTripped);
     SmartDashboard.putBoolean("Note Detected (Color)", getColorSensor());
-    SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwtich());
+    SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwitch());
     SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());
   }
 }
