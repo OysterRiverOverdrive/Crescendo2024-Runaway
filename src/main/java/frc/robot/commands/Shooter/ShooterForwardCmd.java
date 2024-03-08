@@ -36,9 +36,9 @@ public class ShooterForwardCmd extends Command {
     double trigValue = oper.getRawAxis(Controllers.ps4_RT);
     shooter.ShooterForwardCmd(trigValue);
 
-    double degreeout = RobotConstants.kAmpArmDegreesOut / 360; // Convert to percentage of rotation
+    double degreeOut = RobotConstants.kAmpArmDegreesOut / 360; // Convert to percentage of rotation
     if (trigValue >= RobotConstants.kAmpArmTrigActivate) {
-      shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), degreeout));
+      shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), degreeOut));
     } else {
       shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), 0));
     }
