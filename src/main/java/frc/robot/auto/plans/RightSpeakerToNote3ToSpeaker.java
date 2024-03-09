@@ -20,8 +20,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.List;
 
-public class BackAndShootAuto extends ParallelCommandGroup {
-  public BackAndShootAuto(
+public class RightSpeakerToNote3ToSpeaker extends ParallelCommandGroup {
+  public RightSpeakerToNote3ToSpeaker(
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
@@ -29,15 +29,15 @@ public class BackAndShootAuto extends ParallelCommandGroup {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
-    Command speakerForwards =
+    Command rightSpeakerForwards =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
+            drivetrain, List.of(new Translation2d(0.2, 0), new Translation2d(0,0)), new Pose2d(0.45, 0, new Rotation2d(0)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(speakerForwards, new AutoSleepCmd(4)),
+        new SequentialCommandGroup(rightSpeakerForwards, new AutoSleepCmd(4)),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0)),

@@ -11,12 +11,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class AutoShooterCmd extends Command {
   private Timer timer = new Timer();
   ShooterSubsystem shoot;
-  double inSpeed;
+  double rInSpeed;
+  double lInSpeed;
   double timeRunning;
 
-  public AutoShooterCmd(ShooterSubsystem shoots, double inputSpeed, double timeRun) {
+  public AutoShooterCmd(ShooterSubsystem shoots, double rightInputSpeed, double leftInputSpeed, double timeRun) {
     shoot = shoots;
-    inSpeed = inputSpeed;
+    rInSpeed = rightInputSpeed;
+    lInSpeed = leftInputSpeed;
     timeRunning = timeRun;
     addRequirements(shoots);
   }
@@ -31,7 +33,7 @@ public class AutoShooterCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoot.ShooterForwardCmd(inSpeed);
+    shoot.ShooterForwardCmd(rInSpeed,lInSpeed);
   }
 
   // Called once the command ends or is interrupted.
