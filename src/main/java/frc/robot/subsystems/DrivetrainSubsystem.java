@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.utils.SwerveModule;
-import frc.utils.SwerveUtils;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   // Create SwerveModules
