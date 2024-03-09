@@ -6,19 +6,19 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 
-public class ShooterAutoCmd extends Command {
+public class AutoFeederCmd extends Command {
+  private FeederSubsystem feeder;
   private Timer timer = new Timer();
-  ShooterSubsystem shoot;
-  double inSpeed;
-  double timeRunning;
+  public boolean toShooter;
+  public double timeNum;
 
-  public ShooterAutoCmd(ShooterSubsystem shoots, double inputSpeed, double timeRun) {
-    shoot = shoots;
-    inSpeed = inputSpeed;
-    timeRunning = timeRun;
-    addRequirements(shoots);
+  public AutoFeederCmd(FeederSubsystem feeders, boolean goToShooter, double time) {
+    feeder = feeders;
+    toShooter = goToShooter;
+    timeNum = time;
+    addRequirements(feeders);
   }
 
   // Called when the command is initially scheduled.
@@ -31,19 +31,24 @@ public class ShooterAutoCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoot.ShooterForwardCmd(inSpeed);
+    if (toShooter) {
+      feeder.ToShooterCmd();
+    } else {
+      feeder.InFeederCmd();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shoot.motorStop();
+    feeder.StopFeederCmd();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    double currTime = timer.get();
 
-    return timer.hasElapsed(timeRunning) ? true : false;
+    return currTime >= timeNum ? true : false;
   }
 }
