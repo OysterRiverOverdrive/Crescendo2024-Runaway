@@ -14,6 +14,7 @@ import frc.robot.auto.AutoCreationCmd;
 import frc.robot.auto.AutoFeederCmd;
 import frc.robot.auto.AutoShooterCmd;
 import frc.robot.auto.AutoSleepCmd;
+import frc.robot.auto.AutoIntakeCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -32,26 +33,28 @@ public class MidSpeakerAuto extends ParallelCommandGroup {
     Command speakerShoot =
         autodrive.AutoDriveCmd(
             drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
-    Command getNote =
+    Command toNoteToSpeaker =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
-    Command speakerShoot2 =
-        autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
+            drivetrain, List.of(new Translation2d(1.4, 0)), new Pose2d(1.28, 0, new Rotation2d(0)));
+    Command toMidNote = autodrive.AutoDriveCmd(drivetrain, List.of(new Translation2d(-0.2,0), new Translation2d()), new Pose2d(-1,0, new Rotation2d(0)));
+    // Command speakerShoot2 =
+    //     autodrive.AutoDriveCmd(
+    //         drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(speakerShoot, new AutoSleepCmd(4), getNote, speakerShoot2),
+        new SequentialCommandGroup(speakerShoot, new AutoSleepCmd(4), toNoteToSpeaker, toMidNote),
 
         // Intake Sequential
-        new SequentialCommandGroup(new AutoSleepCmd(0)),
+        new SequentialCommandGroup(new AutoSleepCmd(5), new AutoIntakeCmd(intake, 2.5)),
 
         // Feeder Sequential
-        new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5)),
+        new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5), new AutoSleepCmd(0.5), new AutoFeederCmd(feeder, true, 4)),
 
         // Shooter Sequential
-        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 1, 3)));
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 1, 3), new AutoSleepCmd(5), new AutoShooterCmd(shooter, 1, 1, 6))
+        );
   }
 }
