@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.utils.SwerveModule;
-import frc.utils.SwerveUtils;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   // Create SwerveModules
@@ -67,6 +66,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double maxSpeedTurn;
 
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
+  private SlewRateLimiter m_magLimiter1 = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
   private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
@@ -110,46 +110,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
-    // Convert XY to polar for rate limiting
-    double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
-    double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
-
-    // Calculate the direction slew rate based on an estimate of the lateral acceleration
-    double directionSlewRate;
-    if (m_currentTranslationMag != 0.0) {
-      directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
-    } else {
-      directionSlewRate =
-          500.0; // some high number that means the slew rate is effectively instantaneous
-    }
-
-    double currentTime = WPIUtilJNI.now() * 1e-6;
-    double elapsedTime = currentTime - m_prevTime;
-    double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
-    if (angleDif < 0.45 * Math.PI) {
-      m_currentTranslationDir =
-          SwerveUtils.StepTowardsCircular(
-              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-      m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-    } else if (angleDif > 0.85 * Math.PI) {
-      if (m_currentTranslationMag
-          > 1e-4) { // some small number to avoid floating-point errors with equality checking
-        // keep currentTranslationDir unchanged
-        m_currentTranslationMag = m_magLimiter.calculate(0.0);
-      } else {
-        m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
-        m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-      }
-    } else {
-      m_currentTranslationDir =
-          SwerveUtils.StepTowardsCircular(
-              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-      m_currentTranslationMag = m_magLimiter.calculate(0.0);
-    }
-    m_prevTime = currentTime;
-
-    xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
-    ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
+    xSpeedCommanded = m_magLimiter.calculate(xSpeed);
+    ySpeedCommanded = m_magLimiter1.calculate(ySpeed);
     m_currentRotation = m_rotLimiter.calculate(rot);
 
     // Convert the commanded speeds into the correct units for the drivetrain
@@ -191,46 +153,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double xSpeedCommanded;
     double ySpeedCommanded;
 
-    // Convert XY to polar for rate limiting
-    double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
-    double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
-
-    // Calculate the direction slew rate based on an estimate of the lateral acceleration
-    double directionSlewRate;
-    if (m_currentTranslationMag != 0.0) {
-      directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / m_currentTranslationMag);
-    } else {
-      directionSlewRate =
-          500.0; // some high number that means the slew rate is effectively instantaneous
-    }
-
-    double currentTime = WPIUtilJNI.now() * 1e-6;
-    double elapsedTime = currentTime - m_prevTime;
-    double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, m_currentTranslationDir);
-    if (angleDif < 0.45 * Math.PI) {
-      m_currentTranslationDir =
-          SwerveUtils.StepTowardsCircular(
-              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-      m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-    } else if (angleDif > 0.85 * Math.PI) {
-      if (m_currentTranslationMag
-          > 1e-4) { // some small number to avoid floating-point errors with equality checking
-        // keep currentTranslationDir unchanged
-        m_currentTranslationMag = m_magLimiter.calculate(0.0);
-      } else {
-        m_currentTranslationDir = SwerveUtils.WrapAngle(m_currentTranslationDir + Math.PI);
-        m_currentTranslationMag = m_magLimiter.calculate(inputTranslationMag);
-      }
-    } else {
-      m_currentTranslationDir =
-          SwerveUtils.StepTowardsCircular(
-              m_currentTranslationDir, inputTranslationDir, directionSlewRate * elapsedTime);
-      m_currentTranslationMag = m_magLimiter.calculate(0.0);
-    }
-    m_prevTime = currentTime;
-
-    xSpeedCommanded = m_currentTranslationMag * Math.cos(m_currentTranslationDir);
-    ySpeedCommanded = m_currentTranslationMag * Math.sin(m_currentTranslationDir);
+    xSpeedCommanded = m_magLimiter.calculate(xSpeed);
+    ySpeedCommanded = m_magLimiter1.calculate(ySpeed);
     m_currentRotation = m_rotLimiter.calculate(rot);
 
     // Convert the commanded speeds into the correct units for the drivetrain
