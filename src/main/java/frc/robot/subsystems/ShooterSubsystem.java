@@ -24,9 +24,9 @@ public class ShooterSubsystem extends SubsystemBase {
     encAmpArm.setPosition(0); // Reset Encoder on Boot
   }
 
-  public void ShooterForwardCmd(double rTrigValue, double lTrigValue) {
-    m_shooterMotor1.set(rTrigValue);
-    m_shooterMotor2.set(lTrigValue);
+  public void ShooterForwardCmd(double lTrigValue, double rTrigValue) {
+    m_shooterMotor1.set(lTrigValue);
+    m_shooterMotor2.set(rTrigValue);
   }
 
   public void motorStop() {

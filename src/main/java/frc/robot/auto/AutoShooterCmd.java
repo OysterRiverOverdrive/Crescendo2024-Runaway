@@ -15,7 +15,8 @@ public class AutoShooterCmd extends Command {
   double lInSpeed;
   double timeRunning;
 
-  public AutoShooterCmd(ShooterSubsystem shoots, double rightInputSpeed, double leftInputSpeed, double timeRun) {
+  public AutoShooterCmd(
+      ShooterSubsystem shoots, double leftInputSpeed, double rightInputSpeed, double timeRun) {
     shoot = shoots;
     rInSpeed = rightInputSpeed;
     lInSpeed = leftInputSpeed;
@@ -33,7 +34,7 @@ public class AutoShooterCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shoot.ShooterForwardCmd(rInSpeed,lInSpeed);
+    shoot.ShooterForwardCmd(lInSpeed, rInSpeed);
   }
 
   // Called once the command ends or is interrupted.
