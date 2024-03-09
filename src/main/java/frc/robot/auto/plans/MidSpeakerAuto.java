@@ -14,15 +14,14 @@ import frc.robot.auto.AutoCreationCmd;
 import frc.robot.auto.AutoFeederCmd;
 import frc.robot.auto.AutoShooterCmd;
 import frc.robot.auto.AutoSleepCmd;
-import frc.robot.auto.IntakeAutoCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.List;
 
-public class LeftAmpAuto extends ParallelCommandGroup {
-  public LeftAmpAuto(
+public class MidSpeakerAuto extends ParallelCommandGroup {
+  public MidSpeakerAuto(
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
@@ -30,29 +29,29 @@ public class LeftAmpAuto extends ParallelCommandGroup {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
-    Command ampShoot =
+    Command speakerShoot =
         autodrive.AutoDriveCmd(
             drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
-    Command goToNote =
+    Command getNote =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.5, 0), new Translation2d(1.2192,0), new Translation2d(1.2192,0.4)), new Pose2d(1.2192, 0.889, new Rotation2d(Math.PI/2)));
-    Command ampShoot2 =
+            drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
+    Command speakerShoot2 =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(1.2192,0.4), new Translation2d(1.2192,0), new Translation2d(0.5, 0)), new Pose2d(0.45, 0, new Rotation2d(-Math.PI/2)));
+            drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(ampShoot, new AutoSleepCmd(3.5), goToNote, new AutoSleepCmd(1),ampShoot2),
+        new SequentialCommandGroup(speakerShoot, new AutoSleepCmd(4), getNote, speakerShoot2),
 
         // Intake Sequential
-        new SequentialCommandGroup(new AutoSleepCmd(4.5), new IntakeAutoCmd(intake, true, 1)),
+        new SequentialCommandGroup(new AutoSleepCmd(0)),
 
         // Feeder Sequential
         new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5)),
 
         // Shooter Sequential
-        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 3)));
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 1, 3)));
   }
 }
