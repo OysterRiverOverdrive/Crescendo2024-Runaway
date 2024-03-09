@@ -53,8 +53,8 @@ public class RobotContainer {
           () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Commands
-  private final BackAndShootAuto backAndShootAuto =
-      new BackAndShootAuto(drivetrain, intake, feeder, shooter);
+  private final LeftAmpAuto backAndShootAuto =
+      new LeftAmpAuto(drivetrain, intake, feeder, shooter);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
