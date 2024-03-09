@@ -19,6 +19,7 @@ import frc.robot.commands.Hanger.*;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Shooter.*;
 import frc.robot.commands.TeleopCmd;
+import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.HangerSubsystem;
@@ -45,6 +46,7 @@ public class RobotContainer {
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
   private final FeederSubsystem feeder = new FeederSubsystem();
+  private final DashboardSubsystem dash = new DashboardSubsystem();
 
   // Commands
   private final TeleopCmd teleopCmd =
@@ -55,6 +57,8 @@ public class RobotContainer {
   // Auto Commands
   private final BackAndShootAuto backAndShootAuto =
       new BackAndShootAuto(drivetrain, intake, feeder, shooter);
+  private final LeftSpeakerAuto leftSpeakerAuto = new LeftSpeakerAuto(drivetrain, intake, feeder, shooter, dash);
+  private final RightSpeakerAuto rightSpeakerAuto = new RightSpeakerAuto(drivetrain, intake, feeder, shooter, dash);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
@@ -64,8 +68,8 @@ public class RobotContainer {
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Back And Shoot", auto1);
-    m_chooser.addOption("Null1", auto2);
-    m_chooser.addOption("Null2", auto3);
+    m_chooser.addOption("Left Speaker", auto2);
+    m_chooser.addOption("Right Speaker", auto3);
     m_chooser.addOption("Null3", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
@@ -127,10 +131,10 @@ public class RobotContainer {
         auto = backAndShootAuto;
         break;
       case auto2:
-        auto = null;
+        auto = leftSpeakerAuto;
         break;
       case auto3:
-        auto = null;
+        auto = rightSpeakerAuto;
         break;
       case auto4:
         auto = null;

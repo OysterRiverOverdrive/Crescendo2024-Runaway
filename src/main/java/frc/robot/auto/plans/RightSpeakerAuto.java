@@ -21,8 +21,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.List;
 
-public class LeftSpeakerAuto extends ParallelCommandGroup {
-  public LeftSpeakerAuto(
+public class RightSpeakerAuto extends ParallelCommandGroup {
+  public RightSpeakerAuto(
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
@@ -33,7 +33,7 @@ public class LeftSpeakerAuto extends ParallelCommandGroup {
     // Auto Driving Commands
     Command LeftShoot =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.3, 0)), new Pose2d(0.76, -0.12*dash.getAlliance(), new Rotation2d(dash.getAlliance()*2*Math.PI/3)));
+            drivetrain, List.of(new Translation2d(0.3, 0)), new Pose2d(0.76, 0.12*dash.getAlliance(), new Rotation2d(dash.getAlliance()*-2*Math.PI/3)));
 
     // Command LeftNote = 
     //     autodrive.AutoDriveCmd(
