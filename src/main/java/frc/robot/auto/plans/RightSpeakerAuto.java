@@ -14,7 +14,6 @@ import frc.robot.auto.AutoCreationCmd;
 import frc.robot.auto.AutoFeederCmd;
 import frc.robot.auto.AutoShooterCmd;
 import frc.robot.auto.AutoSleepCmd;
-import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -26,25 +25,17 @@ public class RightSpeakerAuto extends ParallelCommandGroup {
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
-      ShooterSubsystem shooter,
-      DashboardSubsystem dash) {
+      ShooterSubsystem shooter) {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
-    Command LeftShoot =
+    Command RightShoot =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.3, 0)), new Pose2d(0.76, 0.12*dash.getAlliance(), new Rotation2d(dash.getAlliance()*-2*Math.PI/3)));
-
-    // Command LeftNote = 
-    //     autodrive.AutoDriveCmd(
-    //         drivetrain, List.of(new Translation2d(1.4, 0)), new Pose2d(2.9, 0, new Rotation2d(-Math.PI/2 + 0.1328*Math.PI)));
-
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+            drivetrain, List.of(new Translation2d(0.3, 0)), new Pose2d(0.76, 0.12, new Rotation2d(-2*Math.PI/3)));
     
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(LeftShoot, new AutoSleepCmd(4)),
+        new SequentialCommandGroup(RightShoot, new AutoSleepCmd(4)),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0)),
@@ -53,6 +44,6 @@ public class RightSpeakerAuto extends ParallelCommandGroup {
         new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5)),
 
         // Shooter Sequential
-        new SequentialCommandGroup(new AutoShooterCmd(shooter, 0.85, 1, 3)));
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 0.85, 3)));
   }
 }
