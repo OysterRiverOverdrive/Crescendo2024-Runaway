@@ -61,6 +61,7 @@ public class RobotContainer {
       new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
+  private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
@@ -72,7 +73,7 @@ public class RobotContainer {
     m_chooser.setDefaultOption("Back And Shoot", auto1);
     m_chooser.addOption("Left Speaker", auto2);
     m_chooser.addOption("Right Speaker", auto3);
-    m_chooser.addOption("Null3", auto4);
+    m_chooser.addOption("Showy Auto", auto4);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
@@ -139,7 +140,7 @@ public class RobotContainer {
         auto = rightSpeakerAuto;
         break;
       case auto4:
-        auto = null;
+        auto = showyAuto;
         break;
     }
     // Create sequential command with the wait command first then run selected auto
