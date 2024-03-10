@@ -81,7 +81,7 @@ public class FeederSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Note Detected (Color)", getColorSensor());
-    SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwtich());
-    SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());
+    // SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwtich());
+    // SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());
   }
 }

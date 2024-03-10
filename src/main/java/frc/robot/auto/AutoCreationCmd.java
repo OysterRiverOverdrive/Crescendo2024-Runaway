@@ -7,7 +7,6 @@ package frc.robot.auto;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -56,7 +55,7 @@ public class AutoCreationCmd {
     // Generate trajectory
     Trajectory trajectory =
         TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new Rotation2d(0)), waypoints, finalrest, trajectoryConfig);
+            drivetrain.getPose(), waypoints, finalrest, trajectoryConfig);
 
     // Construct command to follow trajectory
     SwerveControllerCommand swerveControllerCommand =
