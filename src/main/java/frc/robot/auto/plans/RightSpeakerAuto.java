@@ -31,8 +31,10 @@ public class RightSpeakerAuto extends ParallelCommandGroup {
     // Auto Driving Commands
     Command RightShoot =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.3, 0)), new Pose2d(0.76, 0.12, new Rotation2d(-2*Math.PI/3)));
-    
+            drivetrain,
+            List.of(new Translation2d(0.3, 0)),
+            new Pose2d(0.76, 0.12, new Rotation2d(-2 * Math.PI / 3)));
+
     addCommands(
         // Drivetrain Sequential
         new SequentialCommandGroup(RightShoot, new AutoSleepCmd(4)),

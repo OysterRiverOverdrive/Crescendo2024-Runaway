@@ -57,8 +57,10 @@ public class RobotContainer {
   // Auto Commands
   private final BackAndShootAuto backAndShootAuto =
       new BackAndShootAuto(drivetrain, intake, feeder, shooter);
-  private final LeftSpeakerAuto leftSpeakerAuto = new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
-  private final RightSpeakerAuto rightSpeakerAuto = new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
+  private final LeftSpeakerAuto leftSpeakerAuto =
+      new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
+  private final RightSpeakerAuto rightSpeakerAuto =
+      new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
