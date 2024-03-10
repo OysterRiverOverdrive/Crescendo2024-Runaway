@@ -37,15 +37,15 @@ public class BackAndShootAuto extends ParallelCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(speakerForwards, new AutoSleepCmd(4)),
+        new SequentialCommandGroup(speakerForwards),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0)),
 
         // Feeder Sequential
-        new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5)),
+        new SequentialCommandGroup(new AutoSleepCmd(1.5), new AutoFeederCmd(feeder, true, 0.5)),
 
         // Shooter Sequential
-        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 1, 3)));
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 1, 2)));
   }
 }

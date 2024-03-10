@@ -26,7 +26,7 @@ public class AutoSleepCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Auto is Waiting " + timer.get());
+    String placeholder = "Weeeee";
   }
 
   // Called once the command ends or is interrupted.
