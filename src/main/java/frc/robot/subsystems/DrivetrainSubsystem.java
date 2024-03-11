@@ -13,7 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-// import edu.wpi.first.util.WPIUtilJNI;
+import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.utils.SwerveModule;
-// import frc.utils.SwerveUtils;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   // Create SwerveModules
@@ -55,14 +54,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   // Slew rate filter variables for controlling lateral acceleration
   private double m_currentRotation = 0.0;
+  private double m_currentTranslationDir = 0.0;
+  private double m_currentTranslationMag = 0.0;
 
-  private double xspeedjoy;
-  private double yspeedjoy;
-  private double rspeedjoy;
-
-  private double xspeedapplied;
-  private double yspeedapplied;
-  private double rspeedapplied;
+  private double x;
+  private double y;
+  private double r;
 
   private boolean waiting;
   private boolean demoMode = false;
@@ -70,8 +67,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private double maxSpeedTurn = DriveConstants.kMaxAngularSpeed;
 
   private SlewRateLimiter m_magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
-  private SlewRateLimiter m_mag1Limiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
+  private SlewRateLimiter m_magLimiter1 = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
   private SlewRateLimiter m_rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
+  private double m_prevTime = WPIUtilJNI.now() * 1e-6;
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
@@ -109,25 +107,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void fieldDrive(double xSpeed, double ySpeed, double rot) {
 
-    xspeedjoy = xSpeed;
-    yspeedjoy = ySpeed;
-    rspeedjoy = rot;
-
     double xSpeedCommanded;
     double ySpeedCommanded;
 
-    m_currentRotation = m_rotLimiter.calculate(rot);
     xSpeedCommanded = m_magLimiter.calculate(xSpeed);
-    ySpeedCommanded = m_mag1Limiter.calculate(ySpeed);
+    ySpeedCommanded = m_magLimiter1.calculate(ySpeed);
+    m_currentRotation = m_rotLimiter.calculate(rot);
 
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * maxSpeedDrive;
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
-    xspeedapplied = xSpeedDelivered;
-    yspeedapplied = ySpeedDelivered;
-    rspeedapplied = rotDelivered;
+    x = xSpeedDelivered;
+    y = ySpeedDelivered;
+    r = rotDelivered;
 
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -153,25 +147,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void robotDrive(double xSpeed, double ySpeed, double rot) {
 
-    xspeedjoy = xSpeed;
-    yspeedjoy = ySpeed;
-    rspeedjoy = rot;
-
     double xSpeedCommanded;
     double ySpeedCommanded;
 
-    m_currentRotation = m_rotLimiter.calculate(rot);
     xSpeedCommanded = m_magLimiter.calculate(xSpeed);
-    ySpeedCommanded = m_mag1Limiter.calculate(ySpeed);
+    ySpeedCommanded = m_magLimiter1.calculate(ySpeed);
+    m_currentRotation = m_rotLimiter.calculate(rot);
 
     // Convert the commanded speeds into the correct units for the drivetrain
     double xSpeedDelivered = xSpeedCommanded * maxSpeedDrive;
     double ySpeedDelivered = ySpeedCommanded * maxSpeedDrive;
     double rotDelivered = m_currentRotation * maxSpeedTurn;
 
-    xspeedapplied = xSpeedDelivered;
-    yspeedapplied = ySpeedDelivered;
-    rspeedapplied = rotDelivered;
+    x = xSpeedDelivered;
+    y = ySpeedDelivered;
+    r = rotDelivered;
 
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -295,8 +285,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Z axis", m_gyro.getYaw());
     SmartDashboard.putNumber("Z axis angle", getHeading());
+    // SmartDashboard.putNumber("x", x);
+    // SmartDashboard.putNumber("y", y);
+    // SmartDashboard.putNumber("r", r);
     SmartDashboard.putBoolean("Auto is Waiting", waiting);
 
     // Update the odometry in the periodic block

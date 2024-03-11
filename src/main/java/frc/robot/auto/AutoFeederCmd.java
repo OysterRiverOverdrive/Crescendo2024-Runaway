@@ -6,14 +6,19 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.FeederSubsystem;
 
-public class AutoSleepCmd extends Command {
+public class AutoFeederCmd extends Command {
+  private FeederSubsystem feeder;
   private Timer timer = new Timer();
-  private double sleepTime;
-  /** Creates a new AutoSleepCmd. */
-  public AutoSleepCmd(double timeSleep) {
-    sleepTime = timeSleep;
-    // Use addRequirements() here to declare subsystem dependencies.
+  public boolean toShooter;
+  public double timeNum;
+
+  public AutoFeederCmd(FeederSubsystem feeders, boolean goToShooter, double time) {
+    feeder = feeders;
+    toShooter = goToShooter;
+    timeNum = time;
+    addRequirements(feeders);
   }
 
   // Called when the command is initially scheduled.
@@ -26,26 +31,24 @@ public class AutoSleepCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    String placeholder = "Weeeee";
+    if (toShooter) {
+      feeder.ToShooterCmd();
+    } else {
+      feeder.InFeederCmd();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+    feeder.StopFeederCmd();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean retVal = false;
     double currTime = timer.get();
-    if (currTime >= sleepTime) {
-      retVal = true;
-    } else {
-      retVal = false;
-    }
 
-    return retVal;
+    return currTime >= timeNum ? true : false;
   }
 }
