@@ -20,8 +20,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.List;
 
-public class BackAndShootAuto extends ParallelCommandGroup {
-  public BackAndShootAuto(
+public class LeftSpeakerAuto extends ParallelCommandGroup {
+  public LeftSpeakerAuto(
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
@@ -29,23 +29,23 @@ public class BackAndShootAuto extends ParallelCommandGroup {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
-    Command speakerForwards =
+    Command LeftShoot =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
+            drivetrain,
+            List.of(new Translation2d(0.3, 0)),
+            new Pose2d(0.76, -0.12, new Rotation2d(2 * Math.PI / 3)));
 
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(speakerForwards),
+        new SequentialCommandGroup(LeftShoot, new AutoSleepCmd(4)),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0)),
 
         // Feeder Sequential
-        new SequentialCommandGroup(new AutoSleepCmd(1.5), new AutoFeederCmd(feeder, true, 0.5)),
+        new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5)),
 
         // Shooter Sequential
-        new SequentialCommandGroup(new AutoShooterCmd(shooter, 1, 1, 2)));
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 0.85, 1, 3)));
   }
 }
