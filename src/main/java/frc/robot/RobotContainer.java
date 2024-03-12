@@ -91,13 +91,13 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 1)))
         .onFalse(new ShooterStopCmd(shooter));
 
-    // Speaker Left Bank Shot (Driverstation POV)
+    // Speaker Right Bank Shot (Driverstation POV)
     cutil
         .supplier(Controllers.ps4_O, joysticks.OPERATOR)
         .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 0.8)))
         .onFalse(new ShooterStopCmd(shooter));
 
-    // Speaker Right Bank Shot (Driverstation POV)
+    // Speaker Left Bank Shot (Driverstation POV)
     cutil
         .supplier(Controllers.ps4_square, joysticks.OPERATOR)
         .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(0.8, 1)))
