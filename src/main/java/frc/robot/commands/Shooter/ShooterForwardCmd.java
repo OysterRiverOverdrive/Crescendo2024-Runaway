@@ -34,7 +34,7 @@ public class ShooterForwardCmd extends Command {
   public void execute() {
     // trigger value (how far it's pushed in) is set as the speed of the motor
     double trigValue = oper.getRawAxis(Controllers.ps4_RT);
-    shooter.ShooterForwardCmd(trigValue * 0.6, trigValue * 0.6);
+    shooter.ShooterForwardCmd(trigValue * 0.75, trigValue * 0.75);
 
     double degreeout = RobotConstants.kAmpArmDegreesOut / 360; // Convert to percentage of rotation
     if (trigValue >= RobotConstants.kAmpArmTrigActivate) {
