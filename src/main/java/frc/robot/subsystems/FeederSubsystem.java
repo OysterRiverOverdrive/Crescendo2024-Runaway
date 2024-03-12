@@ -28,8 +28,6 @@ public class FeederSubsystem extends SubsystemBase {
   private final ColorMatch m_colorMatcher = new ColorMatch();
   private final Color OrangeTarget = new Color(0.546, 0.363, 0.091);
 
-  private boolean trigger = false;
-
   public FeederSubsystem() {
     m_feedRightMotor.follow(m_feedLeftMotor, true);
 
@@ -60,7 +58,6 @@ public class FeederSubsystem extends SubsystemBase {
 
     if (match.color == OrangeTarget && match.confidence > 0.85) {
 
-      trigger = true;
       return true;
 
     } else {
@@ -84,7 +81,6 @@ public class FeederSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Note Detected (Color)", getColorSensor());
-    SmartDashboard.putBoolean("Color Trigger", trigger);
     // Used for Limit Switch when on Robot
     // SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwitch());
     // SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());

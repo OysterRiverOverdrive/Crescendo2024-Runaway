@@ -88,20 +88,17 @@ public class RobotContainer {
     // Speaker Straight Shot
     cutil
         .supplier(Controllers.ps4_X, joysticks.OPERATOR)
-        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 1)))
-        .onFalse(new ShooterStopCmd(shooter));
+        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 1)));
 
     // Speaker Right Bank Shot (Driverstation POV)
     cutil
         .supplier(Controllers.ps4_O, joysticks.OPERATOR)
-        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 0.8)))
-        .onFalse(new ShooterStopCmd(shooter));
+        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 0.8)));
 
     // Speaker Left Bank Shot (Driverstation POV)
     cutil
         .supplier(Controllers.ps4_square, joysticks.OPERATOR)
-        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(0.8, 1)))
-        .onFalse(new ShooterStopCmd(shooter));
+        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(0.8, 1)));
 
     // Hangers Up
     cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
