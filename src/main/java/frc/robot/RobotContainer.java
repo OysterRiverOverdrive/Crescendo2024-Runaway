@@ -122,7 +122,7 @@ public class RobotContainer {
 
     // Feeder Out
     cutil
-        .supplier(Controllers.ps4_triangle, DriveConstants.joysticks.OPERATOR)
+        .supplier(Controllers.ps4_share, DriveConstants.joysticks.OPERATOR)
         .onTrue(new OutFeederCmd(feeder))
         .onFalse(new StopFeederCmd(feeder));
 
