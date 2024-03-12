@@ -65,7 +65,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
-    // Shooter Controls
+    // Amp Shot
     shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
 
     // Add Auto options to dropdown and push to dashboard
@@ -85,11 +85,29 @@ public class RobotContainer {
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
+    // Speaker Straight Shot
+    cutil
+        .supplier(Controllers.ps4_X, joysticks.OPERATOR)
+        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 1)))
+        .onFalse(new ShooterStopCmd(shooter));
+
+    // Speaker Right Bank Shot (Driverstation POV)
+    cutil
+        .supplier(Controllers.ps4_O, joysticks.OPERATOR)
+        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 0.8)))
+        .onFalse(new ShooterStopCmd(shooter));
+
+    // Speaker Left Bank Shot (Driverstation POV)
+    cutil
+        .supplier(Controllers.ps4_square, joysticks.OPERATOR)
+        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(0.8, 1)))
+        .onFalse(new ShooterStopCmd(shooter));
+
     // Hangers Up
-    cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
 
     // Hangers Down
-    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
+    cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
     // Zero Heading
     cutil
