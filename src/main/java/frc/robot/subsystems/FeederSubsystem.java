@@ -62,7 +62,7 @@ public class FeederSubsystem extends SubsystemBase {
 
       trigger = true;
       return true;
-  
+
     } else {
 
       return false;
