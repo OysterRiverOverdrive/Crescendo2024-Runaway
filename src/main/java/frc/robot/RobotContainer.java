@@ -53,6 +53,12 @@ public class RobotContainer {
       new TeleopCmd(
           drivetrain,
           () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
+  private final ShooterForwardCmd shooterForwardCmd =
+      new ShooterForwardCmd(
+          shooter,
+          () -> cutil.Boolsupplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR),
+          () -> cutil.Boolsupplier(Controllers.ps4_square, DriveConstants.joysticks.OPERATOR),
+          () -> cutil.Boolsupplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR));
 
   // Auto Commands
   private final BackAndShootAuto backAndShootAuto =
@@ -66,7 +72,7 @@ public class RobotContainer {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
     // Amp Shot
-    shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
+    shooter.setDefaultCommand(shooterForwardCmd);
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Back And Shoot", auto1);
@@ -84,21 +90,6 @@ public class RobotContainer {
     // Configure buttons
     // Prior Reference:
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
-
-    // Speaker Straight Shot
-    cutil
-        .supplier(Controllers.ps4_X, joysticks.OPERATOR)
-        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 1)));
-
-    // Speaker Right Bank Shot (Driverstation POV)
-    cutil
-        .supplier(Controllers.ps4_O, joysticks.OPERATOR)
-        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(1, 0.8)));
-
-    // Speaker Left Bank Shot (Driverstation POV)
-    cutil
-        .supplier(Controllers.ps4_square, joysticks.OPERATOR)
-        .onTrue(new InstantCommand(() -> shooter.ShooterForwardCmd(0.8, 1)));
 
     // Hangers Up
     cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
