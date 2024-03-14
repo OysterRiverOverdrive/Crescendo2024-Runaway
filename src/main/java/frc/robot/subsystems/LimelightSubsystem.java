@@ -25,9 +25,17 @@ public class LimelightSubsystem extends SubsystemBase {
   private final NetworkTableEntry botpose_wpired = table.getEntry("botpose_wpired");
   private final NetworkTableEntry botpose_wpiblue = table.getEntry("botpose_wpiblue");
   private final NetworkTableEntry tid = table.getEntry("tid"); // ID of currently-seen target
+  private final NetworkTableEntry leds = table.getEntry("ledMode");
+  private final NetworkTableEntry camMode = table.getEntry("camMode");
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<String> led_chooser = new SendableChooser<>();
+  private final SendableChooser<String> view_chooser = new SendableChooser<>();
   private final String abs_choice = "absolute coodinates";
   private final String alliance_choice = "alliance coordinates";
+  private final String leds_on = "leds on";
+  private final String leds_off = "leds_off";
+  private final String vision_view = "vision";
+  private final String driver_view = "driver";
   private boolean absoluteCoordinates;
 
   /** Creates a new LimelightSubSys. */
@@ -38,6 +46,16 @@ public class LimelightSubsystem extends SubsystemBase {
     m_chooser.setDefaultOption("Absolute", abs_choice);
     m_chooser.addOption("Alliance", alliance_choice);
     SmartDashboard.putData("Limelight Coordinates", m_chooser);
+
+    // Default to LEDs off
+    led_chooser.setDefaultOption("Off", leds_off);
+    led_chooser.addOption("On", leds_on);
+    SmartDashboard.putData("Limelight LEDs", led_chooser);
+
+    // Default to computer vision mode (detects target, lower quality stream)
+    view_chooser.setDefaultOption("Vision", vision_view);
+    view_chooser.addOption("Driver Only", driver_view);
+    SmartDashboard.putData("Limelight CamMode", view_chooser);
   }
 
   @Override
@@ -46,6 +64,20 @@ public class LimelightSubsystem extends SubsystemBase {
       setAbsoluteCoords();
     } else {
       setAllianceCoords();
+    }
+
+    // Turn camera LEDs off or on
+    if (led_chooser.getSelected().equals(leds_off)) {
+      leds.setNumber(1);
+    } else {
+      leds.setNumber(3);
+    }
+
+    // Choose computer vision mode or driver only mode
+    if (view_chooser.getSelected().equals(vision_view)) {
+      camMode.setNumber(0);
+    } else {
+      camMode.setNumber(1);
     }
 
     // read values periodically
