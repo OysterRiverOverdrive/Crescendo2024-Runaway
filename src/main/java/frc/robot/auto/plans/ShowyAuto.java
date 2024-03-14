@@ -42,13 +42,23 @@ public class ShowyAuto extends ParallelCommandGroup {
     Command showyDrive4 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0, 1.87 / 2)),
-            new Pose2d(1.05, 1.87, new Rotation2d(0)));
+            List.of(new Translation2d(0, 1.72 / 2)),
+            new Pose2d(1.05, 1.72, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-1, -1.87 / 2)),
-            new Pose2d(-1.05, -1.87, new Rotation2d(0)));
+            List.of(new Translation2d(-1, -1.72 / 2)),
+            new Pose2d(-1.05, -1.72, new Rotation2d(0)));
+    Command showyDrive6 =
+        autodrive.AutoDriveCmd(
+            drivetrain,
+            List.of(new Translation2d(0, -1.45 / 2)),
+            new Pose2d(1.05, -1.45, new Rotation2d(0)));
+    Command showyDrive7 =
+        autodrive.AutoDriveCmd(
+            drivetrain,
+            List.of(new Translation2d(-1, 1.45 / 2)),
+            new Pose2d(-1.05, 1.45, new Rotation2d(0)));
     addCommands(
 
         // Driving groups
@@ -56,26 +66,32 @@ public class ShowyAuto extends ParallelCommandGroup {
             showyDrive1,
             new AutoSleepCmd(1),
             showyDrive2,
-            new AutoSleepCmd(1),
+            new AutoSleepCmd(.3),
             showyDrive3,
-            new AutoSleepCmd(2),
-            showyDrive4,
             new AutoSleepCmd(1),
-            showyDrive5),
+            showyDrive4,
+            new AutoSleepCmd(.3),
+            showyDrive5,
+            new AutoSleepCmd(1),
+            showyDrive6,
+            new AutoSleepCmd(.3),
+            showyDrive7, 
+            new AutoSleepCmd(1000)),
 
         // Intake group
-        new SequentialCommandGroup(new AutoSleepCmd(0), new IntakeAutoCmd(intake, 10)),
+        new SequentialCommandGroup(new AutoSleepCmd(0), new IntakeAutoCmd(intake, 20)),
 
         // Feeder group
         new SequentialCommandGroup(
             new AutoSleepCmd(1), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4.5), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4), new AutoFeederCmd(feeder, true, .5)),
-
+            new AutoSleepCmd(3.5), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(5.25), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(6.75), new AutoFeederCmd(feeder, true, .5)),
         // Shooter group
         new SequentialCommandGroup(
             new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(3), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(2.5), new AutoShooterCmd(shooter, 1, 1, 1.5)));
+            new AutoSleepCmd(2.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
+            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
+            new AutoSleepCmd(6), new AutoShooterCmd(shooter, 1, 1, 1.5)));
   }
 }
