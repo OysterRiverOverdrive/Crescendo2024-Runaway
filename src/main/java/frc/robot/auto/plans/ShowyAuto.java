@@ -30,10 +30,10 @@ public class ShowyAuto extends ParallelCommandGroup {
 
     Command showyDrive1 =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(.22, 0)), new Pose2d(.45, 0, new Rotation2d(0)));
+            drivetrain, List.of(new Translation2d(.22, 0)), new Pose2d(.5, 0, new Rotation2d(0)));
     Command showyDrive2 =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(.85, 0)), new Pose2d(1.25, 0, new Rotation2d(0)));
+            drivetrain, List.of(new Translation2d(.85, 0)), new Pose2d(1.30, 0, new Rotation2d(0)));
     Command showyDrive3 =
         autodrive.AutoDriveCmd(
             drivetrain,
@@ -43,12 +43,12 @@ public class ShowyAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(0, 1.72 / 2)),
-            new Pose2d(1.05, 1.72, new Rotation2d(0)));
+            new Pose2d(.7, 1.755, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-1, -1.72 / 2)),
-            new Pose2d(-1.05, -1.72, new Rotation2d(0)));
+            List.of(new Translation2d(-.35, -1.72 / 2)),
+            new Pose2d(-.7, -1.755, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
@@ -66,16 +66,16 @@ public class ShowyAuto extends ParallelCommandGroup {
             showyDrive1,
             new AutoSleepCmd(1),
             showyDrive2,
-            new AutoSleepCmd(.3),
+            new AutoSleepCmd(0),
             showyDrive3,
-            new AutoSleepCmd(1),
+            new AutoSleepCmd(.5),
             showyDrive4,
             new AutoSleepCmd(.3),
             showyDrive5,
-            new AutoSleepCmd(1),
+            new AutoSleepCmd(.5),
             showyDrive6,
             new AutoSleepCmd(.3),
-            showyDrive7, 
+            showyDrive7,
             new AutoSleepCmd(1000)),
 
         // Intake group
@@ -83,15 +83,15 @@ public class ShowyAuto extends ParallelCommandGroup {
 
         // Feeder group
         new SequentialCommandGroup(
-            new AutoSleepCmd(1), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(3.5), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(5.25), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(6.75), new AutoFeederCmd(feeder, true, .5)),
+            new AutoSleepCmd(1.4), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(2.9), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(5.75), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(4.75), new AutoFeederCmd(feeder, true, .5)),
         // Shooter group
         new SequentialCommandGroup(
             new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(2.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(6), new AutoShooterCmd(shooter, 1, 1, 1.5)));
+            new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 1, 1.5),
+            new AutoSleepCmd(4), new AutoShooterCmd(shooter, 1, 1, 1.5),
+            new AutoSleepCmd(4), new AutoShooterCmd(shooter, 1, 1, 1.5)));
   }
 }
