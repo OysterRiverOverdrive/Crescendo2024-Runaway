@@ -11,13 +11,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeAutoCmd extends Command {
   private Timer timer = new Timer();
   IntakeSubsystem intake;
-  boolean bumperOrRollerMotor;
   double timeRunning;
 
-  public IntakeAutoCmd(IntakeSubsystem intakes, boolean useBumperOrRollerMotor, double timeRun) {
+  public IntakeAutoCmd(IntakeSubsystem intakes, double timeRun) {
     // True means only bumper motor will run, false means only roller motor will run.
     intake = intakes;
-    bumperOrRollerMotor = useBumperOrRollerMotor;
     timeRunning = timeRun;
     addRequirements(intakes);
   }
@@ -32,11 +30,8 @@ public class IntakeAutoCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (bumperOrRollerMotor) {
-      intake.BmotorF();
-    } else {
-      intake.RmotorF();
-    }
+    intake.BmotorF();
+    intake.RmotorF();
   }
 
   // Called once the command ends or is interrupted.
