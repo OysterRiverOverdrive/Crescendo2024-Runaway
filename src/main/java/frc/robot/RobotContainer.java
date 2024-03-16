@@ -55,8 +55,6 @@ public class RobotContainer {
           () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
 
   // Auto Commands
-  private final MidSpeakerAuto midShootAuto =
-      new MidSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final BackAndShootAuto backAndShootAuto =
       new BackAndShootAuto(drivetrain, intake, feeder, shooter);
   private final LeftSpeakerAuto leftSpeakerAuto =
@@ -141,7 +139,7 @@ public class RobotContainer {
         auto = rightSpeakerAuto;
         break;
       case auto4:
-        auto = midShootAuto;
+        auto = null;
         break;
     }
     // Create sequential command with the wait command first then run selected auto
