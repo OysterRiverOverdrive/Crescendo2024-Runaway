@@ -69,7 +69,8 @@ public class RobotContainer {
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter);
-  private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder, shooter);
+  // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
+  // shooter);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
@@ -151,9 +152,9 @@ public class RobotContainer {
       case auto4:
         auto = showyAuto;
         break;
-      case auto5:
-        auto = farRightAuto;
-        break;
+        // case auto5:
+        //   auto = farRightAuto;
+        //   break;
     }
     // Create sequential command with the wait command first then run selected auto
     auto =
