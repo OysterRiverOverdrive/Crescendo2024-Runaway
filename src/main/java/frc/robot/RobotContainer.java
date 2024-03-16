@@ -38,6 +38,7 @@ public class RobotContainer {
   private final String auto2 = "2";
   private final String auto3 = "3";
   private final String auto4 = "4";
+  private final String auto5 = "5";
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
@@ -53,6 +54,12 @@ public class RobotContainer {
       new TeleopCmd(
           drivetrain,
           () -> cutil.Boolsupplier(Controllers.ps4_LB, DriveConstants.joysticks.DRIVER));
+  private final ShooterForwardCmd shooterForwardCmd =
+      new ShooterForwardCmd(
+          shooter,
+          () -> cutil.Boolsupplier(Controllers.ps4_X, DriveConstants.joysticks.OPERATOR),
+          () -> cutil.Boolsupplier(Controllers.ps4_square, DriveConstants.joysticks.OPERATOR),
+          () -> cutil.Boolsupplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR));
 
   // Auto Commands
   private final BackAndShootAuto backAndShootAuto =
@@ -61,18 +68,22 @@ public class RobotContainer {
       new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
+  private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter);
+  // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
+  // shooter);
 
   public RobotContainer() {
     // Declare default command during Teleop Period as TeleopCmd(Driving Command)
     drivetrain.setDefaultCommand(teleopCmd);
-    // Shooter Controls
-    shooter.setDefaultCommand(new ShooterForwardCmd(shooter));
+    // Amp Shot
+    shooter.setDefaultCommand(shooterForwardCmd);
 
     // Add Auto options to dropdown and push to dashboard
     m_chooser.setDefaultOption("Back And Shoot", auto1);
     m_chooser.addOption("Left Speaker", auto2);
     m_chooser.addOption("Right Speaker", auto3);
-    m_chooser.addOption("Mid Speaker", auto4);
+    m_chooser.addOption("Showy Auto", auto4);
+    m_chooser.addOption("Null1", auto5);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
@@ -86,10 +97,10 @@ public class RobotContainer {
     // https://github.com/OysterRiverOverdrive/Charged-Up-2023-Atlas_Chainsaw/blob/main/src/main/java/frc/robot/RobotContainer.java
 
     // Hangers Up
-    cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
+    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerUpCmd(hanger));
 
     // Hangers Down
-    cutil.POVsupplier(180, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
+    cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
     // Zero Heading
     cutil
@@ -139,8 +150,11 @@ public class RobotContainer {
         auto = rightSpeakerAuto;
         break;
       case auto4:
-        auto = null;
+        auto = showyAuto;
         break;
+        // case auto5:
+        //   auto = farRightAuto;
+        //   break;
     }
     // Create sequential command with the wait command first then run selected auto
     auto =
