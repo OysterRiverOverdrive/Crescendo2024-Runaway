@@ -28,11 +28,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void RmotorF() {
-    m_RollerMotor.set(Constants.RobotConstants.intakeMotorForward * .8);
+    m_RollerMotor.set(Constants.RobotConstants.intakeMotorForward * 0.8);
   }
 
   public void RmotorB() {
-    m_RollerMotor.set(Constants.RobotConstants.intakeMotorBackward * .8);
+    m_RollerMotor.set(Constants.RobotConstants.intakeMotorBackward * 0.8);
   }
 
   public void RmotorStop() {
