@@ -83,7 +83,7 @@ public class RobotContainer {
     m_chooser.addOption("Left Speaker", auto2);
     m_chooser.addOption("Right Speaker", auto3);
     m_chooser.addOption("Showy Auto", auto4);
-    m_chooser.addOption("Far Right", auto5);
+    m_chooser.addOption("Null1", auto5);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
