@@ -103,6 +103,10 @@ public class RobotContainer {
     // Hangers Down
     cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
 
+    cutil
+      .supplier(Controllers.ps4_triangle, joysticks.OPERATOR)
+      .onTrue(new InstantCommand(() -> hanger.disableOrEnableCompressor()));
+
     // Zero Heading
     cutil
         .supplier(Controllers.ps4_RB, DriveConstants.joysticks.DRIVER)
