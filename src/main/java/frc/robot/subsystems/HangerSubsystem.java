@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotConstants;
 
@@ -30,11 +31,11 @@ public class HangerSubsystem extends SubsystemBase {
   private final Compressor m_compressor =
       new Compressor(RobotConstants.kPneumaticHubCanId, PneumaticsModuleType.REVPH);
 
-  private boolean prev_alert = false;
+  private boolean Compressor = true;
 
   public HangerSubsystem() {
     // If Compressor on Bot
-    m_compressor.enableAnalog(100, 120);
+    m_compressor.enableAnalog(105, 120);
   }
 
   public double getPressure() {
@@ -51,27 +52,21 @@ public class HangerSubsystem extends SubsystemBase {
     m_rightSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
-  public boolean checkRuns() {
-    // A check to display on dashboard to show potential leaks
-    double pressure = getPressure();
-    if (pressure <= RobotConstants.kMinActuationPSI) {
-      // Not Safe Alert - if statement to cause flickering on the dashboard for attention
-      if (prev_alert) {
-        prev_alert = true;
-      } else {
-        prev_alert = false;
-      }
-      return prev_alert;
-    } else {
-      // Safe
-      prev_alert = true;
-      return prev_alert;
+  public void disableOrEnableCompressor() {
+    if (m_compressor.isEnabled()) {
+      Compressor = false;
+      m_compressor.disable();
+    }
+    else if(!m_compressor.isEnabled()){
+      Compressor = true;
+      m_compressor.enableAnalog(105,120);
     }
   }
+
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Pneumatics Pressure (PSI)", getPressure());
-    SmartDashboard.putBoolean("Pneumatics Alert", checkRuns());
+    SmartDashboard.putBoolean("Pneumatics Alert", Compressor);
   }
 }
