@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.AutoCreationCmd;
 import frc.robot.auto.AutoFeederCmd;
+import frc.robot.auto.AutoIntakeCmd;
 import frc.robot.auto.AutoShooterCmd;
 import frc.robot.auto.AutoSleepCmd;
-import frc.robot.auto.AutoIntakeCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -39,16 +39,12 @@ public class MidTwoAuto extends ParallelCommandGroup {
             drivetrain,
             List.of(new Translation2d(-.85, .2)),
             new Pose2d(-1.25, 0, new Rotation2d(0)));
-    
+
     addCommands(
 
         // Driving groups
         new SequentialCommandGroup(
-            showyDrive1,
-            new AutoSleepCmd(1),
-            showyDrive2,
-            new AutoSleepCmd(0),
-            showyDrive3),
+            showyDrive1, new AutoSleepCmd(1), showyDrive2, new AutoSleepCmd(0), showyDrive3),
 
         // Intake group
         new SequentialCommandGroup(new AutoIntakeCmd(intake, 20)),

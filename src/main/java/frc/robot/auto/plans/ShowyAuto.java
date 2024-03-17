@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.AutoCreationCmd;
 import frc.robot.auto.AutoFeederCmd;
+import frc.robot.auto.AutoIntakeCmd;
 import frc.robot.auto.AutoShooterCmd;
 import frc.robot.auto.AutoSleepCmd;
-import frc.robot.auto.AutoIntakeCmd;
 import frc.robot.subsystems.DashboardSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -24,7 +24,8 @@ public class ShowyAuto extends ParallelCommandGroup {
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
-      ShooterSubsystem shooter, DashboardSubsystem dash) {
+      ShooterSubsystem shooter,
+      DashboardSubsystem dash) {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
@@ -38,28 +39,28 @@ public class ShowyAuto extends ParallelCommandGroup {
     Command showyDrive3 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.85, dash.getAlliance()*0.2)),
+            List.of(new Translation2d(-.85, dash.getAlliance() * 0.2)),
             new Pose2d(-1.25, 0, new Rotation2d(0)));
     Command showyDrive4 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0, dash.getAlliance()*1.72 / 2)),
-            new Pose2d(.9, dash.getAlliance()*1.755, new Rotation2d(0)));
+            List.of(new Translation2d(0, dash.getAlliance() * 1.72 / 2)),
+            new Pose2d(.9, dash.getAlliance() * 1.755, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.35, dash.getAlliance()*-1.72 / 2)),
-            new Pose2d(-.955, dash.getAlliance()*-1.755, new Rotation2d(0)));
+            List.of(new Translation2d(-.35, dash.getAlliance() * -1.72 / 2)),
+            new Pose2d(-.955, dash.getAlliance() * -1.755, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0, dash.getAlliance()*-1.45 / 2)),
-            new Pose2d(1.05, dash.getAlliance()*-1.45, new Rotation2d(0)));
+            List.of(new Translation2d(0, dash.getAlliance() * -1.45 / 2)),
+            new Pose2d(1.05, dash.getAlliance() * -1.45, new Rotation2d(0)));
     Command showyDrive7 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-1, dash.getAlliance()*1.45 / 2)),
-            new Pose2d(-1.05, dash.getAlliance()*1.45, new Rotation2d(0)));
+            List.of(new Translation2d(-1, dash.getAlliance() * 1.45 / 2)),
+            new Pose2d(-1.05, dash.getAlliance() * 1.45, new Rotation2d(0)));
     addCommands(
 
         // Driving groups
@@ -88,7 +89,7 @@ public class ShowyAuto extends ParallelCommandGroup {
             new AutoSleepCmd(2.9), new AutoFeederCmd(feeder, true, .5),
             new AutoSleepCmd(4.25), new AutoFeederCmd(feeder, true, .5),
             new AutoSleepCmd(4.75), new AutoFeederCmd(feeder, true, .5)),
-            //9.55
+        // 9.55
         // Shooter group
         new SequentialCommandGroup(
             new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 1, 1.5),

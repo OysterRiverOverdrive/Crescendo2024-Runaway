@@ -153,9 +153,9 @@ public class RobotContainer {
       case auto4:
         auto = showyAuto;
         break;
-        case auto5:
-          auto = midTwoAuto;
-          break;
+      case auto5:
+        auto = midTwoAuto;
+        break;
     }
     // Create sequential command with the wait command first then run selected auto
     auto =
