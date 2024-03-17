@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeAutoCmd extends Command {
+public class AutoIntakeCmd extends Command {
   private Timer timer = new Timer();
   IntakeSubsystem intake;
   double timeRunning;
 
-  public IntakeAutoCmd(IntakeSubsystem intakes, double timeRun) {
+  public AutoIntakeCmd(IntakeSubsystem intakes, double timeRun) {
     // True means only bumper motor will run, false means only roller motor will run.
     intake = intakes;
     timeRunning = timeRun;

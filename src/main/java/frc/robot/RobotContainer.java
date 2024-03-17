@@ -68,7 +68,8 @@ public class RobotContainer {
       new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
-  private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter);
+  private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter, dash);
+  private final MidTwoAuto midTwoAuto = new MidTwoAuto(drivetrain, intake, feeder, shooter);
   // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
   // shooter);
 
@@ -83,7 +84,7 @@ public class RobotContainer {
     m_chooser.addOption("Left Speaker", auto2);
     m_chooser.addOption("Right Speaker", auto3);
     m_chooser.addOption("Showy Auto", auto4);
-    m_chooser.addOption("Null1", auto5);
+    m_chooser.addOption("Middle 2 note", auto5);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
@@ -101,6 +102,10 @@ public class RobotContainer {
 
     // Hangers Down
     cutil.POVsupplier(0, joysticks.OPERATOR).onTrue(new HangerDownCmd(hanger));
+
+    cutil
+        .supplier(Controllers.ps4_triangle, joysticks.OPERATOR)
+        .onTrue(new InstantCommand(() -> hanger.disableOrEnableCompressor()));
 
     // Zero Heading
     cutil
@@ -152,9 +157,9 @@ public class RobotContainer {
       case auto4:
         auto = showyAuto;
         break;
-        // case auto5:
-        //   auto = farRightAuto;
-        //   break;
+      case auto5:
+        auto = midTwoAuto;
+        break;
     }
     // Create sequential command with the wait command first then run selected auto
     auto =

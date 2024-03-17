@@ -33,11 +33,15 @@ public class BackAndShootAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain, List.of(new Translation2d(0.2, 0)), new Pose2d(0.45, 0, new Rotation2d(0)));
 
+    Command taxi =
+        autodrive.AutoDriveCmd(
+            drivetrain, List.of(new Translation2d(.25, 0)), new Pose2d(.5, 0, new Rotation2d(0)));
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(speakerForwards),
+        new SequentialCommandGroup(speakerForwards, new AutoSleepCmd(4), taxi),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0)),
