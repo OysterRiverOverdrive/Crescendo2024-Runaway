@@ -57,13 +57,13 @@ public class HangerSubsystem extends SubsystemBase {
       m_compressor.disable();
     } else if (!m_compressor.isEnabled()) {
       Compressor = true;
-      m_compressor.enableAnalog(105, 120);
+      m_compressor.enableAnalog(110, 120);
     }
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Pneumatics Pressure (PSI)", getPressure());
-    SmartDashboard.putBoolean("Pneumatics Alert", Compressor);
+    SmartDashboard.putBoolean("Compressor", Compressor);
   }
 }
