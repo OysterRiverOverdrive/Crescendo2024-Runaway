@@ -122,7 +122,7 @@ public final class Constants {
     public static final int FeederRightCanId = 12;
 
     public static final double FeederInSpeed = -0.3;
-    public static final double FeederOutSpeed = 0.2;
+    public static final double FeederOutSpeed = 0.15;
     public static final double FeederToShooterSpeed = -0.45;
 
     public static final int kPneumaticHubCanId = 50;
@@ -147,8 +147,8 @@ public final class Constants {
 
     public static final int LimitSwtichActivation = 193;
     // intake motor speeds
-    public static final double intakeMotorForward = 0.85;
-    public static final double intakeMotorBackward = -0.85;
+    public static final double intakeMotorForward = 0.9;
+    public static final double intakeMotorBackward = -0.9;
   }
 
   // Constants specifically for Swerve Module

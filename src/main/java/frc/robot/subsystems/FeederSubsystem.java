@@ -66,7 +66,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
   }
 
-  public Boolean getLimitSwtich() {
+  public Boolean getLimitSwitch() {
 
     if (limitSwitch.getValue() <= RobotConstants.LimitSwtichActivation) {
 
@@ -81,7 +81,8 @@ public class FeederSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Note Detected (Color)", getColorSensor());
-    // SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwtich());
+    // Used for Limit Switch when on Robot
+    // SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwitch());
     // SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());
   }
 }
