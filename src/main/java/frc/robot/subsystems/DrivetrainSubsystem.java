@@ -74,7 +74,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(getHeading()),
+          Rotation2d.fromRadians(getHeadingRadians()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -224,6 +224,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return Math.IEEEremainder(m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0), 360);
   }
 
+  public double getHeadingRadians()
+  {
+    return (Math.IEEEremainder(m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0), 360) * 2 * Math.PI);
+  }
+
   public Rotation2d getRotation2d() {
     return Rotation2d.fromDegrees(getHeading());
   }
@@ -244,7 +249,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(getHeading()),
+        Rotation2d.fromRadians(getHeadingRadians()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -292,7 +297,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(getHeading()),
+        Rotation2d.fromRadians(getHeadingRadians()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
