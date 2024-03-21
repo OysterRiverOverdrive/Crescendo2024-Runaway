@@ -34,7 +34,7 @@ public class HangerSubsystem extends SubsystemBase {
 
   public HangerSubsystem() {
     // If Compressor on Bot
-    m_compressor.enableAnalog(105, 120);
+    m_compressor.enableAnalog(85, 120);
   }
 
   public double getPressure() {
