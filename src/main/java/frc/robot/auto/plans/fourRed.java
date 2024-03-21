@@ -18,9 +18,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.List;
 
-public class ShowyAuto extends ParallelCommandGroup {
+public class fourRed extends ParallelCommandGroup {
 
-  public ShowyAuto(
+  public fourRed(
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
@@ -39,28 +39,28 @@ public class ShowyAuto extends ParallelCommandGroup {
     Command showyDrive3 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.85, dash.getAlliance() * 0.2)),
+            List.of(new Translation2d(-.85, 0.2)),
             new Pose2d(-1.25, 0, new Rotation2d(0)));
     Command showyDrive4 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(.5, dash.getAlliance() * 1.48)),
-            new Pose2d(1.07, dash.getAlliance() * 1.65, new Rotation2d(0)));
+            List.of(new Translation2d(.5, 1.48)),
+            new Pose2d(1.07, 1.65, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.5, dash.getAlliance() * -1.72)),
-            new Pose2d(-1.07, dash.getAlliance() * -1.65, new Rotation2d(0)));
+            List.of(new Translation2d(-.5, -1.72)),
+            new Pose2d(-1.07, -1.65, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(.5, dash.getAlliance() * -1.48)),
-            new Pose2d(1.07, dash.getAlliance() * -1.65, new Rotation2d(0)));
+            List.of(new Translation2d(.5, -1.48)),
+            new Pose2d(1.07, -1.65, new Rotation2d(0)));
     Command showyDrive7 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.5, dash.getAlliance() * 1.72)),
-            new Pose2d(-1.07, dash.getAlliance() * 1.65, new Rotation2d(0)));
+            List.of(new Translation2d(-.5, 1.72)),
+            new Pose2d(-1.07, 1.65, new Rotation2d(0)));
     addCommands(
 
         // Driving groups

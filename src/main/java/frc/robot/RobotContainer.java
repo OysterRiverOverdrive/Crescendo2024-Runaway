@@ -68,7 +68,7 @@ public class RobotContainer {
       new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
-  private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter, dash);
+  private final fourRed showyAuto = new fourRed(drivetrain, intake, feeder, shooter, dash);
   private final MidTwoAuto midTwoAuto = new MidTwoAuto(drivetrain, intake, feeder, shooter);
   // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
   // shooter);
