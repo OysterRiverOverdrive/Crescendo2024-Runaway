@@ -54,7 +54,7 @@ public class HangerSubsystem extends SubsystemBase {
   public void disableOrEnableCompressor() {
     if (m_compressor.isEnabled()) {
       Compressor = false;
-      m_compressor.disable();
+      m_compressor.enableAnalog(85, 120);
     } else if (!m_compressor.isEnabled()) {
       Compressor = true;
       m_compressor.enableAnalog(110, 120);
@@ -64,6 +64,6 @@ public class HangerSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Pneumatics Pressure (PSI)", getPressure());
-    SmartDashboard.putBoolean("Compressor", Compressor);
+    SmartDashboard.putBoolean("Compressor Fill Mode", Compressor);
   }
 }
