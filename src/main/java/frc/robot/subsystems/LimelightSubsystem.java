@@ -40,8 +40,8 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** Creates a new LimelightSubSys. */
   public LimelightSubsystem() {
-    // default to absolute coordinates, with (0,0) at field center
-    setAbsoluteCoords();
+    // default to alliance coordinates
+    setAllianceCoords();
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
     m_chooser.addOption("Alliance", alliance_choice);
