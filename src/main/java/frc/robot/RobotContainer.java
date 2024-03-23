@@ -39,6 +39,7 @@ public class RobotContainer {
   private final String auto3 = "3";
   private final String auto4 = "4";
   private final String auto5 = "5";
+  private final String auto6 = "6";
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
@@ -68,7 +69,8 @@ public class RobotContainer {
       new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
-  private final fourRed showyAuto = new fourRed(drivetrain, intake, feeder, shooter, dash);
+  private final fourRed redFourAuto = new fourRed(drivetrain, intake, feeder, shooter, dash);
+  private final fourBlue blueFourAuto = new fourBlue(drivetrain, intake, feeder, shooter, dash);
   private final MidTwoAuto midTwoAuto = new MidTwoAuto(drivetrain, intake, feeder, shooter);
   // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
   // shooter);
@@ -83,7 +85,8 @@ public class RobotContainer {
     m_chooser.setDefaultOption("Back And Shoot", auto1);
     m_chooser.addOption("Left Speaker", auto2);
     m_chooser.addOption("Right Speaker", auto3);
-    m_chooser.addOption("Showy Auto", auto4);
+    m_chooser.addOption("Red 4 Auto", auto4);
+    m_chooser.addOption("Blue 4 Auto", auto6);
     m_chooser.addOption("Middle 2 note", auto5);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
@@ -155,10 +158,13 @@ public class RobotContainer {
         auto = rightSpeakerAuto;
         break;
       case auto4:
-        auto = showyAuto;
+        auto = redFourAuto;
         break;
       case auto5:
         auto = midTwoAuto;
+        break;
+      case auto6:
+        auto = blueFourAuto;
         break;
     }
     // Create sequential command with the wait command first then run selected auto
