@@ -113,6 +113,10 @@ public class LimelightSubsystem extends SubsystemBase {
     leds.setNumber(1);
   }
 
+  public void setLEDsFlash() {
+    leds.setNumber(2);
+  }
+
   public void setAbsoluteCoords() {
     absoluteCoordinates = true;
   }
