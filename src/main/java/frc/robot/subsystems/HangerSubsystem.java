@@ -52,11 +52,13 @@ public class HangerSubsystem extends SubsystemBase {
   }
 
   public void disableOrEnableCompressor() {
-    if (m_compressor.isEnabled()) {
+    if (Compressor) {
       Compressor = false;
-      m_compressor.enableAnalog(85, 120);
-    } else if (!m_compressor.isEnabled()) {
+      m_compressor.disable();
+      m_compressor.enableAnalog(85, 110);
+    } else {
       Compressor = true;
+      m_compressor.disable();
       m_compressor.enableAnalog(110, 120);
     }
   }
