@@ -25,10 +25,8 @@ public final class Constants {
 
   public static final class AutoConstants {
 
-    public static final double kMaxSpeedMetersPerSecond =
-        DriveConstants.kMaxSpeedMetersPerSecond / 2;
-    public static final double kMaxAngularSpeedRadiansPerSecond =
-        DriveConstants.kMaxAngularSpeed / 4;
+    public static final double kMaxSpeedMetersPerSecond = 4.8 / 2;
+    public static final double kMaxAngularSpeedRadiansPerSecond = (2 * Math.PI) / 4;
     public static final double kMaxAccelerationMetersPerSecondSquared = 6;
     public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 2;
     public static final double kPXController = 2.2;
@@ -68,7 +66,7 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
 
-    public static final double kMaxSpeedMetersPerSecond = 4.8;
+    public static final double kMaxSpeedMetersPerSecond = 7.0;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Drive Mode Speeds
@@ -83,7 +81,7 @@ public final class Constants {
     public static final double kSpeedSlowTurn = 1.8;
 
     public static final double kDirectionSlewRate = 4; // radians per second
-    public static final double kMagnitudeSlewRate = 0.95; // percent per second (1 = 100%)
+    public static final double kMagnitudeSlewRate = 2; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 5; // percent per second (1 = 100%)
 
     // Chassis configuration
@@ -123,14 +121,14 @@ public final class Constants {
     public static final double kAmpArmDegreesOut = 110;
     public static final double kAmpArmTrigActivate = 0.10;
     public static final double kAmpArmP = 0.8;
-    public static final double kAmpArmI = 0.0;
+    public static final double kAmpArmI = 0.03;
     public static final double kAmpArmD = 0.0;
 
     public static final int FeederLeftCanId = 11;
     public static final int FeederRightCanId = 12;
 
     public static final double FeederInSpeed = -0.3;
-    public static final double FeederOutSpeed = 0.15;
+    public static final double FeederOutSpeed = 0.12;
     public static final double FeederToShooterSpeed = -0.45;
 
     public static final int kPneumaticHubCanId = 50;
