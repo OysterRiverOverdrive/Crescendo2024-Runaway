@@ -42,7 +42,7 @@ public class LimelightSubsystem extends SubsystemBase {
   /** Creates a new LimelightSubSys. */
   public LimelightSubsystem() {
     // default to alliance coordinates
-    setAllianceCoords();
+    absoluteCoordinates = false;
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
     m_chooser.addOption("Alliance", alliance_choice);
@@ -63,9 +63,9 @@ public class LimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (m_chooser.getSelected().equals(abs_choice)) {
-      setAbsoluteCoords();
+      absoluteCoordinates = true;
     } else {
-      setAllianceCoords();
+      absoluteCoordinates = false;
     }
 
     // Turn camera LEDs off or on
@@ -107,14 +107,6 @@ public class LimelightSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Field pose Roll", fieldpose[3]);
     // SmartDashboard.putNumber("Field pose Pitch", fieldpose[4]);
     SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
-  }
-
-  public void setAbsoluteCoords() {
-    absoluteCoordinates = true;
-  }
-
-  public void setAllianceCoords() {
-    absoluteCoordinates = false;
   }
 
   public double[] getAbsoluteBotPose() {
