@@ -68,9 +68,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
     // Turn camera LEDs off or on
     if (led_chooser.getSelected().equals(leds_off)) {
-      leds.setNumber(1);
+      setLEDsOff();
     } else {
-      leds.setNumber(3);
+      setLEDsOn();
     }
 
     // Choose computer vision mode or driver only mode
@@ -103,6 +103,14 @@ public class LimelightSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Field pose Roll", fieldpose[3]);
     // SmartDashboard.putNumber("Field pose Pitch", fieldpose[4]);
     SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
+  }
+
+  public void setLEDsOn() {
+    leds.setNumber(3);
+  }
+
+  public void setLEDsOff() {
+    leds.setNumber(1);
   }
 
   public void setAbsoluteCoords() {
