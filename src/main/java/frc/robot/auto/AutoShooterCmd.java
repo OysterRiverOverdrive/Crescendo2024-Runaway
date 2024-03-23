@@ -6,14 +6,22 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class AutoSleepCmd extends Command {
+public class AutoShooterCmd extends Command {
   private Timer timer = new Timer();
-  private double sleepTime;
-  /** Creates a new AutoSleepCmd. */
-  public AutoSleepCmd(double timeSleep) {
-    sleepTime = timeSleep;
-    // Use addRequirements() here to declare subsystem dependencies.
+  ShooterSubsystem shoot;
+  double rInSpeed;
+  double lInSpeed;
+  double timeRunning;
+
+  public AutoShooterCmd(
+      ShooterSubsystem shoots, double leftInputSpeed, double rightInputSpeed, double timeRun) {
+    shoot = shoots;
+    rInSpeed = rightInputSpeed;
+    lInSpeed = leftInputSpeed;
+    timeRunning = timeRun;
+    addRequirements(shoots);
   }
 
   // Called when the command is initially scheduled.
@@ -26,26 +34,19 @@ public class AutoSleepCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    String placeholder = "Weeeee";
+    shoot.ShooterForwardCmd(lInSpeed, rInSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+    shoot.motorStop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean retVal = false;
-    double currTime = timer.get();
-    if (currTime >= sleepTime) {
-      retVal = true;
-    } else {
-      retVal = false;
-    }
 
-    return retVal;
+    return timer.hasElapsed(timeRunning) ? true : false;
   }
 }

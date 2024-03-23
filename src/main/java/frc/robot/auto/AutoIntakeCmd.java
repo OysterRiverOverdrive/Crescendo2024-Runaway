@@ -6,14 +6,18 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class AutoSleepCmd extends Command {
+public class AutoIntakeCmd extends Command {
   private Timer timer = new Timer();
-  private double sleepTime;
-  /** Creates a new AutoSleepCmd. */
-  public AutoSleepCmd(double timeSleep) {
-    sleepTime = timeSleep;
-    // Use addRequirements() here to declare subsystem dependencies.
+  IntakeSubsystem intake;
+  double timeRunning;
+
+  public AutoIntakeCmd(IntakeSubsystem intakes, double timeRun) {
+    // True means only bumper motor will run, false means only roller motor will run.
+    intake = intakes;
+    timeRunning = timeRun;
+    addRequirements(intakes);
   }
 
   // Called when the command is initially scheduled.
@@ -26,26 +30,21 @@ public class AutoSleepCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    String placeholder = "Weeeee";
+    intake.BmotorF();
+    intake.RmotorF();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    timer.stop();
+    intake.BmotorStop();
+    intake.RmotorStop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean retVal = false;
-    double currTime = timer.get();
-    if (currTime >= sleepTime) {
-      retVal = true;
-    } else {
-      retVal = false;
-    }
 
-    return retVal;
+    return timer.hasElapsed(timeRunning) ? true : false;
   }
 }

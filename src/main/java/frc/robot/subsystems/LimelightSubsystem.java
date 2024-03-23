@@ -100,8 +100,8 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Field pose X", fieldpose[0]);
     SmartDashboard.putNumber("Field pose Y", fieldpose[1]);
     SmartDashboard.putNumber("Field pose Z", fieldpose[2]);
-    SmartDashboard.putNumber("Field pose Roll", fieldpose[3]);
-    SmartDashboard.putNumber("Field pose Pitch", fieldpose[4]);
+    // SmartDashboard.putNumber("Field pose Roll", fieldpose[3]);
+    // SmartDashboard.putNumber("Field pose Pitch", fieldpose[4]);
     SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
   }
 
