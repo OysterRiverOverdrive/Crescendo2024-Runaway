@@ -224,9 +224,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return Math.IEEEremainder(m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0), 360);
   }
 
-  public double getHeadingRadians()
-  {
-    return (Math.IEEEremainder(m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0), 360) * 2 * Math.PI);
+  public double getHeadingRadians() {
+    return (Math.IEEEremainder(m_gyro.getAngle() * (RobotConstants.kGyroReversed ? -1.0 : 1.0), 360)
+        * 2
+        * Math.PI);
   }
 
   public Rotation2d getRotation2d() {
