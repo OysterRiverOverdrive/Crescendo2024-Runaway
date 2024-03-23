@@ -81,7 +81,7 @@ public final class Constants {
     public static final double kSpeedSlowTurn = 1.8;
 
     public static final double kDirectionSlewRate = 4; // radians per second
-    public static final double kMagnitudeSlewRate = 0.95; // percent per second (1 = 100%)
+    public static final double kMagnitudeSlewRate = 2; // percent per second (1 = 100%)
     public static final double kRotationalSlewRate = 5; // percent per second (1 = 100%)
 
     // Chassis configuration
