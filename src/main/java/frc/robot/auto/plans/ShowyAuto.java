@@ -44,23 +44,23 @@ public class ShowyAuto extends ParallelCommandGroup {
     Command showyDrive4 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0, dash.getAlliance() * 1.72 / 2)),
-            new Pose2d(.9, dash.getAlliance() * 1.755, new Rotation2d(0)));
+            List.of(new Translation2d(.5, dash.getAlliance() * 1.48)),
+            new Pose2d(1.07, dash.getAlliance() * 1.65, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.35, dash.getAlliance() * -1.72 / 2)),
-            new Pose2d(-.955, dash.getAlliance() * -1.755, new Rotation2d(0)));
+            List.of(new Translation2d(-.5, dash.getAlliance() * -1.72)),
+            new Pose2d(-1.07, dash.getAlliance() * -1.65, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0, dash.getAlliance() * -1.45 / 2)),
-            new Pose2d(1.05, dash.getAlliance() * -1.45, new Rotation2d(0)));
+            List.of(new Translation2d(.5, dash.getAlliance() * -1.48)),
+            new Pose2d(1.07, dash.getAlliance() * -1.65, new Rotation2d(0)));
     Command showyDrive7 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-1, dash.getAlliance() * 1.45 / 2)),
-            new Pose2d(-1.05, dash.getAlliance() * 1.45, new Rotation2d(0)));
+            List.of(new Translation2d(-.5, dash.getAlliance() * 1.72)),
+            new Pose2d(-1.07, dash.getAlliance() * 1.65, new Rotation2d(0)));
     addCommands(
 
         // Driving groups

@@ -34,7 +34,7 @@ public class HangerSubsystem extends SubsystemBase {
 
   public HangerSubsystem() {
     // If Compressor on Bot
-    m_compressor.enableAnalog(105, 120);
+    m_compressor.enableAnalog(85, 120);
   }
 
   public double getPressure() {
@@ -52,18 +52,20 @@ public class HangerSubsystem extends SubsystemBase {
   }
 
   public void disableOrEnableCompressor() {
-    if (m_compressor.isEnabled()) {
+    if (Compressor) {
       Compressor = false;
       m_compressor.disable();
-    } else if (!m_compressor.isEnabled()) {
+      m_compressor.enableAnalog(85, 110);
+    } else {
       Compressor = true;
-      m_compressor.enableAnalog(105, 120);
+      m_compressor.disable();
+      m_compressor.enableAnalog(110, 120);
     }
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Pneumatics Pressure (PSI)", getPressure());
-    SmartDashboard.putBoolean("Pneumatics Alert", Compressor);
+    SmartDashboard.putBoolean("Compressor Fill Mode", Compressor);
   }
 }
