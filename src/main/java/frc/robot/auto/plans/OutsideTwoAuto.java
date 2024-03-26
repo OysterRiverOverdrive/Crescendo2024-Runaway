@@ -36,30 +36,39 @@ public class OutsideTwoAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(0.3, 0)),
-            new Pose2d(0.76, dash.getAlliance()*0.12, new Rotation2d(dash.getAlliance()*-2 * Math.PI / 3)));
+            new Pose2d(
+                0.76,
+                dash.getAlliance() * 0.12,
+                new Rotation2d(dash.getAlliance() * -2 * Math.PI / 3)));
 
     Command RightNote =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0.156, dash.getAlliance()*0.6)),
-            new Pose2d(0.95, dash.getAlliance()*1.53, new Rotation2d(0)));
+            List.of(new Translation2d(0.156, dash.getAlliance() * 0.6)),
+            new Pose2d(0.95, dash.getAlliance() * 1.53, new Rotation2d(0)));
 
     Command ReturnNote =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.95 / 2, dash.getAlliance()*-1.53 / 2)),
-            new Pose2d(-.95, dash.getAlliance()*-1.53, new Rotation2d(0)));
+            List.of(new Translation2d(-.95 / 2, dash.getAlliance() * -1.53 / 2)),
+            new Pose2d(-.95, dash.getAlliance() * -1.53, new Rotation2d(0)));
 
     Command Taxi =
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(1, 1)),
-            new Pose2d(1.2, dash.getAlliance()*1.2, new Rotation2d(0)));
+            new Pose2d(1.2, dash.getAlliance() * 1.2, new Rotation2d(0)));
 
     addCommands(
         // Drivetrain Sequential
         new SequentialCommandGroup(
-            RightShoot, new AutoSleepCmd(.5), RightNote, new AutoSleepCmd(.5), ReturnNote, new AutoSleepCmd(.5), Taxi),
+            RightShoot,
+            new AutoSleepCmd(.5),
+            RightNote,
+            new AutoSleepCmd(.5),
+            ReturnNote,
+            new AutoSleepCmd(.5),
+            Taxi),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0), new AutoIntakeCmd(intake, 15)),

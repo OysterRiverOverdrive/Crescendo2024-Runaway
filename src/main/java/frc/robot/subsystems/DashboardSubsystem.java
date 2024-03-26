@@ -22,8 +22,7 @@ public final class DashboardSubsystem {
   public DashboardSubsystem() {
     m_allianceChoice.setDefaultOption("Red Alliance", red);
     m_allianceChoice.addOption("Blue Alliance", blue);
-    SmartDashboard.putData("Alliance Override",m_allianceChoice);
-    
+    SmartDashboard.putData("Alliance Override", m_allianceChoice);
   }
 
   public double getAlliance() {

@@ -39,7 +39,7 @@ public class RightSpeakerAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(0.156, -0.0425)),
-            new Pose2d(1.2, 1.2, new Rotation2d(-2* Math.PI / 3)));
+            new Pose2d(1.2, 1.2, new Rotation2d(-2 * Math.PI / 3)));
 
     addCommands(
         // Drivetrain Sequential
