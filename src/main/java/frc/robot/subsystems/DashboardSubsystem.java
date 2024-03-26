@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.TimerConstants;
-import java.util.Optional;
 
 public final class DashboardSubsystem {
   // determinew what timer is enabled
@@ -17,10 +15,27 @@ public final class DashboardSubsystem {
   static float TeleOpStartTimerValue = 0;
   static float AutoTimerValue = 0;
   // check Constants for timervalues
+  private SendableChooser<String> m_allianceChoice = new SendableChooser<String>();
+  private String blue = "blue";
+  private String red = "red";
+
+  public DashboardSubsystem() {
+    m_allianceChoice.setDefaultOption("Red Alliance", red);
+    m_allianceChoice.addOption("Blue Alliance", blue);
+    SmartDashboard.putData("Alliance Override",m_allianceChoice);
+    
+  }
 
   public double getAlliance() {
+    // Flawed With FMS
     // Our field is configured for Red Alliance, this function will help mirror autonomous
-    if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue))) {
+    // if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue))) {
+    //   return -1.0;
+    // } else {
+    //   return 1.0;
+    // }
+    // FMS Override
+    if (m_allianceChoice.getSelected() == blue) {
       return -1.0;
     } else {
       return 1.0;
