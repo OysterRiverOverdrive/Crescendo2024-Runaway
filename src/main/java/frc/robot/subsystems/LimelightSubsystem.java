@@ -133,7 +133,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public Pose2d getAlliancePose2d() {
     double poseArray[] = getAbsoluteBotPose();
-    return new Pose2d(poseArray[0], poseArray[1], new Rotation2d(poseArray[5]));
+    return new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
   }
 
   public int getAprilTagID() {
