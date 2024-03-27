@@ -153,8 +153,8 @@ public final class Constants {
 
     public static final int LimitSwtichActivation = 193;
     // intake motor speeds
-    public static final double intakeMotorForward = 0.85;
-    public static final double intakeMotorBackward = -0.85;
+    public static final double intakeMotorForward = 0.9;
+    public static final double intakeMotorBackward = -0.9;
   }
 
   // Constants specifically for Swerve Module
