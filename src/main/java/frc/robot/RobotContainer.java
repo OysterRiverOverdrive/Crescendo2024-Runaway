@@ -47,7 +47,7 @@ public class RobotContainer {
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
-  private final FeederSubsystem feeder = new FeederSubsystem();
+  private final FeederSubsystem feeder = new FeederSubsystem(limelight);
   private final DashboardSubsystem dash = new DashboardSubsystem();
 
   // Commands

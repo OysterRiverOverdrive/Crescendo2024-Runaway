@@ -49,10 +49,10 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putData("Limelight Coordinates", m_chooser);
 
     // Default to LEDs off
-    led_chooser.setDefaultOption("Off", leds_off);
-    led_chooser.addOption("On", leds_on);
-    led_chooser.addOption("Flash", leds_flash);
-    SmartDashboard.putData("Limelight LEDs", led_chooser);
+    // led_chooser.setDefaultOption("Off", leds_off);
+    // led_chooser.addOption("On", leds_on);
+    // led_chooser.addOption("Flash", leds_flash);
+    // SmartDashboard.putData("Limelight LEDs", led_chooser);
 
     // Default to computer vision mode (detects target, lower quality stream)
     view_chooser.setDefaultOption("Vision", vision_view);
@@ -69,13 +69,13 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     // Turn camera LEDs off or on
-    if (led_chooser.getSelected().equals(leds_off)) {
-      leds.setNumber(1);
-    } else if (led_chooser.getSelected().equals(leds_on)) {
-      leds.setNumber(3);
-    } else {
-      leds.setNumber(2);
-    }
+    // if (led_chooser.getSelected().equals(leds_off)) {
+    //   leds.setNumber(1);
+    // } else if (led_chooser.getSelected().equals(leds_on)) {
+    //   leds.setNumber(3);
+    // } else {
+    //   leds.setNumber(2);
+    // }
 
     // Choose computer vision mode or driver only mode
     if (view_chooser.getSelected().equals(vision_view)) {
@@ -105,6 +105,14 @@ public class LimelightSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Field pose Y", fieldpose[1]);
     SmartDashboard.putNumber("Field pose Z", fieldpose[2]);
     SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
+  }
+
+  public void setLEDsOn() {
+    leds.setNumber(3);
+  }
+
+  public void setLEDsOff() {
+    leds.setNumber(1);
   }
 
   public double[] getAbsoluteBotPose() {

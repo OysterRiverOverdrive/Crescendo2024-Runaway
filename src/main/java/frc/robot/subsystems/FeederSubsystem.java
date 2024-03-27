@@ -19,6 +19,8 @@ public class FeederSubsystem extends SubsystemBase {
   private CANSparkMax m_feedRightMotor =
       new CANSparkMax(RobotConstants.FeederRightCanId, MotorType.kBrushless);
 
+  private final LimelightSubsystem limelight;
+
   // Create color sensor and limit switch
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final AnalogInput limitSwitch = new AnalogInput(0);
@@ -28,9 +30,9 @@ public class FeederSubsystem extends SubsystemBase {
   private final ColorMatch m_colorMatcher = new ColorMatch();
   private final Color OrangeTarget = new Color(0.546, 0.363, 0.091);
 
-  public FeederSubsystem() {
+  public FeederSubsystem(LimelightSubsystem limelightSubsys) {
     m_feedRightMotor.follow(m_feedLeftMotor, true);
-
+    limelight = limelightSubsys;
     m_colorMatcher.addColorMatch(OrangeTarget);
   }
 
@@ -81,6 +83,12 @@ public class FeederSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Note Detected (Color)", getColorSensor());
+
+    if (getColorSensor()) {
+      limelight.setLEDsOn();
+    } else {
+      limelight.setLEDsOff();
+    }
     // Used for Limit Switch when on Robot
     // SmartDashboard.putBoolean("Note Detected (Limit)", getLimitSwitch());
     // SmartDashboard.putNumber("Limit Switch Tuning", limitSwitch.getValue());
