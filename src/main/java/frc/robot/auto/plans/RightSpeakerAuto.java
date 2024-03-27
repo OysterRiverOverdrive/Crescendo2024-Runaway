@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.AutoCreationCmd;
 import frc.robot.auto.AutoFeederCmd;
-import frc.robot.auto.AutoIntakeCmd;
 import frc.robot.auto.AutoShooterCmd;
 import frc.robot.auto.AutoSleepCmd;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -30,43 +29,29 @@ public class RightSpeakerAuto extends ParallelCommandGroup {
     AutoCreationCmd autodrive = new AutoCreationCmd();
 
     // Auto Driving Commands
-    Command RightShoot =
+    Command LeftShoot =
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(0.3, 0)),
-            new Pose2d(0.76, 0.12, new Rotation2d(-2 * Math.PI / 3)));
+            new Pose2d(0.76, -0.12, new Rotation2d(2 * Math.PI / 3)));
 
-    Command RightTaxi =
+    Command OuttaThatBitch =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(0.156, 0.6)),
-            new Pose2d(0.95, 1.53, new Rotation2d(0)));
-
-    Command ReturnTaxi =
-        autodrive.AutoDriveCmd(
-            drivetrain,
-            List.of(new Translation2d(-.95 / 2, -1.53 / 2)),
-            new Pose2d(-.95, -1.53, new Rotation2d(0)));
+            List.of(new Translation2d(0.156, -0.0425)),
+            new Pose2d(1.2, 1.2, new Rotation2d(-2 * Math.PI / 6)));
 
     addCommands(
         // Drivetrain Sequential
-        new SequentialCommandGroup(
-            RightShoot, new AutoSleepCmd(.5), RightTaxi, new AutoSleepCmd(.5), ReturnTaxi),
+        new SequentialCommandGroup(LeftShoot, new AutoSleepCmd(4), OuttaThatBitch),
 
         // Intake Sequential
-        new SequentialCommandGroup(new AutoSleepCmd(0), new AutoIntakeCmd(intake, 15)),
+        new SequentialCommandGroup(new AutoSleepCmd(0)),
 
         // Feeder Sequential
-        new SequentialCommandGroup(
-            new AutoSleepCmd(1),
-            new AutoFeederCmd(feeder, true, 0.5),
-            new AutoSleepCmd(4.5),
-            new AutoFeederCmd(feeder, true, .5)),
+        new SequentialCommandGroup(new AutoSleepCmd(2.5), new AutoFeederCmd(feeder, true, 0.5)),
 
         // Shooter Sequential
-        new SequentialCommandGroup(
-            new AutoShooterCmd(shooter, 1, 0.85, 2),
-            new AutoSleepCmd(3),
-            new AutoShooterCmd(shooter, 1, 0.85, 2)));
+        new SequentialCommandGroup(new AutoShooterCmd(shooter, 0.85, 1, 3)));
   }
 }

@@ -46,14 +46,14 @@ public class ShooterForwardCmd extends Command {
       shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), 0));
     } else if (leftShot.get()) {
       shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), 0));
-      shooter.ShooterForwardCmd(0.8, 1);
+      shooter.ShooterForwardCmd(0.9, 1);
     } else if (rightShot.get()) {
       shooter.setArmSpeed(pidControl.calculate(shooter.getAmpArmEnc(), 0));
-      shooter.ShooterForwardCmd(1, 0.8);
+      shooter.ShooterForwardCmd(1, 0.9);
     } else {
       // trigger value (how far it's pushed in) is set as the speed of the motor
       double trigValue = oper.getRawAxis(Controllers.ps4_RT);
-      shooter.ShooterForwardCmd(trigValue * 0.45, trigValue * 0.45);
+      shooter.ShooterForwardCmd(trigValue * 0.5, trigValue * 0.5);
 
       // Amp arm PID and activation
       double degreeout =
