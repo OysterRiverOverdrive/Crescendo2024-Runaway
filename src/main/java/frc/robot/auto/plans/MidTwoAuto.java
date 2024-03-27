@@ -48,7 +48,7 @@ public class MidTwoAuto extends ParallelCommandGroup {
 
         // Driving groups
         new SequentialCommandGroup(
-            showyDrive1, new AutoSleepCmd(1), showyDrive2, showyDrive3, new AutoSleepCmd(.5)),
+            showyDrive1, new AutoSleepCmd(1), showyDrive2, showyDrive3, new AutoSleepCmd(.5), taxi),
 
         // Intake group
         new SequentialCommandGroup(new AutoIntakeCmd(intake, 20)),
