@@ -46,11 +46,11 @@ public class AutoCreationCmd {
       DrivetrainSubsystem _drivetrain, List<Translation2d> waypoints, Pose2d finalrest) {
     drivetrain = _drivetrain;
     // Define PID controllers for tracking trajectory
-    PIDController xController = new PIDController(AutoConstants.kPXController, 0.05, 0);
-    PIDController yController = new PIDController(AutoConstants.kPYController, 0.05, 0);
+    PIDController xController = new PIDController(AutoConstants.kPXController, 0.01, 0);
+    PIDController yController = new PIDController(AutoConstants.kPYController, 0.01, 0);
     ProfiledPIDController thetaController =
         new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0.05, 0, AutoConstants.kThetaControllerConstraints);
+            AutoConstants.kPThetaController, 0.01, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     // Generate trajectory
     Trajectory trajectory =

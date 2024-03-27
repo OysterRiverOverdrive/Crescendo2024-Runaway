@@ -29,9 +29,9 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = (2 * Math.PI) / 4;
     public static final double kMaxAccelerationMetersPerSecondSquared = 6;
     public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 2;
-    public static final double kPXController = 2.2;
-    public static final double kPYController = 2.2;
-    public static final double kPThetaController = 3.5;
+    public static final double kPXController = 8;
+    public static final double kPYController = 8;
+    public static final double kPThetaController = 5;
 
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
@@ -66,7 +66,7 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
 
-    public static final double kMaxSpeedMetersPerSecond = 7.0;
+    public static final double kMaxSpeedMetersPerSecond = 6.2;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
 
     // Drive Mode Speeds
@@ -153,8 +153,8 @@ public final class Constants {
 
     public static final int LimitSwtichActivation = 193;
     // intake motor speeds
-    public static final double intakeMotorForward = 0.9;
-    public static final double intakeMotorBackward = -0.9;
+    public static final double intakeMotorForward = 0.85;
+    public static final double intakeMotorBackward = -0.85;
   }
 
   // Constants specifically for Swerve Module

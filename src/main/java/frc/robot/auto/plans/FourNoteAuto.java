@@ -50,7 +50,7 @@ public class FourNoteAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(-.5, dash.getAlliance() * -1.72)),
-            new Pose2d(-0.8, dash.getAlliance() * -1.44, new Rotation2d(0)));
+            new Pose2d(-0.8, dash.getAlliance() * -1.38, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
@@ -60,7 +60,7 @@ public class FourNoteAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(-.5, dash.getAlliance() * 1.72)),
-            new Pose2d(-0.8, dash.getAlliance() * 1.44, new Rotation2d(0)));
+            new Pose2d(-0.8, dash.getAlliance() * 1.30, new Rotation2d(0)));
     addCommands(
 
         // Driving groups
@@ -92,9 +92,9 @@ public class FourNoteAuto extends ParallelCommandGroup {
         // 9.55
         // Shooter group
         new SequentialCommandGroup(
-            new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(4), new AutoShooterCmd(shooter, 1, 1, 1.5)));
+            new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(4.7), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(4.4), new AutoShooterCmd(shooter, 1, 0.9, 1.5)));
   }
 }
