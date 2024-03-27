@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -127,6 +129,11 @@ public class LimelightSubsystem extends SubsystemBase {
     } else {
       return botpose_wpired.getDoubleArray(new double[6]);
     }
+  }
+
+  public Pose2d getAlliancePose2d() {
+    double poseArray[] = getAbsoluteBotPose();
+    return new Pose2d(poseArray[0], poseArray[1], Rotation2d.fromDegrees(poseArray[5]));
   }
 
   public int getAprilTagID() {
