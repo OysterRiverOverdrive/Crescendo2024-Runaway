@@ -66,8 +66,8 @@ public final class Constants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
 
-    public static final double kMaxSpeedMetersPerSecond = 6.7;
-    public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kMaxSpeedMetersPerSecond = 6.8;
+    public static final double kMaxAngularSpeed = 1.25 *2 * Math.PI; // radians per second
 
     // Drive Mode Speeds
     // High
@@ -118,9 +118,9 @@ public final class Constants {
     public static final int kAmpArmCanId = 15;
     public static final double kAmpArmGearRatio =
         27; // 27:1, Motor needs to spin 27 times for the arm to spin once
-    public static final double kAmpArmDegreesOut = 110;
+    public static final double kAmpArmDegreesOut = 109;
     public static final double kAmpArmTrigActivate = 0.10;
-    public static final double kAmpArmP = 0.8;
+    public static final double kAmpArmP = 1.2;
     public static final double kAmpArmI = 0.03;
     public static final double kAmpArmD = 0.0;
 

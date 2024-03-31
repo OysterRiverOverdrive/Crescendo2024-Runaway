@@ -72,29 +72,28 @@ public class FourNoteAuto extends ParallelCommandGroup {
             showyDrive3,
             new AutoSleepCmd(.5),
             showyDrive4,
-            new AutoSleepCmd(.3),
+            new AutoSleepCmd(0),
             showyDrive5,
             new AutoSleepCmd(.5),
             showyDrive6,
-            new AutoSleepCmd(.3),
-            showyDrive7,
-            new AutoSleepCmd(1000)),
+            new AutoSleepCmd(0),
+            showyDrive7),
 
         // Intake group
-        new SequentialCommandGroup(new AutoSleepCmd(0), new AutoIntakeCmd(intake, 20)),
+        new SequentialCommandGroup(new AutoIntakeCmd(intake, 20)),
 
         // Feeder group
         new SequentialCommandGroup(
             new AutoSleepCmd(1.4), new AutoFeederCmd(feeder, true, .5),
             new AutoSleepCmd(2.9), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4.25), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4.75), new AutoFeederCmd(feeder, true, .5)),
+            new AutoSleepCmd(3.9), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(4.15), new AutoFeederCmd(feeder, true, .5)),
         // 9.55
         // Shooter group
         new SequentialCommandGroup(
             new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
             new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
-            new AutoSleepCmd(4.7), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
-            new AutoSleepCmd(4.4), new AutoShooterCmd(shooter, 1, 0.9, 1.5)));
+            new AutoSleepCmd(4.1), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5)));
   }
 }
