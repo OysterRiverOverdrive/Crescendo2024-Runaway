@@ -4,10 +4,6 @@
 
 package frc.robot.auto.plans;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auto.AutoCreationCmd;
@@ -18,7 +14,6 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import java.util.List;
 
 public class AmpBotAuto extends ParallelCommandGroup {
   public AmpBotAuto(
@@ -27,7 +22,6 @@ public class AmpBotAuto extends ParallelCommandGroup {
       FeederSubsystem feeder,
       ShooterSubsystem shooter) {
     AutoCreationCmd autodrive = new AutoCreationCmd();
-
 
     addCommands(
 

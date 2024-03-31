@@ -42,10 +42,10 @@ public class AutoCreationCmd {
     drivetrain = _drivetrain;
 
     TrajectoryConfig trajectoryConfig =
-      new TrajectoryConfig(
-              AutoConstants.kMaxSpeedMetersPerSecond,
-              AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-          .setKinematics(DriveConstants.kDriveKinematics);
+        new TrajectoryConfig(
+                AutoConstants.kMaxSpeedMetersPerSecond,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(DriveConstants.kDriveKinematics);
     // Define PID controllers for tracking trajectory
     PIDController xController = new PIDController(AutoConstants.kPXController, 0.01, 0);
     PIDController yController = new PIDController(AutoConstants.kPYController, 0.01, 0);
@@ -78,14 +78,15 @@ public class AutoCreationCmd {
   }
 
   public Command AutoDriveSpeedVar(
-      Double maxSpeed, DrivetrainSubsystem _drivetrain, List<Translation2d> waypoints, Pose2d finalrest) {
+      Double maxSpeed,
+      DrivetrainSubsystem _drivetrain,
+      List<Translation2d> waypoints,
+      Pose2d finalrest) {
     drivetrain = _drivetrain;
 
     TrajectoryConfig trajectoryConfig =
-      new TrajectoryConfig(
-              maxSpeed,
-              AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-          .setKinematics(DriveConstants.kDriveKinematics);
+        new TrajectoryConfig(maxSpeed, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(DriveConstants.kDriveKinematics);
     // Define PID controllers for tracking trajectory
     PIDController xController = new PIDController(AutoConstants.kPXController, 0.01, 0);
     PIDController yController = new PIDController(AutoConstants.kPYController, 0.01, 0);

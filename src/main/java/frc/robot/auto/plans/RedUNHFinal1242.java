@@ -34,10 +34,7 @@ public class RedUNHFinal1242 extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(0.3, 0)),
-            new Pose2d(
-                0.76,
-                0.12,
-                new Rotation2d(-2 * Math.PI / 3)));
+            new Pose2d(0.76, 0.12, new Rotation2d(-2 * Math.PI / 3)));
 
     Command RightNote =
         autodrive.AutoDriveCmd(
@@ -73,7 +70,8 @@ public class RedUNHFinal1242 extends ParallelCommandGroup {
             new AutoSleepCmd(.5),
             ReturnNote,
             new AutoSleepCmd(.5),
-            Taxi, race),
+            Taxi,
+            race),
 
         // Intake Sequential
         new SequentialCommandGroup(new AutoSleepCmd(0), new AutoIntakeCmd(intake, 15)),

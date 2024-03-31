@@ -67,7 +67,7 @@ public final class Constants {
     // the robot, rather the allowed maximum speeds
 
     public static final double kMaxSpeedMetersPerSecond = 6.8;
-    public static final double kMaxAngularSpeed = 1.25 *2 * Math.PI; // radians per second
+    public static final double kMaxAngularSpeed = 1.25 * 2 * Math.PI; // radians per second
 
     // Drive Mode Speeds
     // High
