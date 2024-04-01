@@ -18,9 +18,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import java.util.List;
 
-public class ShowyAuto extends ParallelCommandGroup {
+public class FourNoteAuto extends ParallelCommandGroup {
 
-  public ShowyAuto(
+  public FourNoteAuto(
       DrivetrainSubsystem drivetrain,
       IntakeSubsystem intake,
       FeederSubsystem feeder,
@@ -45,22 +45,22 @@ public class ShowyAuto extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(.5, dash.getAlliance() * 1.48)),
-            new Pose2d(1.07, dash.getAlliance() * 1.65, new Rotation2d(0)));
+            new Pose2d(0.8, dash.getAlliance() * 1.44, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(-.5, dash.getAlliance() * -1.72)),
-            new Pose2d(-1.07, dash.getAlliance() * -1.65, new Rotation2d(0)));
+            new Pose2d(-0.8, dash.getAlliance() * -1.38, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(.5, dash.getAlliance() * -1.48)),
-            new Pose2d(1.07, dash.getAlliance() * -1.65, new Rotation2d(0)));
+            new Pose2d(0.8, dash.getAlliance() * -1.44, new Rotation2d(0)));
     Command showyDrive7 =
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(-.5, dash.getAlliance() * 1.72)),
-            new Pose2d(-1.07, dash.getAlliance() * 1.65, new Rotation2d(0)));
+            new Pose2d(-0.8, dash.getAlliance() * 1.30, new Rotation2d(0)));
     addCommands(
 
         // Driving groups
@@ -72,29 +72,28 @@ public class ShowyAuto extends ParallelCommandGroup {
             showyDrive3,
             new AutoSleepCmd(.5),
             showyDrive4,
-            new AutoSleepCmd(.3),
+            new AutoSleepCmd(0),
             showyDrive5,
             new AutoSleepCmd(.5),
             showyDrive6,
-            new AutoSleepCmd(.3),
-            showyDrive7,
-            new AutoSleepCmd(1000)),
+            new AutoSleepCmd(0),
+            showyDrive7),
 
         // Intake group
-        new SequentialCommandGroup(new AutoSleepCmd(0), new AutoIntakeCmd(intake, 20)),
+        new SequentialCommandGroup(new AutoIntakeCmd(intake, 20)),
 
         // Feeder group
         new SequentialCommandGroup(
             new AutoSleepCmd(1.4), new AutoFeederCmd(feeder, true, .5),
             new AutoSleepCmd(2.9), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4.25), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4.75), new AutoFeederCmd(feeder, true, .5)),
+            new AutoSleepCmd(3.9), new AutoFeederCmd(feeder, true, .5),
+            new AutoSleepCmd(4.15), new AutoFeederCmd(feeder, true, .5)),
         // 9.55
         // Shooter group
         new SequentialCommandGroup(
-            new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 1, 1.5),
-            new AutoSleepCmd(4), new AutoShooterCmd(shooter, 1, 1, 1.5)));
+            new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(4.1), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
+            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5)));
   }
 }

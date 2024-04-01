@@ -48,7 +48,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
     m_chooser.addOption("Alliance", alliance_choice);
-    SmartDashboard.putData("Limelight Coordinates", m_chooser);
+    // SmartDashboard.putData("Limelight Coordinates", m_chooser);
 
     // Default to LEDs off
     // led_chooser.setDefaultOption("Off", leds_off);
@@ -99,16 +99,14 @@ public class LimelightSubsystem extends SubsystemBase {
       fieldpose = getAllianceBotPose();
     }
 
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putNumber("Target ID", targetid);
-    SmartDashboard.putNumber("Field pose X", fieldpose[0]);
-    SmartDashboard.putNumber("Field pose Y", fieldpose[1]);
-    SmartDashboard.putNumber("Field pose Z", fieldpose[2]);
-    // SmartDashboard.putNumber("Field pose Roll", fieldpose[3]);
-    // SmartDashboard.putNumber("Field pose Pitch", fieldpose[4]);
-    SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
+    // SmartDashboard.putNumber("LimelightX", x);
+    // SmartDashboard.putNumber("LimelightY", y);
+    // SmartDashboard.putNumber("LimelightArea", area);
+    // SmartDashboard.putNumber("Target ID", targetid);
+    // SmartDashboard.putNumber("Field pose X", fieldpose[0]);
+    // SmartDashboard.putNumber("Field pose Y", fieldpose[1]);
+    // SmartDashboard.putNumber("Field pose Z", fieldpose[2]);
+    // SmartDashboard.putNumber("Field pose Yaw", fieldpose[5]);
   }
 
   public void setLEDsOn() {

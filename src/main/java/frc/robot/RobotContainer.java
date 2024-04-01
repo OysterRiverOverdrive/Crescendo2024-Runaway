@@ -39,6 +39,8 @@ public class RobotContainer {
   private final String auto3 = "3";
   private final String auto4 = "4";
   private final String auto5 = "5";
+  private final String auto6 = "6";
+  private final String auto7 = "7";
 
   // Subsystems
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
@@ -62,14 +64,24 @@ public class RobotContainer {
           () -> cutil.Boolsupplier(Controllers.ps4_O, DriveConstants.joysticks.OPERATOR));
 
   // Auto Commands
-  private final BackAndShootAuto backAndShootAuto =
-      new BackAndShootAuto(drivetrain, intake, feeder, shooter);
   private final LeftSpeakerAuto leftSpeakerAuto =
       new LeftSpeakerAuto(drivetrain, intake, feeder, shooter);
   private final RightSpeakerAuto rightSpeakerAuto =
       new RightSpeakerAuto(drivetrain, intake, feeder, shooter);
-  private final ShowyAuto showyAuto = new ShowyAuto(drivetrain, intake, feeder, shooter, dash);
+
+  private final OutsideTwoAuto oustideTwoSpeakerAuto =
+      new OutsideTwoAuto(drivetrain, intake, feeder, shooter, dash);
+
+  private final FourNoteAuto fourAuto = new FourNoteAuto(drivetrain, intake, feeder, shooter, dash);
+
   private final MidTwoAuto midTwoAuto = new MidTwoAuto(drivetrain, intake, feeder, shooter);
+
+  private final RedUNHFinal1242 redUNHFinal1242 =
+      new RedUNHFinal1242(drivetrain, intake, feeder, shooter);
+  private final BlueUNHFinal1242 blueUNHFinal1242 =
+      new BlueUNHFinal1242(drivetrain, intake, feeder, shooter);
+
+  private final AmpBotAuto ampBotAuto = new AmpBotAuto(drivetrain, intake, feeder, shooter);
   // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
   // shooter);
 
@@ -80,11 +92,13 @@ public class RobotContainer {
     shooter.setDefaultCommand(shooterForwardCmd);
 
     // Add Auto options to dropdown and push to dashboard
-    m_chooser.setDefaultOption("Back And Shoot", auto1);
-    m_chooser.addOption("Left Speaker", auto2);
-    m_chooser.addOption("Right Speaker", auto3);
-    m_chooser.addOption("Showy Auto", auto4);
-    m_chooser.addOption("Middle 2 note", auto5);
+    m_chooser.setDefaultOption("Amp Bot Auto", auto1);
+    m_chooser.addOption("Left Speaker 1", auto2);
+    m_chooser.addOption("Right Speaker 1", auto3);
+    m_chooser.addOption("4 Center", auto4);
+    m_chooser.addOption("Outside 2", auto5);
+    m_chooser.addOption("RedUNH1242", auto6);
+    m_chooser.addOption("BlueUNH1242", auto7);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
@@ -146,7 +160,7 @@ public class RobotContainer {
     switch (m_chooser.getSelected()) {
       default:
       case auto1:
-        auto = backAndShootAuto;
+        auto = null;
         break;
       case auto2:
         auto = leftSpeakerAuto;
@@ -155,10 +169,16 @@ public class RobotContainer {
         auto = rightSpeakerAuto;
         break;
       case auto4:
-        auto = showyAuto;
+        auto = fourAuto;
         break;
       case auto5:
-        auto = midTwoAuto;
+        auto = oustideTwoSpeakerAuto;
+        break;
+      case auto6:
+        auto = redUNHFinal1242;
+        break;
+      case auto7:
+        auto = blueUNHFinal1242;
         break;
     }
     // Create sequential command with the wait command first then run selected auto
