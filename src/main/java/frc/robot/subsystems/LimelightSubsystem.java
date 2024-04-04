@@ -40,6 +40,10 @@ public class LimelightSubsystem extends SubsystemBase {
   private final String vision_view = "vision";
   private final String driver_view = "driver";
   private boolean absoluteCoordinates;
+  public static final double X_MAX_SPEAKER_DISTANCE = 2.0; // CHANGEME: max distance from field edge
+  public static final double X_MIN_SPEAKER_DISTANCE = 0.0; // probably stays 0
+  public static final double Y_MAX_SPEAKER_DISTANCE = 2.0; // CHANGEME: no idea what this should be
+  public static final double Y_MIN_SPEAKER_DISTANCE = 1.0; // CHANGEME: no idea what this should be
 
   /** Creates a new LimelightSubSys. */
   public LimelightSubsystem() {
@@ -98,6 +102,18 @@ public class LimelightSubsystem extends SubsystemBase {
     } else {
       fieldpose = getAllianceBotPose();
     }
+
+    Boolean canShootSpeaker = false;
+    double fieldX = fieldpose[0];
+    double fieldY = fieldpose[1];
+    // Strict inequalities so we don't indicate when limelight sees
+    // nothing and returns (0,0)
+    if (fieldX > X_MIN_SPEAKER_DISTANCE
+        && fieldX < X_MAX_SPEAKER_DISTANCE
+        && y > Y_MIN_SPEAKER_DISTANCE
+        && y < Y_MAX_SPEAKER_DISTANCE) canShootSpeaker = true;
+
+    SmartDashboard.putBoolean("Speaker Shot", canShootSpeaker);
 
     // SmartDashboard.putNumber("LimelightX", x);
     // SmartDashboard.putNumber("LimelightY", y);
