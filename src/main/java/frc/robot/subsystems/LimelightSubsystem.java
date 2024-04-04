@@ -110,8 +110,10 @@ public class LimelightSubsystem extends SubsystemBase {
     // nothing and returns (0,0)
     if (fieldX > X_MIN_SPEAKER_DISTANCE
         && fieldX < X_MAX_SPEAKER_DISTANCE
-        && y > Y_MIN_SPEAKER_DISTANCE
-        && y < Y_MAX_SPEAKER_DISTANCE) canShootSpeaker = true;
+        && fieldY > Y_MIN_SPEAKER_DISTANCE
+        && fieldY < Y_MAX_SPEAKER_DISTANCE) {
+      canShootSpeaker = true;
+    }
 
     SmartDashboard.putBoolean("Speaker Shot", canShootSpeaker);
 
