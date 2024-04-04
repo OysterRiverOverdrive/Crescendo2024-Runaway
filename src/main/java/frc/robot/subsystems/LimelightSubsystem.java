@@ -55,8 +55,10 @@ public class LimelightSubsystem extends SubsystemBase {
   public LimelightSubsystem() {
     // default to alliance coordinates
     absoluteCoordinates = false;
-    // Limelight is ~ 5 cm behind the bumper with pitch ~60 degrees
-    double cameraOffset[] = {-0.05, 0.0, 0.0, 0.0, 60.0, 0.0};
+    // Limelight is ~ 5 cm behind the bumper with pitch ~60 degrees, facing
+    // backwards relative to robot. z offset isn't 0 but shouldn't matter since
+    // we only use Pose2d.
+    double cameraOffset[] = {-0.05, 0.0, 0.0, 0.0, 60.0, 180.0};
     setCameraposeRobotspace(cameraOffset);
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
