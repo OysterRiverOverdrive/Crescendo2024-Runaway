@@ -40,15 +40,24 @@ public class LimelightSubsystem extends SubsystemBase {
   private final String vision_view = "vision";
   private final String driver_view = "driver";
   private boolean absoluteCoordinates;
-  public static final double X_MAX_SPEAKER_DISTANCE = 2.0; // CHANGEME: max distance from field edge
+  public static final double X_MAX_SPEAKER_DISTANCE =
+      2.01; // About 79 inches or 2.01m from field edge
   public static final double X_MIN_SPEAKER_DISTANCE = 0.0; // probably stays 0
-  public static final double Y_MAX_SPEAKER_DISTANCE = 2.0; // CHANGEME: no idea what this should be
-  public static final double Y_MIN_SPEAKER_DISTANCE = 1.0; // CHANGEME: no idea what this should be
+  // x is the same regardless of red or blue, but y is mirrored.
+  public static final double Y_MAX_SPEAKER_DISTANCE_BLUE =
+      5.547868 + 0.2; // target center +/- .2 meters
+  public static final double Y_MIN_SPEAKER_DISTANCE_BLUE = 5.547868 - 0.2;
+  public static final double Y_MAX_SPEAKER_DISTANCE_RED =
+      2.656332 + 0.2; // target center +/- .2 meters
+  public static final double Y_MIN_SPEAKER_DISTANCE_RED = 2.656332 - 0.2;
 
   /** Creates a new LimelightSubSys. */
   public LimelightSubsystem() {
     // default to alliance coordinates
     absoluteCoordinates = false;
+    // Limelight is ~ 5 cm behind the bumper with pitch ~60 degrees
+    double cameraOffset[] = {-0.05, 0.0, 0.0, 0.0, 60.0, 0.0};
+    setCameraposeRobotspace(cameraOffset);
 
     m_chooser.setDefaultOption("Absolute", abs_choice);
     m_chooser.addOption("Alliance", alliance_choice);
@@ -108,10 +117,17 @@ public class LimelightSubsystem extends SubsystemBase {
     double fieldY = fieldpose[1];
     // Strict inequalities so we don't indicate when limelight sees
     // nothing and returns (0,0)
-    if (fieldX > X_MIN_SPEAKER_DISTANCE
+    if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue))
+        && fieldX > X_MIN_SPEAKER_DISTANCE
         && fieldX < X_MAX_SPEAKER_DISTANCE
-        && fieldY > Y_MIN_SPEAKER_DISTANCE
-        && fieldY < Y_MAX_SPEAKER_DISTANCE) {
+        && fieldY > Y_MIN_SPEAKER_DISTANCE_BLUE
+        && fieldY < Y_MAX_SPEAKER_DISTANCE_BLUE) {
+      canShootSpeaker = true;
+    } else if (DriverStation.getAlliance().equals(Optional.of(Alliance.Red))
+        && fieldX > X_MIN_SPEAKER_DISTANCE
+        && fieldX < X_MAX_SPEAKER_DISTANCE
+        && fieldY > Y_MIN_SPEAKER_DISTANCE_RED
+        && fieldY < Y_MAX_SPEAKER_DISTANCE_RED) {
       canShootSpeaker = true;
     }
 

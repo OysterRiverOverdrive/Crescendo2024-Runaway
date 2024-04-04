@@ -302,6 +302,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
         });
+
+    // Update odometry based on Limelight. Right now, the location
+    // given by the limelight reflect center of the rear bumper,
+    // facing backwards. If that's not how we currently measure
+    // robot pose, then we need to update the limelight offset
+    // with LimelightSubsytem.setCameraposeRobotspace(). That takes
+    // a double array {x, y, z, roll, pitch, yaw} relative to the robot,
+    // where +x is in front of the robot.
     Pose2d ll_pose = limelight.getAlliancePose2d();
     // If at least one of these values is non-zero, we should
     // be getting a valid Pose2d from the limelight.
