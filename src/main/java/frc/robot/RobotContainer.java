@@ -43,10 +43,10 @@ public class RobotContainer {
   private final String auto7 = "7";
 
   // Subsystems
-  private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final LimelightSubsystem limelight = new LimelightSubsystem();
+  private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem(limelight);
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
-  private final LimelightSubsystem limelight = new LimelightSubsystem();
   private final HangerSubsystem hanger = new HangerSubsystem();
   private final FeederSubsystem feeder = new FeederSubsystem(limelight);
   private final DashboardSubsystem dash = new DashboardSubsystem();

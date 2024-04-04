@@ -48,6 +48,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
           RobotConstants.kRearRightTurningCanId,
           RobotConstants.kBackRightChassisAngularOffset);
 
+  private final LimelightSubsystem limelight;
+
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   // The gyro sensor
   private AHRS m_gyro = new AHRS(SerialPort.Port.kUSB1);
@@ -83,9 +85,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
           });
 
   /** Creates a new DriveSubsystem. */
-  public DrivetrainSubsystem() {
+  public DrivetrainSubsystem(LimelightSubsystem ls) {
     zeroHeading();
     m_gyro.calibrate();
+    limelight = ls;
 
     m_chooser.setDefaultOption("Medium Speed", DriveConstants.medium);
     m_chooser.addOption("Low Speed", DriveConstants.low);
@@ -299,5 +302,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
         });
+    Pose2d ll_pose = limelight.getAlliancePose2d();
+    // If at least one of these values is non-zero, we should
+    // be getting a valid Pose2d from the limelight.
+    if (ll_pose.getX() != 0.0 || ll_pose.getY() != 0.0) {
+      resetOdometry(ll_pose);
+    }
   }
 }
