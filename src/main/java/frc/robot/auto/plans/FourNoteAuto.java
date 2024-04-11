@@ -88,7 +88,6 @@ public class FourNoteAuto extends ParallelCommandGroup {
             new AutoSleepCmd(2.9), new AutoFeederCmd(feeder, true, .5),
             new AutoSleepCmd(3.9), new AutoFeederCmd(feeder, true, .8),
             new AutoSleepCmd(3.85), new AutoFeederCmd(feeder, true, .8)),
-        
 
         // 9.55
         // Shooter group
