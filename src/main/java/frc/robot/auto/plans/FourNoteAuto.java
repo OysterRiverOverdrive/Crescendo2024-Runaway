@@ -32,35 +32,35 @@ public class FourNoteAuto extends ParallelCommandGroup {
 
     Command showyDrive1 =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(.22, 0)), new Pose2d(.5, 0, new Rotation2d(0)));
+            drivetrain, List.of(new Translation2d(.08, 0)), new Pose2d(.2, 0, new Rotation2d(0)));
     Command showyDrive2 =
         autodrive.AutoDriveCmd(
-            drivetrain, List.of(new Translation2d(.85, 0)), new Pose2d(1.30, 0, new Rotation2d(0)));
+            drivetrain, List.of(new Translation2d(.85, 0)), new Pose2d(1.69, 0, new Rotation2d(0)));
     Command showyDrive3 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.85, dash.getAlliance() * 0.2)),
-            new Pose2d(-1.25, 0, new Rotation2d(0)));
+            List.of(new Translation2d(-.85, dash.getAlliance() * 0.01)),
+            new Pose2d(-1.60, 0, new Rotation2d(0)));
     Command showyDrive4 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(.5, dash.getAlliance() * 1.48)),
-            new Pose2d(0.8, dash.getAlliance() * 1.44, new Rotation2d(0)));
+            List.of(new Translation2d(.5, dash.getAlliance() * 1)),
+            new Pose2d(0.89, dash.getAlliance() * 1.3, new Rotation2d(0)));
     Command showyDrive5 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.5, dash.getAlliance() * -1.72)),
-            new Pose2d(-0.8, dash.getAlliance() * -1.38, new Rotation2d(0)));
+            List.of(new Translation2d(-.5, dash.getAlliance() * -1)),
+            new Pose2d(-0.84, dash.getAlliance() * -1.44, new Rotation2d(0)));
     Command showyDrive6 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(.5, dash.getAlliance() * -1.48)),
-            new Pose2d(0.8, dash.getAlliance() * -1.44, new Rotation2d(0)));
+            List.of(new Translation2d(.5, dash.getAlliance() * -1)),
+            new Pose2d(0.89, dash.getAlliance() * -1.44, new Rotation2d(0)));
     Command showyDrive7 =
         autodrive.AutoDriveCmd(
             drivetrain,
-            List.of(new Translation2d(-.5, dash.getAlliance() * 1.72)),
-            new Pose2d(-0.8, dash.getAlliance() * 1.30, new Rotation2d(0)));
+            List.of(new Translation2d(-.5, dash.getAlliance() * 1)),
+            new Pose2d(-0.84, dash.getAlliance() * 1.30, new Rotation2d(0)));
     addCommands(
 
         // Driving groups
@@ -86,14 +86,16 @@ public class FourNoteAuto extends ParallelCommandGroup {
         new SequentialCommandGroup(
             new AutoSleepCmd(1.4), new AutoFeederCmd(feeder, true, .5),
             new AutoSleepCmd(2.9), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(3.9), new AutoFeederCmd(feeder, true, .5),
-            new AutoSleepCmd(4.15), new AutoFeederCmd(feeder, true, .5)),
+            new AutoSleepCmd(3.9), new AutoFeederCmd(feeder, true, .8),
+            new AutoSleepCmd(3.85), new AutoFeederCmd(feeder, true, .8)),
+        
+
         // 9.55
         // Shooter group
         new SequentialCommandGroup(
             new AutoSleepCmd(.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
             new AutoSleepCmd(2.3), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
-            new AutoSleepCmd(4.1), new AutoShooterCmd(shooter, 1, 0.9, 1.5),
-            new AutoSleepCmd(3.5), new AutoShooterCmd(shooter, 1, 0.9, 1.5)));
+            new AutoSleepCmd(3.8), new AutoShooterCmd(shooter, 1, 0.9, 1.8),
+            new AutoSleepCmd(3.2), new AutoShooterCmd(shooter, 1, 0.9, 1.8)));
   }
 }
