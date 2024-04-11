@@ -80,8 +80,6 @@ public class RobotContainer {
       new RedUNHFinal1242(drivetrain, intake, feeder, shooter);
   private final BlueUNHFinal1242 blueUNHFinal1242 =
       new BlueUNHFinal1242(drivetrain, intake, feeder, shooter);
-
-  private final AmpBotAuto ampBotAuto = new AmpBotAuto(drivetrain, intake, feeder, shooter);
   // private final FarRightAuto farRightAuto = new FarRightAuto(drivetrain, intake, feeder,
   // shooter);
 
@@ -92,13 +90,13 @@ public class RobotContainer {
     shooter.setDefaultCommand(shooterForwardCmd);
 
     // Add Auto options to dropdown and push to dashboard
-    m_chooser.setDefaultOption("Amp Bot Auto", auto1);
+    m_chooser.setDefaultOption("Mid 2 Note", auto1);
     m_chooser.addOption("Left Speaker 1", auto2);
     m_chooser.addOption("Right Speaker 1", auto3);
     m_chooser.addOption("4 Center", auto4);
     m_chooser.addOption("Outside 2", auto5);
-    m_chooser.addOption("RedUNH1242", auto6);
-    m_chooser.addOption("BlueUNH1242", auto7);
+    m_chooser.addOption("RedAmp2", auto6);
+    m_chooser.addOption("BlueAmp2", auto7);
     SmartDashboard.putData("Auto Selector", m_chooser);
     SmartDashboard.putNumber("Auto Wait Time (Sec)", 0);
 
@@ -160,7 +158,7 @@ public class RobotContainer {
     switch (m_chooser.getSelected()) {
       default:
       case auto1:
-        auto = null;
+        auto = midTwoAuto;
         break;
       case auto2:
         auto = leftSpeakerAuto;
