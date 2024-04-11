@@ -40,11 +40,15 @@ public class MidTwoAuto extends ParallelCommandGroup {
             List.of(new Translation2d(-.85, .2)),
             new Pose2d(-1.25, 0, new Rotation2d(0)));
 
+    Command taxi =
+        autodrive.AutoDriveCmd(
+            drivetrain, List.of(new Translation2d(.85, 0)), new Pose2d(1.30, 0, new Rotation2d(0)));
+
     addCommands(
 
         // Driving groups
         new SequentialCommandGroup(
-            showyDrive1, new AutoSleepCmd(1), showyDrive2, new AutoSleepCmd(0), showyDrive3),
+            showyDrive1, new AutoSleepCmd(1), showyDrive2, showyDrive3, new AutoSleepCmd(.5), taxi),
 
         // Intake group
         new SequentialCommandGroup(new AutoIntakeCmd(intake, 20)),

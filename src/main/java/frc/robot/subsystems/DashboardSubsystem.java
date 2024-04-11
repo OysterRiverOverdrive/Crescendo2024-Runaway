@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.TimerConstants;
-import java.util.Optional;
 
 public final class DashboardSubsystem {
   // determinew what timer is enabled
@@ -17,14 +15,18 @@ public final class DashboardSubsystem {
   static float TeleOpStartTimerValue = 0;
   static float AutoTimerValue = 0;
   // check Constants for timervalues
+  private SendableChooser<Double> m_allianceChoice = new SendableChooser<Double>();
+  private Double blue = -1.0;
+  private Double red = 1.0;
+
+  public DashboardSubsystem() {
+    m_allianceChoice.setDefaultOption("Red Alliance", red);
+    m_allianceChoice.addOption("Blue Alliance", blue);
+    SmartDashboard.putData("Alliance Override", m_allianceChoice);
+  }
 
   public double getAlliance() {
-    // Our field is configured for Red Alliance, this function will help mirror autonomous
-    if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue))) {
-      return -1.0;
-    } else {
-      return 1.0;
-    }
+    return m_allianceChoice.getSelected();
   }
 
   public static void StartTimer(String type, float timer_length) {
