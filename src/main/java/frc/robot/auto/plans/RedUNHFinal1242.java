@@ -46,20 +46,20 @@ public class RedUNHFinal1242 extends ParallelCommandGroup {
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(-.95 / 2, -1.53 / 2)),
-            new Pose2d(-.95, -1.53, new Rotation2d(0)));
+            new Pose2d(-.95, -1.63, new Rotation2d(0)));
 
     Command Taxi =
         autodrive.AutoDriveCmd(
             drivetrain,
             List.of(new Translation2d(1, 1)),
-            new Pose2d(1.2, 1.2, new Rotation2d(2 * Math.PI / 6)));
+            new Pose2d(1.2, 1.3, new Rotation2d(2 * Math.PI / 6)));
 
     Command race =
         autodrive.AutoDriveSpeedVar(
             5.6,
             drivetrain,
             List.of(new Translation2d(1, 0)),
-            new Pose2d(6.3, 0, new Rotation2d(0)));
+            new Pose2d(2.3, 0, new Rotation2d(0)));
 
     addCommands(
         // Drivetrain Sequential

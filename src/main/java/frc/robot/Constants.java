@@ -110,18 +110,18 @@ public final class Constants {
     public static final int kAmpArmCanId = 15;
     public static final double kAmpArmGearRatio =
         27; // 27:1, Motor needs to spin 27 times for the arm to spin once
-    public static final double kAmpArmDegreesOut = 109;
+    public static final double kAmpArmDegreesOut = 121.5;
     public static final double kAmpArmTrigActivate = 0.10;
-    public static final double kAmpArmP = 1.2;
+    public static final double kAmpArmP = 1.1;
     public static final double kAmpArmI = 0.03;
     public static final double kAmpArmD = 0.0;
 
     public static final int FeederLeftCanId = 11;
     public static final int FeederRightCanId = 12;
 
-    public static final double FeederInSpeed = -0.3;
-    public static final double FeederOutSpeed = 0.12;
-    public static final double FeederToShooterSpeed = -0.45;
+    public static final double FeederInSpeed = 0.3;
+    public static final double FeederOutSpeed = -0.18;
+    public static final double FeederToShooterSpeed = 0.45;
 
     public static final int kPneumaticHubCanId = 50;
 

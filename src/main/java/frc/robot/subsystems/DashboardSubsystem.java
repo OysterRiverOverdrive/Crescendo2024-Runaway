@@ -15,9 +15,9 @@ public final class DashboardSubsystem {
   static float TeleOpStartTimerValue = 0;
   static float AutoTimerValue = 0;
   // check Constants for timervalues
-  private SendableChooser<String> m_allianceChoice = new SendableChooser<String>();
-  private String blue = "blue";
-  private String red = "red";
+  private SendableChooser<Double> m_allianceChoice = new SendableChooser<Double>();
+  private Double blue = -1.0;
+  private Double red = 1.0;
 
   public DashboardSubsystem() {
     m_allianceChoice.setDefaultOption("Red Alliance", red);
@@ -26,19 +26,7 @@ public final class DashboardSubsystem {
   }
 
   public double getAlliance() {
-    // Flawed With FMS
-    // Our field is configured for Red Alliance, this function will help mirror autonomous
-    // if (DriverStation.getAlliance().equals(Optional.of(Alliance.Blue))) {
-    //   return -1.0;
-    // } else {
-    //   return 1.0;
-    // }
-    // FMS Override
-    if (m_allianceChoice.getSelected() == blue) {
-      return -1.0;
-    } else {
-      return 1.0;
-    }
+    return m_allianceChoice.getSelected();
   }
 
   public static void StartTimer(String type, float timer_length) {
