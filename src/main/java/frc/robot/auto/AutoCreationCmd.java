@@ -23,11 +23,6 @@ import java.util.List;
 public class AutoCreationCmd {
 
   DrivetrainSubsystem drivetrain;
-  TrajectoryConfig trajectoryConfig =
-      new TrajectoryConfig(
-              AutoConstants.kMaxSpeedMetersPerSecond,
-              AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-          .setKinematics(DriveConstants.kDriveKinematics);
 
   /**
    * Method to autonomously drive the robot (ALL MEASUREMENTS IN METERS)
@@ -45,12 +40,59 @@ public class AutoCreationCmd {
   public Command AutoDriveCmd(
       DrivetrainSubsystem _drivetrain, List<Translation2d> waypoints, Pose2d finalrest) {
     drivetrain = _drivetrain;
+
+    TrajectoryConfig trajectoryConfig =
+        new TrajectoryConfig(
+                AutoConstants.kMaxSpeedMetersPerSecond,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(DriveConstants.kDriveKinematics);
     // Define PID controllers for tracking trajectory
-    PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-    PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
+    PIDController xController = new PIDController(AutoConstants.kPXController, 0.01, 0);
+    PIDController yController = new PIDController(AutoConstants.kPYController, 0.01, 0);
     ProfiledPIDController thetaController =
         new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+            AutoConstants.kPThetaController, 0.01, 0, AutoConstants.kThetaControllerConstraints);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+    // Generate trajectory
+    Trajectory trajectory =
+        TrajectoryGenerator.generateTrajectory(
+            drivetrain.getPose(), waypoints, finalrest, trajectoryConfig);
+
+    // Construct command to follow trajectory
+    SwerveControllerCommand swerveControllerCommand =
+        new SwerveControllerCommand(
+            trajectory,
+            drivetrain::getPose,
+            DriveConstants.kDriveKinematics,
+            xController,
+            yController,
+            thetaController,
+            drivetrain::setModuleStates,
+            drivetrain);
+
+    // Add some init and wrap-up, and return everything
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> drivetrain.resetOdometry(trajectory.getInitialPose())),
+        swerveControllerCommand,
+        new InstantCommand(() -> drivetrain.stopModules()));
+  }
+
+  public Command AutoDriveSpeedVar(
+      Double maxSpeed,
+      DrivetrainSubsystem _drivetrain,
+      List<Translation2d> waypoints,
+      Pose2d finalrest) {
+    drivetrain = _drivetrain;
+
+    TrajectoryConfig trajectoryConfig =
+        new TrajectoryConfig(maxSpeed, AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(DriveConstants.kDriveKinematics);
+    // Define PID controllers for tracking trajectory
+    PIDController xController = new PIDController(AutoConstants.kPXController, 0.01, 0);
+    PIDController yController = new PIDController(AutoConstants.kPYController, 0.01, 0);
+    ProfiledPIDController thetaController =
+        new ProfiledPIDController(
+            AutoConstants.kPThetaController, 0.01, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     // Generate trajectory
     Trajectory trajectory =
